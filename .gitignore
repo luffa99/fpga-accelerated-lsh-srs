@@ -1,0 +1,6 @@
+**/hls_output
+**/_*
+common/
+*.log
+**/build_dir*
+*/.*
