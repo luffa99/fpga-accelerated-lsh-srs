@@ -3,4 +3,5 @@
 common/
 *.log
 **/build_dir*
-*/.*
+.*
+!/.gitignore
