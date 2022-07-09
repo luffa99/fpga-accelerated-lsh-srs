@@ -39,8 +39,8 @@
  * 
  * And then we parse the generated Tree + knn search
 */
-void generateTree(  float points_coords [n_points][dimension],
-                    int  points_children [n_points][maxchildren*2],
+void generateTree(  float points_coords [n_points*dimension],
+                    int  points_children [n_points*maxchildren*2],
                     float result_py [dimension],
                     int &n_points_real,
                     float query [dimension*100],
@@ -94,11 +94,11 @@ void generateTree(  float points_coords [n_points][dimension],
         for(int j=0; j<dimension;j++){
             std::getline(file, str);
             //std::cout << str << std::endl;
-            points_coords[i][j] = std::stof(str);
+            points_coords[i*dimension+j] = std::stof(str);
         }
         for(int j=0; j<maxchildren*2; j++){
             std::getline(file, str);
-            points_children[i][j] = std::stoi(str);
+            points_children[i*maxchildren*2+j] = std::stoi(str);
         }
     }
 
@@ -137,8 +137,8 @@ int main(int argc, char** argv) {
     std::string binaryFile = argv[1];
 
     // 2D array DATA to pass to the FPGA
-    float points_coords [n_points][dimension] = {};
-    int points_children [n_points][maxchildren*2] = {};
+    // float points_coords_2 [n_points][dimension] = {};
+    // int points_children_2 [n_points][maxchildren*2] = {};
     // Results arrays
     float result_hw [dimension*100] = {};
     float result_py [dimension] = {};
@@ -148,7 +148,14 @@ int main(int argc, char** argv) {
     int maxlevel = dummy_level;
     int minlevel = dummy_level; 
 
+
+    // Convert to 1d arrays...
+    float points_coords [n_points*dimension] = {};
+    int points_children [n_points*maxchildren*2] = {};
+
     generateTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel);
+
+
 
 
     // TODO!!!!!!!!!!!!!!!

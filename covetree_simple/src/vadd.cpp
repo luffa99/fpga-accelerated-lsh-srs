@@ -36,8 +36,8 @@ extern "C" {
 
 
 void vadd(int const size,
-        float const points_coords_dram [n_points][dimension],
-        int const points_children_dram [n_points][maxchildren*2],
+        float const points_coords_dram [n_points*dimension],
+        int const points_children_dram [n_points*maxchildren*2],
         float const querys[dimension*100],
         float outs[dimension*100],
         int maxlevel,
@@ -73,10 +73,10 @@ int points_children [n_points][maxchildren*2];
     // Copying data structure in on-chip memory:
     for(int i=0; i<n_points; i++){
         for(int j=0; j<dimension; j++){
-            points_coords[i][j] = points_coords_dram[i][j];
+            points_coords[i][j] = points_coords_dram[i*dimension+j];
         }
         for(int j=0; j<maxchildren*2; j++) {
-            points_children[i][j] = points_children_dram[i][j];
+            points_children[i][j] = points_children_dram[i*maxchildren*2+j];
         }
     }
 

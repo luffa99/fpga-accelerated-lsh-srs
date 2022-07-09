@@ -1,28 +1,28 @@
 Profile Summary
-Generated on: 2022-07-09 13:43:41
-Msec since Epoch: 1657367021704
-Profiled application: covetree_simple_host_single_queue
+Generated on: 2022-07-09 19:09:35
+Msec since Epoch: 1657386575740
+Profiled application: covetree
 Target platform: Xilinx
 Tool version: 2022.1
 XRT build version: 2.13.466
 Build version branch: 2022.1
 Build version hash: f5505e402c2ca1ffe45eb6d3a9399b23a0dc8776
 Build version date: N/A
-Target devices: 
+Target devices: xilinx_u55c_gen3x16_xdma_base_3-0
 Flow mode: System Run
 
 OpenCL API Calls
 API Name,Number Of Calls,Total Time (ms),Minimum Time (ms),Average Time (ms),Maximum Time (ms),
-clCreateCommandQueue,1,0.009098,0.009098,0.009098,0.009098,
-clCreateContext,1,29.594,29.594,29.594,29.594,
-clCreateProgramWithBinary,1,50.2023,50.2023,50.2023,50.2023,
-clGetDeviceIDs,2,0.004588,0.001152,0.002294,0.003436,
-clGetDeviceInfo,2,6.05543,0.003477,3.02772,6.05195,
-clGetExtensionFunctionAddress,2,0.020397,0.002634,0.0101985,0.017763,
-clGetExtensionFunctionAddressForPlatform,2,0.0102,0.001082,0.0051,0.009118,
-clGetPlatformInfo,6,0.004809,0.000561,0.0008015,0.001483,
-clReleaseDevice,3,0.005732,0.000441,0.00191067,0.004669,
-clRetainDevice,4,0.0108,0.00034,0.0027,0.008746,
+clCreateCommandQueue,1,0.007784,0.007784,0.007784,0.007784,
+clCreateContext,1,135.556,135.556,135.556,135.556,
+clCreateKernel,1,0.544992,0.544992,0.544992,0.544992,
+clCreateProgramWithBinary,1,42.2808,42.2808,42.2808,42.2808,
+clGetDeviceIDs,2,0.003717,0.001032,0.0018585,0.002685,
+clGetDeviceInfo,2,5.54106,0.002374,2.77053,5.53868,
+clGetPlatformIDs,2,0.019447,0.001262,0.0097235,0.018185,
+clGetPlatformInfo,2,0.002464,0.000841,0.001232,0.001623,
+clReleaseDevice,2,0.003487,0.000491,0.0017435,0.002996,
+clRetainDevice,4,0.008105,0.00025,0.00202625,0.006422,
 
 
 
@@ -30,12 +30,61 @@ clRetainDevice,4,0.0108,0.00034,0.0027,0.008746,
 
 Guidance Parameters
 Parameter,Element,Value,
-PLRAM_DEVICE,all,0,
-HBM_DEVICE,all,0,
+DEVICE_EXEC_TIME,xilinx_u55c_gen3x16_xdma_base_3-0,0,
+NUM_MONITORS,xilinx_u55c_gen3x16_xdma_base_3-0|XCL_PERF_MON_MEMORY|0,0,
+NUM_MONITORS,xilinx_u55c_gen3x16_xdma_base_3-0|XCL_PERF_MON_ACCEL|0,0,
+NUM_MONITORS,xilinx_u55c_gen3x16_xdma_base_3-0|XCL_PERF_MON_STR|0,0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[0],1,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[1],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[2],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[3],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[4],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[5],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[6],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[7],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[8],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[9],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[10],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[11],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[12],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[13],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[14],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[15],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[16],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[17],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[18],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[19],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[20],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[21],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[22],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[23],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[24],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[25],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[26],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[27],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[28],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[29],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[30],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HBM[31],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|PLRAM[0],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|PLRAM[1],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|PLRAM[2],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|PLRAM[3],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|PLRAM[4],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|PLRAM[5],0,
+MEMORY_USAGE,xilinx_u55c_gen3x16_xdma_base_3-0|HOST[0],0,
+PLRAM_DEVICE,all,1,
+HBM_DEVICE,all,1,
 KDMA_DEVICE,all,0,
 P2P_DEVICE,all,0,
+KERNEL_COUNT,vadd,1,
 TRACE_MEMORY,all,FIFO,
-APPLICATION_RUN_TIME_MS,all,739.35,
+PLRAM_SIZE_BYTES,xilinx_u55c_gen3x16_xdma_base_3-0,0,
+TRACE_BUFFER_FULL,xilinx_u55c_gen3x16_xdma_base_3-0,false
+MEMORY_TYPE_BIT_WIDTH,xilinx_u55c_gen3x16_xdma_base_3-0|HBM,256,
+MEMORY_TYPE_BIT_WIDTH,xilinx_u55c_gen3x16_xdma_base_3-0|DDR,512,
+MEMORY_TYPE_BIT_WIDTH,xilinx_u55c_gen3x16_xdma_base_3-0|PLRAM,512,
+APPLICATION_RUN_TIME_MS,all,259.537,
 XRT_INI_SETTING,opencl_summary,1,Generation of OpenCL summary report (deprecated)
 XRT_INI_SETTING,opencl_trace,0,Generation of trace of OpenCL APIs and memory transfers
 XRT_INI_SETTING,opencl_device_counter,1,Hardware counters added to OpenCL summary file (deprecated)
