@@ -1,3 +1,5 @@
+
+
 .PHONY: help
 
 help::
@@ -34,7 +36,7 @@ KERNEL_SRC := src/vadd.cpp
 HOST_SRC := src/host.cpp
 
 # targets
-HOST_EXE := host
+HOST_EXE := covetree
 
 XOS := $(XCLBIN_DIR)/vadd.$(TARGET).xo
 XCLBIN := $(XCLBIN_DIR)/vadd.$(TARGET).xclbin

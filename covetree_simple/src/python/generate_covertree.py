@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 #
 # File: test_covertree.py
 # Date of creation: 11/20/08
@@ -20,7 +20,8 @@ from naiveknn import knn
 from numpy import subtract, dot, sqrt, linalg
 from random import random, seed
 import time
-import cPickle as pickle
+# import cPickle as pickle
+import pickle
 import sys
 
 def distance(p, q):
@@ -38,7 +39,7 @@ def test_covertree():
     passed_tests = 0
 
     if(len(sys.argv) < 3):
-        print "Usage: script number_of_points max_number_of_children"
+        print ("Usage: script number_of_points max_number_of_children")
         exit(1)
     
     n_points = int(sys.argv[1])
@@ -46,11 +47,11 @@ def test_covertree():
 
     # k = 1
     
-    pts = [(random(),random(),random(),random(),random(),random()) for _ in xrange(n_points)]
+    pts = [(random(),random(),random(),random(),random(),random()) for _ in range(n_points)]
 
     gt = time.time
 
-    print "Build cover tree of", n_points, "6D-points"
+    print ("Build cover tree of", n_points, "6D-points")
     
     t = gt()
     ct = CoverTree(distance, maxchildren)
@@ -59,12 +60,12 @@ def test_covertree():
     b_t = gt() - t
     # print "Building time:", b_t, "seconds"
 
-    print "==== Check that all cover tree invariants are satisfied ===="
+    print ("==== Check that all cover tree invariants are satisfied ====")
     if ct.check_invariants():
-        print "OK!"
+        print ("OK!")
         passed_tests += 1
     else:
-        print "NOT OK!"
+        print ("NOT OK!")
     total_tests += 1
     
     # print "==== Write test1.dot, dotty file of the built tree ===="
@@ -103,9 +104,9 @@ def test_covertree():
                     queue.append(neighbour)
 
     # Driver Code
-    print "Building graph to export"
+    print ("Building graph to export")
     bfs(visited, ct.root)    # function calling
-    points = sorted(points.iteritems(), key=lambda x: int(x[0]))
+    points = sorted(points.items(), key=lambda x: int(x[0]))
     points = list(map(lambda i : i[1], points))
     for node in points:
         if len(node[1]) < maxchildren: ## max 16 children !!!
@@ -138,7 +139,7 @@ def test_covertree():
     ctFileName = "test.ct"
     # print "Save cover tree under", ctFileName
     t = gt()
-    ct_file = open("test.ct", "w")
+    ct_file = open("test.ct", "wb")
     pickle.dump(ct, ct_file)
     ct_file.close()
     # print "Saving time:", gt() - t
@@ -147,16 +148,16 @@ def test_covertree():
     # load ct
     # print "Reload", ctFileName
     t = gt()
-    ct_file = open("test.ct")
+    ct_file = open("test.ct", "rb")
     ct = pickle.load(ct_file)
     ct_file.close()
     # print "Loading time:", gt() - t
     
-    print "==== Test (PYTHON) " + str(k) + "-nearest neighbors cover tree query ===="
+    print ("==== Test (PYTHON) " + str(k) + "-nearest neighbors cover tree query ====")
     #query = (0.5,0.5,0.5)
 
-    print "Query: "
-    print query
+    print ("Query: ")
+    print (query)
 
     # naive nearest neighbor
     t = gt()
@@ -173,13 +174,13 @@ def test_covertree():
     # print "Time to run a cover tree " + str(k) + "-nn query:", ct_t, "seconds"
     
     if all([distance(r, nr) != 0 for r, nr in zip(results, naive_results)]):
-        print "NOT OK!"
-        print results
-        print "!="
-        print naive_results
+        print ("NOT OK!")
+        print (results)
+        print ("!=")
+        print (naive_results)
     else:
-        print "OK!"
-        print results
+        print ("OK!")
+        print (results)
         # print "=="
         # print naive_results
         # print "Cover tree query is", n_t/ct_t, "faster"
@@ -199,45 +200,45 @@ def test_covertree():
     # plot([results[0][0]], [results[0][1]], 'mo')
 
     # test knn_insert
-    print "==== Test knn_insert method ===="
+    print ("==== Test knn_insert method ====")
     t = gt()
     results2 = ct.knn_insert(k, query, True)
     ct_t = gt() - t
-    print "Time to run a cover tree " + str(k) + "-nn query:", ct_t, "seconds"
+    print ("Time to run a cover tree " + str(k) + "-nn query:", ct_t, "seconds")
     
     if all([distance(r, nr) != 0 for r, nr in zip(results2, naive_results)]):
-        print "NOT OK!"
-        print results2
-        print "!="
-        print naive_results
+        print ("NOT OK!")
+        print (results2)
+        print ("!=")
+        print (naive_results)
     else:
-        print "OK!"
-        print results2
-        print "=="
-        print naive_results
-        print "Cover tree query is", n_t/ct_t, "faster"
+        print ("OK!")
+        print (results2)
+        print ("==")
+        print (naive_results)
+        print ("Cover tree query is", n_t/ct_t, "faster")
         passed_tests += 1
     total_tests += 1
 
-    print "==== Check that all cover tree invariants are satisfied ===="
+    print ("==== Check that all cover tree invariants are satisfied ====")
     if ct.check_invariants():
-        print "OK!"
+        print ("OK!")
         passed_tests += 1
     else:
-        print "NOT OK!"
+        print ("NOT OK!")
     total_tests += 1
 
-    print "==== Write test2.dot, dotty file of the built tree after knn_insert ===="
+    print ("==== Write test2.dot, dotty file of the built tree after knn_insert ====")
     with open("test2.dot", "w") as testDottyFile2:
         ct.writeDotty(testDottyFile2)
         
     # test find
-    print "==== Test cover tree find method ===="
+    print ("==== Test cover tree find method ====")
     if ct.find(query):
-        print "OK!"
+        print ("OK!")
         passed_tests += 1
     else:
-        print "NOT OK!"
+        print ("NOT OK!")
     total_tests += 1
 
     # printDotty prints the tree that was generated in dotty format,
@@ -246,7 +247,7 @@ def test_covertree():
 
     # show()
 
-    print passed_tests, "tests out of", total_tests, "have passed"
+    print (passed_tests, "tests out of", total_tests, "have passed")
     
 
 if __name__ == '__main__':

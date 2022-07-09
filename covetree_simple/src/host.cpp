@@ -14,7 +14,7 @@
 * under the License.
 */
 
-#include "xcl2.hpp"
+// #include "../../common/includes/xcl2/xcl2.hpp"
 #include <algorithm>
 #include <vector>
 #include <algorithm>
@@ -25,6 +25,7 @@
 #include <string>
 #include <iostream>
 #include <unistd.h>
+#include "host.hpp"
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 16  // Maximum number of children for every node (fixed vector)
@@ -42,21 +43,21 @@ void generateTree(  float points_coords [n_points][dimension],
                     int  points_children [n_points][maxchildren*2],
                     float result_py [dimension],
                     int &n_points_real,
-                    float query [dimension],
+                    float query [dimension*100],
                     int &maxlevel,
                     int &minlevel) {
 
     std::string str; 
 
     // Generate random query point
-    for(int i=0; i<dimension; i++) {
+    for(int i=0; i<dimension*100; i++) {
         // This will generate a random number from 0.0 to 1.0, inclusive.
-        srand(time(NULL));
+        srand(time(NULL)+i);
         query[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     }
 
 
-    // Call python script to generate tree
+    // Call python script to generate tree 
     system(("rm generated_tree_"+std::to_string(n_points)+".txt").c_str() );
     system(("python src/python/generate_covertree.py "+std::to_string(n_points)+" "+std::to_string(maxchildren)
         +" "+std::to_string(query[0])
@@ -139,10 +140,10 @@ int main(int argc, char** argv) {
     float points_coords [n_points][dimension] = {};
     int points_children [n_points][maxchildren*2] = {};
     // Results arrays
-    float result_hw [dimension] = {};
+    float result_hw [dimension*100] = {};
     float result_py [dimension] = {};
     // Utils
-    float query [dimension] = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
+    float query [dimension*100];
     int n_points_real = n_points;
     int maxlevel = dummy_level;
     int minlevel = dummy_level; 
@@ -185,11 +186,17 @@ int main(int argc, char** argv) {
     // OPENCL HOST CODE AREA START
     // get_xil_devices() is a utility API which will find the xilinx
     // platforms and will return list of devices connected to Xilinx platform
-    auto devices = xcl::get_xil_devices();
+    // auto devices = xcl::get_xil_devices();
+    std::vector<cl::Device> devices = get_devices();
+
     // read_binary_file() is a utility API which will load the binaryFile
     // and will return the pointer to file buffer.
-    auto fileBuf = xcl::read_binary_file(binaryFile);
-    cl::Program::Binaries bins{{fileBuf.data(), fileBuf.size()}};
+    // auto fileBuf = xcl::read_binary_file(binaryFile);
+    xclbin_file_name = argv[1];
+    cl::Program::Binaries vadd_bins = import_binary_file();
+
+
+    // cl::Program::Binaries bins{{vadd_bins.data(), vadd_bins.size()}};
     bool valid_device = false;
     for (unsigned int i = 0; i < devices.size(); i++) {
         auto device = devices[i];
@@ -197,7 +204,7 @@ int main(int argc, char** argv) {
         OCL_CHECK(err, context = cl::Context(device, nullptr, nullptr, nullptr, &err));
         OCL_CHECK(err, q = cl::CommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &err));
         std::cout << "Trying to program device[" << i << "]: " << device.getInfo<CL_DEVICE_NAME>() << std::endl;
-        cl::Program program(context, {device}, bins, nullptr, &err);
+        cl::Program program(context, {device}, vadd_bins, nullptr, &err);
         if (err != CL_SUCCESS) {
             std::cout << "Failed to program device[" << i << "] with xclbin file!\n";
         } else {
@@ -246,7 +253,7 @@ int main(int argc, char** argv) {
                                          points_children, &err));
     OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, sizeof(float)*dimension,
                                          query, &err));
-    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, sizeof(float)*dimension,
+    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, sizeof(float)*dimension*100,
                                             result_hw, &err));
 
     OCL_CHECK(err, err = krnl_vector_add.setArg(0, n_points_real));

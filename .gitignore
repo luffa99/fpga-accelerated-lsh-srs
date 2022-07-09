@@ -5,3 +5,4 @@ common/
 **/build_dir*
 .*
 !/.gitignore
+test/

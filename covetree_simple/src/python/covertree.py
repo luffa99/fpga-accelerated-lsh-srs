@@ -17,7 +17,8 @@ from heapq import nsmallest
 from itertools import product
 from collections import Counter
 from joblib import Parallel, delayed
-import cStringIO
+# import cStringIO
+import io
 
 # method that returns true iff only one element of the container is True
 def unique(container):
@@ -198,7 +199,7 @@ class CoverTree:
         for x in parent.children:
             tot_children += len(parent.children[x])
         if(tot_children >= self.maxchildren): # MAX NUMBER OF CHILDS!!!!!!!!!!!!
-            print "XXX Ignored "+str(self.ignored+1)+" node"
+            print ("XXX Ignored "+str(self.ignored+1)+" node")
             self.ignored += 1
             self.id -= 1
             return
@@ -217,7 +218,7 @@ class CoverTree:
     #
     def knn_iter(self, k, p):
         Qi_p_ds = [(self.root, self.distance(p, self.root.data))]
-        for i in reversed(xrange(self.minlevel, self.maxlevel + 1)):
+        for i in reversed(range(self.minlevel, self.maxlevel + 1)):
             #print("Round "+str(i))
 
             # for ch,d in Qi_p_ds:
@@ -366,7 +367,7 @@ class CoverTree:
         self.writeDotty_rec(outputFile, children, i-1)
 
     def __str__(self):
-        output = cStringIO.StringIO()
+        output = io.StringIO()
         self.writeDotty(output)
         return output.getvalue()
 
@@ -383,10 +384,10 @@ class CoverTree:
     # for all i, my_invariant(C_i, C_{i-1})
     def check_my_invariant(self, my_invariant):
         C = [self.root]
-        for i in reversed(xrange(self.minlevel, self.maxlevel + 1)):        
+        for i in reversed(range(self.minlevel, self.maxlevel + 1)):        
             C_next = sum([p.getChildren(i) for p in C], [])
             if not my_invariant(C, C_next, i):
-                print "At level", i, "the invariant", my_invariant, "is false"
+                print ("At level", i, "the invariant", my_invariant, "is false")
                 return False
             C = C_next
         return True
