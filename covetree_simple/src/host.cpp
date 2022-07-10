@@ -39,11 +39,11 @@
  * 
  * And then we parse the generated Tree + knn search
 */
-void generateTree(  float points_coords [n_points*dimension],
-                    int  points_children [n_points*maxchildren*2],
+void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
+                    std::vector<int,aligned_allocator<int>>  &points_children,
                     float result_py [dimension],
                     int &n_points_real,
-                    float query [dimension*100],
+                    std::vector<float,aligned_allocator<float>> &query,
                     int &maxlevel,
                     int &minlevel) {
 
@@ -140,23 +140,24 @@ int main(int argc, char** argv) {
     // float points_coords_2 [n_points][dimension] = {};
     // int points_children_2 [n_points][maxchildren*2] = {};
     // Results arrays
-    float result_hw [dimension*100] = {};
+    // float result_hw [dimension*100] = {};
+    std::vector<float,aligned_allocator<float>> result_hw (dimension*100);
     float result_py [dimension] = {};
     // Utils
-    float query [dimension*100];
+    // float query [dimension*100];
+    std::vector<float,aligned_allocator<float>> query (dimension*100);
     int n_points_real = n_points;
     int maxlevel = dummy_level;
     int minlevel = dummy_level; 
 
 
     // Convert to 1d arrays...
-    float points_coords [n_points*dimension] = {};
-    int points_children [n_points*maxchildren*2] = {};
+    // float points_coords [n_points*dimension] = {};
+    // int points_children [n_points*maxchildren*2] = {};
+    std::vector<float,aligned_allocator<float>> points_coords(n_points*dimension);
+    std::vector<int,aligned_allocator<int>> points_children(n_points*maxchildren*2);
 
     generateTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel);
-
-
-
 
     // TODO!!!!!!!!!!!!!!!
     // size_t vector_size_bytes = sizeof(int) * dimension;
@@ -255,13 +256,13 @@ int main(int argc, char** argv) {
     // Buffers are allocated using CL_MEM_USE_HOST_PTR for efficient memory and
     // Device-to-host communication
     OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, sizeof(float)*n_points*dimension,
-                                         points_coords, &err));
+                                         points_coords.data(), &err));
     OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, sizeof(int)*n_points*maxchildren*2,
-                                         points_children, &err));
+                                         points_children.data(), &err));
     OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, sizeof(float)*dimension,
-                                         query, &err));
+                                         query.data(), &err));
     OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, sizeof(float)*dimension*100,
-                                            result_hw, &err));
+                                            result_hw.data(), &err));
 
     OCL_CHECK(err, err = krnl_vector_add.setArg(0, n_points_real));
     OCL_CHECK(err, err = krnl_vector_add.setArg(1, buffer_in1));

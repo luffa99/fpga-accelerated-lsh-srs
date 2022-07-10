@@ -36,10 +36,10 @@ extern "C" {
 
 
 void vadd(int const size,
-        float const points_coords_dram [n_points*dimension],
-        int const points_children_dram [n_points*maxchildren*2],
-        float const querys[dimension*100],
-        float outs[dimension*100],
+        const float * points_coords_dram,
+        const int * points_children_dram,
+        const float * querys,
+        float * outs,
         int maxlevel,
         int minlevel) {
 

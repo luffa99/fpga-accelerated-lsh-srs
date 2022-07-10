@@ -1,19 +1,5 @@
-/**
-* Copyright (C) 2019-2021 Xilinx, Inc
-*
-* Licensed under the Apache License, Version 2.0 (the "License"). You may
-* not use this file except in compliance with the License. A copy of the
-* License is located at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-* License for the specific language governing permissions and limitations
-* under the License.
-*/
 
+// #include "../../common/includes/xcl2/xcl2.hpp"
 #include <algorithm>
 #include <vector>
 #include <algorithm>
@@ -24,176 +10,206 @@
 #include <string>
 #include <iostream>
 #include <unistd.h>
+#include "host.hpp"
+// #include <hls_vector.h>
+// #include <hls_stream.h>
+#include "assert.h"
+// #include "hls_math.h"
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 16  // Maximum number of children for every node (fixed vector)
 #define n_points 100   // Number of po#defines to generate
 #define dummy_level 69
 
+
+// #define _minlevel -4
+// #define _maxlevel 2
+
+
 float distance( float const in1[dimension],
                 float const in2[dimension]) {
 
     float ans = 0;
+    distance_loop:
     for (int i = 0; i < dimension; i++) {
+    #pragma HLS unroll
         float a = in1[i];
         float b = in2[i];
         ans = ans + ( ( a-b ) * (a-b) ); 
     }
-    return sqrt(ans); 
+
+    return ans; 
 }
 
-int seq_vadd(int const size,
-        float const points_coords [n_points][dimension],
-        int const points_children [n_points][maxchildren*2],
-        float const query[dimension],
-        float out[dimension],
+
+
+void vadd(int const size,
+        const float * points_coords_dram,
+        const int * points_children_dram,   
+        const float * querys,
+        float * outs,
         int maxlevel,
         int minlevel) {
-    
 
-    float min_distance = 19990102;
-    int min_index = -1;
-    for(int i=0; i<size;i++) {
-        // Only points in set
-        float d = distance(points_coords[i], query);
-        //std::cout << "P: " << i << " D: " << d << std::endl;
-        if(d < min_distance) {
-            min_distance = d;
-            min_index = i;
+    // Memory mapping
+    float points_coords [n_points][dimension];
+    int points_children [n_points][maxchildren*2];
+
+    // Copying data structure in on-chip memory:
+    for(int i=0; i<n_points; i++){
+        for(int j=0; j<dimension; j++){
+            points_coords[i][j] = points_coords_dram[i*dimension+j];
+        }
+        for(int j=0; j<maxchildren*2; j++) {
+            points_children[i][j] = points_children_dram[i*maxchildren*2+j];
         }
     }
 
-    for(int i=0; i<dimension; i++) {
-        out[i] = points_coords[min_index][i];
+    std::cout << "Points coords is: " <<std::endl;
+    for(int i=0; i< n_points; i++) {
+        for(int j=0; j< dimension;j++) {
+            std::cout << points_coords[i][j] << " ";
+        }
     }
 
-    return min_index;
-}
+    // Search 100 query points!
+    for(int q=0; q<100;q++) {
 
-int vadd(int const size,
-        float const points_coords [n_points][dimension],
-        int const points_children [n_points][maxchildren*2],
-        float const query[dimension],
-        float out[dimension],
-        int maxlevel,
-        int minlevel) {
+        // Select actual query
+        float query[dimension];
+        for(int i=0; i<dimension; i++){
+            query[i] = querys[q*dimension+i];
+        }
 
-    // Distances from query point
-    float dists [n_points] = {-1};  
-    for (int i=0; i<n_points; i++){
-        dists[i] = -1;
-    }
+        // Distances from query point
+        float dists [n_points] = {-1};  
+        for (int i=0; i<n_points; i++){
+            dists[i] = -1;
+        }
 
-    // Set of points: use array as queue
-    int queue_ptr = 0;              // A pointer to the end of the queue
-    int queue [n_points] = {-1};
-    for (int i=0; i<n_points; i++){
-        queue[i] = -1;
-    }
+        // Set of points: use array as queue
+        int queue_ptr = 0;              // A pointer to the end of the queue
+        int queue [n_points] = {-1};
+        for (int i=0; i<n_points; i++){
+            queue[i] = -1;
+        }
 
-    // Insert root in queue and save distance
-    queue[queue_ptr] = 0;
-    queue_ptr++;
-    dists[0] = distance(points_coords[0], query);
+        // Insert root in queue and save distance
+        queue[queue_ptr] = 0;
+        queue_ptr++;
+        dists[0] = distance(points_coords[0], query);
 
-    // Iteration on levels
-    for(int l=maxlevel; l >= minlevel; l--){
-        // std::cout << "Round " << l << std::endl;
-        // Inspect all children of points in p_set
-        // and compute the distances
-        float min_distance = 19990102;
-        // for(int i=0; i<size; i++){
-        //     if(p_set[i] != -1) {
-        //     std::cout << i << std::endl;
-        //     }
-        // }
+        // Iteration on levels
+        levels_loop:
+        for(int l=maxlevel; l >= minlevel; l--){
+        // for(int l= _maxlevel; l >= _minlevel; l--){
+            std::cout << "L: " << l << std::endl;
 
-        // Visit all elements in queue
-        for(int i=0; i<queue_ptr;i++) {
-            // std::cout << "|=> " << p_set[i] << std::endl;
-            // Get children at some level
-            // for(int j=0; j<maxchildren*2; j+=2) {
-            //     std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
+            // std::cout << "Round " << l << std::endl;
+            // Inspect all children of points in p_set
+            // and compute the distances
+            float min_distance = 19990102;
+            // for(int i=0; i<size; i++){
+            //     if(p_set[i] != -1) {
+            //     std::cout << i << std::endl;
+            //     }
             // }
-            int p = queue[i];
-            for(int j=0; j<maxchildren*2; j+=2) {
-                // Values in list are "tuples of 2"
-                // With (Level, Point)
 
-                // dummy_level means NULL and list is sorted
-                if(points_children[p][j] == dummy_level) {
-                    break;
-                }
-                // List is sorted by level; stop
-                // iterating if find LOWER one
-                if(points_children[p][j] < l) {
-                    break;
-                }
+            // Visit all elements in queue
+            queue_loop:
+            for(int i=0; i<queue_ptr;i++) {
+                // std::cout << "|=> " << p_set[i] << std::endl;
+                // Get children at some level
+                // for(int j=0; j<maxchildren*2; j+=2) {
+                //     std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
+                // }
+                int p = queue[i];
+                std::cout << "P: " << p << std::endl;
 
-                // We found a child at level l
-                // int chil2d = points_children[i][j+1];
-                // std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
-                if(points_children[p][j] == l) {
-                    int child = points_children[p][j+1];
-                    // Add child to queue and save distance
-                    queue[queue_ptr] = child;
-                    queue_ptr++;
-                    dists[child] = distance(points_coords[child],query);
+                children_loop:
+                for(int j=0; j<maxchildren*2; j+=2) {
+                    // Values in list are "tuples of 2"
+                    // With (Level, Point)
 
-                    // OK for k=1
-                    if(dists[child] < min_distance){
-                        min_distance = dists[child];
+                    // dummy_level means NULL and list is sorted or
+                    // List is sorted by level; stop
+                    // iterating if find LOWER one
+
+                    /*THIS causes the II to increase from 2 to 19. Is it better to have an II of 19 or to always go throu the 
+                    entire loop?
+                    */
+                    // if(points_children[p][j] == dummy_level || points_children[p][j] < l) {
+                    //     break;
+                    // }
+
+                    // We found a child at level l
+                    // int chil2d = points_children[i][j+1];
+                    // std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
+                    if(points_children[p][j] == l) {
+                        int child = points_children[p][j+1];
+                        // Add child to queue and save distance
+                        queue[queue_ptr] = child;
+                        queue_ptr++;
+                        dists[child] = distance(points_coords[child],query);
+
+                        // OK for k=1
+                        if(dists[child] < min_distance){
+                            min_distance = dists[child];
+                        }
                     }
                 }
+
+                // OK for k=1
+                if(dists[p] < min_distance){
+                    min_distance = dists[p];
+                }
+                
             }
 
-            // OK for k=1
-            if(dists[p] < min_distance){
-                min_distance = dists[p];
+            // We allow only points with distance <= min_distance + 2^l
+            int reduced_position = 0;
+            filter_loop:
+            for(int i=0; i<queue_ptr;i++) {
+                int p = queue[i];
+                int modify_position = 1;
+                if(dists[p] > (min_distance + pow(2,l))) {
+                    // Exclude point from queue
+                    modify_position = 0;
+                }
+                queue[reduced_position] = queue[i];
+                reduced_position += modify_position;
             }
             
+            std::cout << "B: " << queue_ptr << std::endl;
+
+            queue_ptr = reduced_position;
+
+            std::cout << "A: " << queue_ptr << std::endl;
+
+            // if(l==-1) {
+            //     break;
+            // }
         }
 
-
-        // We allow only points with distance <= min_distance + 2^l
-        int reduced_position = 0;
+        // We visited all levels, now just take the minimum
+        float min_distance = 19990102;
+        int min_index = -1;
+        min_find_loop:
         for(int i=0; i<queue_ptr;i++) {
             int p = queue[i];
-            int modify_position = 1;
-            if(dists[p] > (min_distance + pow(2,l))) {
-                // Exclude point from queue
-                modify_position = 0;
+            if(dists[p] < min_distance) {
+                min_distance = dists[p];
+                min_index = p;
             }
-            queue[reduced_position] = queue[i];
-            reduced_position += modify_position;
         }
-        std::cout << "B: " << queue_ptr << std::endl;
 
-        queue_ptr = reduced_position;
-
-        std::cout << "A: " << queue_ptr << std::endl;
-
-        // if(l==-1) {
-        //     break;
-        // }
-    }
- 
-    // We visited all levels, now just take the minimum
-    float min_distance = 19990102;
-    int min_index = -1;
-    for(int i=0; i<size;i++) {
-        int p = queue[i];
-        if(dists[p] < min_distance) {
-            min_distance = dists[p];
-            min_index = p;
+        // Save result corresponding to query
+        for(int i=0; i<dimension; i++) {
+            outs[q*dimension+i] = points_coords[min_index][i];
         }
     }
 
-    for(int i=0; i<dimension; i++) {
-        out[i] = points_coords[min_index][i];
-    }
-
-    return min_index;
+    
 }
 
 /*
@@ -203,25 +219,25 @@ int vadd(int const size,
  * 
  * And then we parse the generated Tree + knn search
 */
-void generateTree(  float points_coords [n_points][dimension],
-                    int  points_children [n_points][maxchildren*2],
+void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
+                    std::vector<int,aligned_allocator<int>>  &points_children,
                     float result_py [dimension],
                     int &n_points_real,
-                    float query [dimension],
+                    std::vector<float,aligned_allocator<float>> &query,
                     int &maxlevel,
                     int &minlevel) {
 
     std::string str; 
 
     // Generate random query point
-    for(int i=0; i<dimension; i++) {
+    for(int i=0; i<dimension*100; i++) {
         // This will generate a random number from 0.0 to 1.0, inclusive.
-        srand(time(NULL));
+        srand(time(NULL)+i);
         query[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     }
 
 
-    // Call python script to generate tree
+    // Call python script to generate tree 
     system(("rm generated_tree_"+std::to_string(n_points)+".txt").c_str() );
     system(("python src/python/generate_covertree.py "+std::to_string(n_points)+" "+std::to_string(maxchildren)
         +" "+std::to_string(query[0])
@@ -258,11 +274,11 @@ void generateTree(  float points_coords [n_points][dimension],
         for(int j=0; j<dimension;j++){
             std::getline(file, str);
             //std::cout << str << std::endl;
-            points_coords[i][j] = std::stof(str);
+            points_coords[i*dimension+j] = std::stof(str);
         }
         for(int j=0; j<maxchildren*2; j++){
             std::getline(file, str);
-            points_children[i][j] = std::stoi(str);
+            points_children[i*maxchildren*2+j] = std::stoi(str);
         }
     }
 
@@ -293,33 +309,43 @@ void generateTree(  float points_coords [n_points][dimension],
 }
 
 int main(int argc, char** argv) {
-    if (argc != 2) {
-        std::cout << "Usage: " << argv[0] << " <XCLBIN File>" << std::endl;
-        return EXIT_FAILURE;
-    }
 
-    std::string binaryFile = argv[1];
+    std::cout << "C SIMULATION ***********************" << std::endl;
 
+    // std::string binaryFile = argv[1];
     // 2D array DATA to pass to the FPGA
-    float points_coords [n_points][dimension] = {};
-    int points_children [n_points][maxchildren*2] = {};
+    // float points_coords_2 [n_points][dimension] = {};
+    // int points_children_2 [n_points][maxchildren*2] = {};
     // Results arrays
-    float result_hw [dimension] = {};
+    // float result_hw [dimension*100] = {};
+    std::vector<float,aligned_allocator<float>> result_hw (dimension*100);
     float result_py [dimension] = {};
     // Utils
-    float query [dimension] = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
+    // float query [dimension*100];
+    std::vector<float,aligned_allocator<float>> query (dimension*100);
     int n_points_real = n_points;
     int maxlevel = dummy_level;
-    int minlevel = dummy_level;
+    int minlevel = dummy_level; 
+
+
+    // Convert to 1d arrays...
+    // float points_coords [n_points*dimension] = {};
+    // int points_children [n_points*maxchildren*2] = {};
+    std::vector<float,aligned_allocator<float>> points_coords(n_points*dimension);
+    std::vector<int,aligned_allocator<int>> points_children(n_points*maxchildren*2);
 
     generateTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel);
 
-    int res = vadd(n_points_real, points_coords, points_children, query, result_hw, maxlevel, minlevel);
+    std::cout << "Points coords was: " <<std::endl;
+    for(int i=0; i< n_points*dimension; i++) {
+        std::cout << points_coords[i] << " ";
+    }
+    vadd(n_points_real, points_coords.data(), points_children.data(), query.data(), result_hw.data(), maxlevel,minlevel);
 
 
     // Compare the results of the Device to the simulation
     bool match = true;
-    for (int i = 0; i < dimension; i++) {
+    for (int i = 0; i < dimension; i++) { 
         if (result_hw[i] != result_py[i]) {
             std::cout << "Error: Result mismatch" << std::endl;
             std::cout << "i = " << 0 << " CPU result = " << result_py[i]
@@ -327,8 +353,6 @@ int main(int argc, char** argv) {
             match = false;
         }
     }
-
-    std::cout << "Found Node ID: " << res << std::endl;
 
     std::cout << "Query point was:" <<std::endl;
     std::cout << "(";
@@ -351,25 +375,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    // std::cout << "Sequential:" <<std::endl;
-
-
-    // res = seq_vadd(n_points_real, points_coords, points_children, query, result_hw, maxlevel, minlevel);
-
-
-    // std::cout << res << std::endl;
-
-    // std::cout << "Query point was:" <<std::endl;
-    // for (int i=0; i < dimension; i++){
-    //     std::cout << query[i] << std::endl;
-    // }
-
-
-    // std::cout << "Found point is:" <<std::endl;
-    // for (int i=0; i < dimension; i++){
-    //     std::cout << result_hw[i] << std::endl;
-    // }
-
     std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
     return (match ? EXIT_SUCCESS : EXIT_FAILURE);
 }
+
