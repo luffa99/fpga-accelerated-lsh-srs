@@ -7,10 +7,18 @@
     "generation": {
         "this_file": "\/pub\/scratch\/lfalardi\/my_bachelor_thesis\/covetree_simple\/xrt.run_summary",
         "source": "vp",
-        "PID": "2060285",
-        "timestamp": "1657538485231"
+        "PID": "2064762",
+        "timestamp": "1657540417401"
     },
     "files": [
+        {
+            "name": "opencl_trace.csv",
+            "type": "VP_TRACE"
+        },
+        {
+            "name": "device_trace_0.csv",
+            "type": "VP_TRACE"
+        },
         {
             "name": "summary.csv",
             "type": "PROFILE_SUMMARY"

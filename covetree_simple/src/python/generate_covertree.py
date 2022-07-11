@@ -133,6 +133,9 @@ def test_covertree():
                 x.write(str(b)+'\n')
     
     k = 1
+
+    # This list will be used by naive knn
+    points_fn = [x for (x,_) in points]
     
 
     # print "==== Test saving/loading (via pickle)"
@@ -161,7 +164,7 @@ def test_covertree():
 
     # naive nearest neighbor
     t = gt()
-    naive_results = knn(k, query, pts, distance)
+    naive_results = knn(k, query, points_fn, distance)
     # print "resultNN =", resultNN
     n_t = gt() - t
     # print "Time to run a naive " + str(k) + "-nn query:", n_t, "seconds"

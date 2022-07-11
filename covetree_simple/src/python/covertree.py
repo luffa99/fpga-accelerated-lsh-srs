@@ -200,6 +200,7 @@ class CoverTree:
             tot_children += len(parent.children[x])
         if(tot_children >= self.maxchildren): # MAX NUMBER OF CHILDS!!!!!!!!!!!!
             print ("XXX Ignored "+str(self.ignored+1)+" node")
+            # print (p,uid)
             self.ignored += 1
             self.id -= 1
             return
