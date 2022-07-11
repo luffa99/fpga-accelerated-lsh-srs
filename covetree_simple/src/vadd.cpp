@@ -19,6 +19,7 @@ float distance( float const in1[dimension],
     float ans = 0;
     distance_loop:
     for (int i = 0; i < dimension; i++) {
+    // TODO: manually unroll
     #pragma HLS unroll
         float a = in1[i];
         float b = in2[i];
@@ -47,26 +48,29 @@ void vadd(int const size,
 #pragma HLS INTERFACE m_axi port = points_coords_dram bundle=gmem0
 #pragma HLS INTERFACE m_axi port = points_children_dram bundle=gmem1
 #pragma HLS INTERFACE m_axi port = querys bundle=gmem2
+#pragma HLS INTERFACE m_axi port = outs bundle=gmem3
 
 #pragma HLS INTERFACE s_axilite port = points_coords_dram
 #pragma HLS INTERFACE s_axilite port = points_children_dram
 #pragma HLS INTERFACE s_axilite port = querys 
+#pragma HLS INTERFACE s_axilite port = outs 
 
 #pragma HLS INTERFACE s_axilite port = size 
-#pragma HLS INTERFACE s_axilite port = outs 
+#pragma HLS INTERFACE s_axilite port = maxlevel 
+#pragma HLS INTERFACE s_axilite port = minlevel 
 
 // Let's partition the array -> this should allow optimizations
 
 /* Partitioning of points_coords in 6 parts: so we can access each dimension
 in parallel and speed-up the distance computation */
-#pragma HLS array_partition variable=points_coords_dram block factor=6 dim=2
+// #pragma HLS array_partition variable=points_coords_dram block factor=6 dim=2
 float points_coords [n_points][dimension];
 #pragma HLS array_partition variable=points_coords block factor=6 dim=2
 
 /*  Partitioning of points_children in maxchildren part: this may optimize
 the children_loop below
 */
-#pragma HLS array_partition variable=points_children_dram block factor=16 dim=2
+// #pragma HLS array_partition variable=points_children_dram block factor=16 dim=2
 int points_children [n_points][maxchildren*2];
 #pragma HLS array_partition variable=points_children block factor=16 dim=2
 
@@ -81,6 +85,7 @@ int points_children [n_points][maxchildren*2];
     }
 
     // Search 100 query points!
+    // TODO: parametrize the loop size
     for(int q=0; q<100;q++) {
 
         // Select actual query

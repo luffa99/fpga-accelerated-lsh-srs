@@ -9,13 +9,13 @@
 <ENTRY>
 {
  "type": "ET_CmdStep",
- "dateTimestamp": "Sun Jul 10 14:09:15 2022",
- "timestampMillis": "1657454955961",
+ "dateTimestamp": "Mon Jul 11 10:34:15 2022",
+ "timestampMillis": "1657528455019",
  "buildStep": {
-  "cmdId": "457654fd-a03f-4c22-9eff-8ba2a6bf0d59",
+  "cmdId": "941fc68b-8774-4a78-ad5f-8d6ab73913b6",
   "name": "v++",
   "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/vadd.hw/vadd.hw.steps.log",
-  "commandLine": "/tools/Xilinx/Vitis/2022.1/bin/unwrapped/lnx64.o/v++  --vivado.prop \"run.__KERNEL__.{STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS}={-directive sdx_optimization_effort_high}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_route_design_summary steps {route_design} runs {impl_1} options {-max_paths 10}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_post_route_phys_opt_design_summary steps {post_route_phys_opt_design} runs {impl_1} options {-max_paths 10}\" -g -t hw --platform xilinx_u55c_gen3x16_xdma_3_202210_1 --save-temps -c -k vadd --temp_dir ./_x.hw -o xclbin/vadd.hw.xo src/vadd.cpp ",
+  "commandLine": "/tools/Xilinx/Vitis/2022.1/bin/unwrapped/lnx64.o/v++  --vivado.prop \"run.__KERNEL__.{STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS}={-directive sdx_optimization_effort_high}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_route_design_summary steps {route_design} runs {impl_1} options {-max_paths 10}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_post_route_phys_opt_design_summary steps {post_route_phys_opt_design} runs {impl_1} options {-max_paths 10}\" -g -t hw --platform xilinx_u55c_gen3x16_xdma_3_202210_1 --save-temps --config connectivity.cfg -c -k vadd --temp_dir ./_x.hw -o xclbin/vadd.hw.xo src/vadd.cpp ",
   "args": [
    "-g",
    "-t",
@@ -23,6 +23,8 @@
    "--platform",
    "xilinx_u55c_gen3x16_xdma_3_202210_1",
    "--save-temps",
+   "--config",
+   "connectivity.cfg",
    "-c",
    "-k",
    "vadd",
@@ -32,7 +34,12 @@
    "xclbin/vadd.hw.xo",
    "src/vadd.cpp"
   ],
-  "iniFiles": [],
+  "iniFiles": [
+   {
+    "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/connectivity.cfg",
+    "content": "kernel_frequency=135\ndebug=1\n\n[connectivity]\nnk=vadd:1:vadd_1\nsp=vadd_1.points_coords_dram:HBM[0]\nsp=vadd_1.points_children_dram:HBM[1] \nsp=vadd_1.querys:HBM[2]\nsp=vadd_1.outs:HBM[3]\n\n[profile]\ndata=all:all:all\n"
+   }
+  ],
   "cwd": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple"
  }
 }
@@ -40,10 +47,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Sun Jul 10 14:09:15 2022",
- "timestampMillis": "1657454955962",
+ "dateTimestamp": "Mon Jul 11 10:34:15 2022",
+ "timestampMillis": "1657528455020",
  "status": {
-  "cmdId": "457654fd-a03f-4c22-9eff-8ba2a6bf0d59",
+  "cmdId": "941fc68b-8774-4a78-ad5f-8d6ab73913b6",
   "state": "CS_RUNNING"
  }
 }
@@ -51,8 +58,8 @@
 <ENTRY>
 {
  "type": "ET_FlowMetaData",
- "dateTimestamp": "Sun Jul 10 14:09:22 2022",
- "timestampMillis": "1657454962489",
+ "dateTimestamp": "Mon Jul 11 10:34:22 2022",
+ "timestampMillis": "1657528462276",
  "buildSummary": {
   "hardwarePlatform": "xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm",
   "hardwareDsa": "",
@@ -87,10 +94,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Sun Jul 10 14:09:22 2022",
- "timestampMillis": "1657454962495",
+ "dateTimestamp": "Mon Jul 11 10:34:22 2022",
+ "timestampMillis": "1657528462283",
  "buildStep": {
-  "cmdId": "520a448d-5cd9-4d13-8e40-35a24b60ecf0",
+  "cmdId": "462850d9-7bc3-428b-baa4-2b2c64eb1f2f",
   "name": "vitis_hls",
   "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/vadd.hw/vadd/vitis_hls.log",
   "commandLine": "vitis_hls -f /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/vadd.hw/vadd/vadd.tcl -messageDb vitis_hls.pb",
@@ -109,10 +116,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Sun Jul 10 14:09:22 2022",
- "timestampMillis": "1657454962496",
+ "dateTimestamp": "Mon Jul 11 10:34:22 2022",
+ "timestampMillis": "1657528462285",
  "status": {
-  "cmdId": "520a448d-5cd9-4d13-8e40-35a24b60ecf0",
+  "cmdId": "462850d9-7bc3-428b-baa4-2b2c64eb1f2f",
   "state": "CS_RUNNING"
  }
 }
@@ -120,10 +127,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Sun Jul 10 14:11:07 2022",
- "timestampMillis": "1657455067981",
+ "dateTimestamp": "Mon Jul 11 10:36:15 2022",
+ "timestampMillis": "1657528575706",
  "status": {
-  "cmdId": "520a448d-5cd9-4d13-8e40-35a24b60ecf0",
+  "cmdId": "462850d9-7bc3-428b-baa4-2b2c64eb1f2f",
   "state": "CS_PASSED"
  }
 }
@@ -131,8 +138,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Sun Jul 10 14:11:08 2022",
- "timestampMillis": "1657455068669",
+ "dateTimestamp": "Mon Jul 11 10:36:16 2022",
+ "timestampMillis": "1657528576474",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/vadd.hw/vadd/vadd/solution/.autopilot/db/vadd.design.xml",
   "name": "vadd",
@@ -145,8 +152,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Sun Jul 10 14:11:08 2022",
- "timestampMillis": "1657455068671",
+ "dateTimestamp": "Mon Jul 11 10:36:16 2022",
+ "timestampMillis": "1657528576476",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/vadd.hw/vadd/vadd/solution/.autopilot/db/.message_syn.xml",
   "name": "vadd",
@@ -159,8 +166,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Sun Jul 10 14:11:08 2022",
- "timestampMillis": "1657455068680",
+ "dateTimestamp": "Mon Jul 11 10:36:16 2022",
+ "timestampMillis": "1657528576485",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/vadd.hw/hls_reports/vadd_csynth.rpt",
   "name": "vadd",
@@ -173,8 +180,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Sun Jul 10 14:11:08 2022",
- "timestampMillis": "1657455068682",
+ "dateTimestamp": "Mon Jul 11 10:36:16 2022",
+ "timestampMillis": "1657528576487",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/vadd.hw/vadd/vadd/solution/syn/report/vadd_csynth.xml",
   "name": "vadd",
@@ -187,8 +194,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Sun Jul 10 14:11:08 2022",
- "timestampMillis": "1657455068707",
+ "dateTimestamp": "Mon Jul 11 10:36:16 2022",
+ "timestampMillis": "1657528576511",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/vadd.hw/system_estimate_vadd.hw.xtxt",
   "name": "",
@@ -201,8 +208,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Sun Jul 10 14:11:09 2022",
- "timestampMillis": "1657455069666",
+ "dateTimestamp": "Mon Jul 11 10:36:17 2022",
+ "timestampMillis": "1657528577606",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/vadd.hw/v++_compile_vadd.hw_guidance.html",
   "name": "",
@@ -215,8 +222,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Sun Jul 10 14:11:09 2022",
- "timestampMillis": "1657455069668",
+ "dateTimestamp": "Mon Jul 11 10:36:17 2022",
+ "timestampMillis": "1657528577607",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/v++_compile_vadd.hw_guidance.pb",
   "name": "",
@@ -229,10 +236,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Sun Jul 10 14:11:09 2022",
- "timestampMillis": "1657455069675",
+ "dateTimestamp": "Mon Jul 11 10:36:17 2022",
+ "timestampMillis": "1657528577612",
  "status": {
-  "cmdId": "457654fd-a03f-4c22-9eff-8ba2a6bf0d59",
+  "cmdId": "941fc68b-8774-4a78-ad5f-8d6ab73913b6",
   "state": "CS_PASSED"
  }
 }

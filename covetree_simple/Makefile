@@ -42,7 +42,7 @@ XOS := $(XCLBIN_DIR)/vadd.$(TARGET).xo
 XCLBIN := $(XCLBIN_DIR)/vadd.$(TARGET).xclbin
 EMCONFIG_FILE := ./emconfig.json
 
-VPP_COMMON_OPTS := -g -t $(TARGET) --platform $(PLATFORM) --save-temps #--config connectivity.cfg
+VPP_COMMON_OPTS := -g -t $(TARGET) --platform $(PLATFORM) --save-temps --config connectivity.cfg
 CFLAGS := -g -std=c++11 -I$(XILINX_XRT)/include
 LFLAGS := -L$(XILINX_XRT)/lib -lxilinxopencl -pthread -lrt
 NUMDEVICES := 1

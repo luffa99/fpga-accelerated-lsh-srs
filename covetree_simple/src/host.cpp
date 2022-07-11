@@ -32,6 +32,27 @@
 #define n_points 100   // Number of po#defines to generate
 #define dummy_level 69
 
+#define BANK_NAME(n) n | XCL_MEM_TOPOLOGY
+// memory topology:  https://www.xilinx.com/html_docs/xilinx2021_1/vitis_doc/optimizingperformance.html#utc1504034308941
+// See https://github.com/WenqiJiang/Fast-Vector-Similarity-Search-on-FPGA/blob/main/FPGA-ANNS-local/generalized_attempt_K_1_12_bank_6_PE/src/host.cpp
+// <id> | XCL_MEM_TOPOLOGY
+// The <id> is determined by looking at the Memory Configuration section in the xxx.xclbin.info file generated next to the xxx.xclbin file. 
+// In the xxx.xclbin.info file, the global memory (DDR, HBM, PLRAM, etc.) is listed with an index representing the <id>.
+
+/* for U280 specifically */
+const int bank[32] = {
+    /* 0 ~ 31 HBM (256MB per channel) */
+    BANK_NAME(0),  BANK_NAME(1),  BANK_NAME(2),  BANK_NAME(3),  BANK_NAME(4),
+    BANK_NAME(5),  BANK_NAME(6),  BANK_NAME(7),  BANK_NAME(8),  BANK_NAME(9),
+    BANK_NAME(10), BANK_NAME(11), BANK_NAME(12), BANK_NAME(13), BANK_NAME(14),
+    BANK_NAME(15), BANK_NAME(16), BANK_NAME(17), BANK_NAME(18), BANK_NAME(19),
+    BANK_NAME(20), BANK_NAME(21), BANK_NAME(22), BANK_NAME(23), BANK_NAME(24),
+    BANK_NAME(25), BANK_NAME(26), BANK_NAME(27), BANK_NAME(28), BANK_NAME(29),
+    BANK_NAME(30), BANK_NAME(31)};
+
+
+
+
 /*
  * To generate the tree we call a python script
  * https://hunch.net/~jl/projects/cover_tree/cover_tree.html
@@ -252,17 +273,46 @@ int main(int argc, char** argv) {
     //     _result_hw[i] = result_hw[i];
     // }
 
+     //////////////////////////////   TEMPLATE START  //////////////////////////////
+
+        cl_mem_ext_ptr_t 
+            buffer_in1Ext,
+            buffer_in2Ext,
+            buffer_in3Ext,
+            buffer_outputExt;
+    //////////////////////////////   TEMPLATE END  //////////////////////////////
+
+    //////////////////////////////   TEMPLATE START  //////////////////////////////
+        buffer_in1Ext.obj = points_coords.data();
+        buffer_in1Ext.param = 0;
+        buffer_in1Ext.flags = bank[0];
+
+        buffer_in2Ext.obj = points_children.data();
+        buffer_in2Ext.param = 0;
+        buffer_in2Ext.flags = bank[1];
+
+        buffer_in3Ext.obj = query.data();
+        buffer_in3Ext.param = 0;
+        buffer_in3Ext.flags = bank[2];
+
+        buffer_outputExt.obj = result_hw.data();
+        buffer_outputExt.param = 0;
+        buffer_outputExt.flags = bank[3];
+
     // Allocate Buffer in Global Memory
     // Buffers are allocated using CL_MEM_USE_HOST_PTR for efficient memory and
     // Device-to-host communication
-    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, sizeof(float)*n_points*dimension,
-                                         points_coords.data(), &err));
-    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, sizeof(int)*n_points*maxchildren*2,
-                                         points_children.data(), &err));
-    OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, sizeof(float)*dimension,
-                                         query.data(), &err));
-    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, sizeof(float)*dimension*100,
-                                            result_hw.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*n_points*dimension,
+                                         &buffer_in1Ext, &err));
+    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(int)*n_points*maxchildren*2,
+                                         &buffer_in2Ext, &err));
+    OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*dimension*100,
+                                         &buffer_in3Ext, &err));
+    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*dimension*100,
+                                            &buffer_outputExt, &err));
+
+   
+
 
     OCL_CHECK(err, err = krnl_vector_add.setArg(0, n_points_real));
     OCL_CHECK(err, err = krnl_vector_add.setArg(1, buffer_in1));
@@ -285,6 +335,8 @@ int main(int argc, char** argv) {
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_output}, CL_MIGRATE_MEM_OBJECT_HOST));
     q.finish();
     // OPENCL HOST CODE AREA END
+
+
 
     // Compare the results of the Device to the simulation
     bool match = true;
