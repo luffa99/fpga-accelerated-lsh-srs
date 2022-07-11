@@ -14,12 +14,14 @@
 * under the License.
 */
 
-#include "xcl2.hpp"
+// #include "xcl2.hpp"
 #include <algorithm>
 #include <vector>
 #include <iostream>
 #include <random>
 #include "math.h"
+#include "host.hpp"
+
 #define DATA_SIZE 100 // <<-- vectors of size 6
 #define LOWER_SIZE 6
 
@@ -66,13 +68,17 @@ int main(int argc, char** argv) {
 
 
     // OPENCL HOST CODE AREA START
+    std::vector<cl::Device> devices = get_devices();
+    xclbin_file_name = argv[1];
+    cl::Program::Binaries vadd_bins = import_binary_file();
+
     // get_xil_devices() is a utility API which will find the xilinx
     // platforms and will return list of devices connected to Xilinx platform
-    auto devices = xcl::get_xil_devices();
+    // auto devices = xcl::get_xil_devices();
     // read_binary_file() is a utility API which will load the binaryFile
     // and will return the pointer to file buffer.
-    auto fileBuf = xcl::read_binary_file(binaryFile);
-    cl::Program::Binaries bins{{fileBuf.data(), fileBuf.size()}};
+    // auto fileBuf = xcl::read_binary_file(binaryFile);
+    // cl::Program::Binaries bins{{fileBuf.data(), fileBuf.size()}};
     bool valid_device = false;
     for (unsigned int i = 0; i < devices.size(); i++) {
         auto device = devices[i];
@@ -80,7 +86,7 @@ int main(int argc, char** argv) {
         OCL_CHECK(err, context = cl::Context(device, nullptr, nullptr, nullptr, &err));
         OCL_CHECK(err, q = cl::CommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &err));
         std::cout << "Trying to program device[" << i << "]: " << device.getInfo<CL_DEVICE_NAME>() << std::endl;
-        cl::Program program(context, {device}, bins, nullptr, &err);
+        cl::Program program(context, {device}, vadd_bins, nullptr, &err);
         if (err != CL_SUCCESS) {
             std::cout << "Failed to program device[" << i << "] with xclbin file!\n";
         } else {
@@ -119,7 +125,14 @@ int main(int argc, char** argv) {
     // For HLS kernels global and local size is always (1,1,1). So, it is
     // recommended
     // to always use enqueueTask() for invoking HLS kernel
+    auto start = std::chrono::high_resolution_clock::now();
+
     OCL_CHECK(err, err = q.enqueueTask(krnl_vector_add));
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> float_ms = end - start;
+    std::cout << "Kernel execution elapsed time is " << float_ms.count() << " milliseconds" << std::endl;
+
 
     // Copy Result from Device Global Memory to Host Local Memory
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_output}, CL_MIGRATE_MEM_OBJECT_HOST));

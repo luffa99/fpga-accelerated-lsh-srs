@@ -1,0 +1,19 @@
+{
+    "schema_version": {
+        "major": "1",
+        "minor": "2",
+        "patch": "0"
+    },
+    "generation": {
+        "this_file": "\/pub\/scratch\/lfalardi\/my_bachelor_thesis\/dotproduct_6d\/xrt.run_summary",
+        "source": "vp",
+        "PID": "2072129",
+        "timestamp": "1657545097891"
+    },
+    "files": [
+        {
+            "name": "summary.csv",
+            "type": "PROFILE_SUMMARY"
+        }
+    ]
+}

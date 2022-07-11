@@ -1,0 +1,373 @@
+#####1 CON FIFOs
+
+================================================================
+== Synthesis Summary Report of 'vadd'
+================================================================
++ General Information: 
+    * Date:           Mon Jul 11 11:33:35 2022
+    * Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+    * Project:        hls_output
+    * Solution:       xcu280-fsvh2892-2L-e (Vivado IP Flow Target)
+    * Product family: virtexuplus
+    * Target device:  xcu280-fsvh2892-2L-e
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +------------------------------------------------+--------+-------+---------+-----------+----------+---------+------+----------+------+----------+------------+------------+-----+
+    |                     Modules                    |  Issue |       | Latency |  Latency  | Iteration|         | Trip |          |      |          |            |            |     |
+    |                     & Loops                    |  Type  | Slack | (cycles)|    (ns)   |  Latency | Interval| Count| Pipelined| BRAM |    DSP   |     FF     |     LUT    | URAM|
+    +------------------------------------------------+--------+-------+---------+-----------+----------+---------+------+----------+------+----------+------------+------------+-----+
+    |+ vadd*                                         |  Timing|  -0.00|      612|  4.372e+03|         -|      613|     -|  dataflow|     -|  288 (3%)|  36129 (1%)|  27170 (2%)|    -|
+    | + entry_proc                                   |       -|   3.80|        0|      0.000|         -|        0|     -|        no|     -|         -|     3 (~0%)|    29 (~0%)|    -|
+    | + ReadMemory_orig                              |  Timing|  -0.00|      111|    792.873|         -|      111|     -|        no|     -|         -|   119 (~0%)|   400 (~0%)|    -|
+    |  + ReadMemory_orig_Pipeline_VITIS_LOOP_165_1   |  Timing|  -0.00|      103|    735.729|         -|      103|     -|        no|     -|         -|    45 (~0%)|   131 (~0%)|    -|
+    |   o VITIS_LOOP_165_1                           |       -|   5.21|      101|    721.443|         3|        1|   100|       yes|     -|         -|           -|           -|    -|
+    | + ReadMemory_rands                             |  Timing|  -0.00|      612|  4.372e+03|         -|      612|     -|        no|     -|         -|   973 (~0%)|  1131 (~0%)|    -|
+    |  + ReadMemory_rands_Pipeline_VITIS_LOOP_143_1  |  Timing|  -0.00|      610|  4.357e+03|         -|      610|     -|        no|     -|         -|   596 (~0%)|   673 (~0%)|    -|
+    |   o VITIS_LOOP_143_1                           |      II|   5.21|      608|  4.343e+03|        15|        6|   100|       yes|     -|         -|           -|           -|    -|
+    | + PE_dotproduct                                |       -|   0.31|      143|  1.021e+03|         -|      143|     -|        no|     -|  48 (~0%)|  5154 (~0%)|  3449 (~0%)|    -|
+    |  o loop2                                       |      II|   5.21|      142|  1.014e+03|        53|       10|    10|  yes(flp)|     -|         -|           -|           -|    -|
+    | + PE_dotproduct_1                              |       -|   0.31|      143|  1.021e+03|         -|      143|     -|        no|     -|  48 (~0%)|  5154 (~0%)|  3449 (~0%)|    -|
+    |  o loop2                                       |      II|   5.21|      142|  1.014e+03|        53|       10|    10|  yes(flp)|     -|         -|           -|           -|    -|
+    | + PE_dotproduct_2                              |       -|   0.31|      143|  1.021e+03|         -|      143|     -|        no|     -|  48 (~0%)|  5154 (~0%)|  3449 (~0%)|    -|
+    |  o loop2                                       |      II|   5.21|      142|  1.014e+03|        53|       10|    10|  yes(flp)|     -|         -|           -|           -|    -|
+    | + PE_dotproduct_3                              |       -|   0.31|      143|  1.021e+03|         -|      143|     -|        no|     -|  48 (~0%)|  5154 (~0%)|  3449 (~0%)|    -|
+    |  o loop2                                       |      II|   5.21|      142|  1.014e+03|        53|       10|    10|  yes(flp)|     -|         -|           -|           -|    -|
+    | + PE_dotproduct_4                              |       -|   0.31|      143|  1.021e+03|         -|      143|     -|        no|     -|  48 (~0%)|  5154 (~0%)|  3449 (~0%)|    -|
+    |  o loop2                                       |      II|   5.21|      142|  1.014e+03|        53|       10|    10|  yes(flp)|     -|         -|           -|           -|    -|
+    | + PE_dotproduct_5                              |       -|   0.31|      143|  1.021e+03|         -|      143|     -|        no|     -|  48 (~0%)|  5154 (~0%)|  3449 (~0%)|    -|
+    |  o loop2                                       |      II|   5.21|      142|  1.014e+03|        53|       10|    10|  yes(flp)|     -|         -|           -|           -|    -|
+    | + WriteMemory                                  |  Timing|  -0.00|       12|     85.716|         -|       12|     -|        no|     -|         -|   270 (~0%)|   203 (~0%)|    -|
+    +------------------------------------------------+--------+-------+---------+-----------+----------+---------+------+----------+------+----------+------------+------------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* M_AXI
++-------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+
+| Interface   | Data Width | Address Width | Latency | Offset | Register | Max Widen | Max Read     | Max Write    | Num Read    | Num Write   |
+|             | (SW->HW)   |               |         |        |          | Bitwidth  | Burst Length | Burst Length | Outstanding | Outstanding |
++-------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+
+| m_axi_gmem0 | 32 -> 32   | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          |
+| m_axi_gmem1 | 32 -> 32   | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          |
+| m_axi_gmem2 | 32 -> 32   | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          |
++-------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+
+
+* S_AXILITE Interfaces
++---------------+------------+---------------+--------+----------+
+| Interface     | Data Width | Address Width | Offset | Register |
++---------------+------------+---------------+--------+----------+
+| s_axi_control | 32         | 7             | 16     | 0        |
++---------------+------------+---------------+--------+----------+
+
+* S_AXILITE Registers
++---------------+----------+--------+-------+--------+-----------------------+
+| Interface     | Register | Offset | Width | Access | Description           |
++---------------+----------+--------+-------+--------+-----------------------+
+| s_axi_control | rands_1  | 0x10   | 32    | W      | Data signal of rands  |
+| s_axi_control | rands_2  | 0x14   | 32    | W      | Data signal of rands  |
+| s_axi_control | orig_1   | 0x1c   | 32    | W      | Data signal of orig   |
+| s_axi_control | orig_2   | 0x20   | 32    | W      | Data signal of orig   |
+| s_axi_control | proj_1   | 0x28   | 32    | W      | Data signal of proj   |
+| s_axi_control | proj_2   | 0x2c   | 32    | W      | Data signal of proj   |
+| s_axi_control | size_d   | 0x34   | 32    | W      | Data signal of size_d |
+| s_axi_control | size_m   | 0x3c   | 32    | W      | Data signal of size_m |
++---------------+----------+--------+-------+--------+-----------------------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_clk    | clock      | ap_clk                            |
+| ap_rst_n  | reset      | ap_rst_n                          |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+---------------+
+| Argument | Direction | Datatype      |
++----------+-----------+---------------+
+| rands    | in        | float const * |
+| orig     | in        | float const * |
+| proj     | out       | float*        |
+| size_d   | in        | int           |
+| size_m   | in        | int           |
++----------+-----------+---------------+
+
+* SW-to-HW Mapping
++----------+---------------+-----------+----------+-----------------------------------+
+| Argument | HW Interface  | HW Type   | HW Usage | HW Info                           |
++----------+---------------+-----------+----------+-----------------------------------+
+| rands    | m_axi_gmem0   | interface |          |                                   |
+| rands    | s_axi_control | register  | offset   | name=rands_1 offset=0x10 range=32 |
+| rands    | s_axi_control | register  | offset   | name=rands_2 offset=0x14 range=32 |
+| orig     | m_axi_gmem1   | interface |          |                                   |
+| orig     | s_axi_control | register  | offset   | name=orig_1 offset=0x1c range=32  |
+| orig     | s_axi_control | register  | offset   | name=orig_2 offset=0x20 range=32  |
+| proj     | m_axi_gmem2   | interface |          |                                   |
+| proj     | s_axi_control | register  | offset   | name=proj_1 offset=0x28 range=32  |
+| proj     | s_axi_control | register  | offset   | name=proj_2 offset=0x2c range=32  |
+| size_d   | s_axi_control | register  |          | name=size_d offset=0x34 range=32  |
+| size_m   | s_axi_control | register  |          | name=size_m offset=0x3c range=32  |
++----------+---------------+-----------+----------+-----------------------------------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+* Inferred Burst Summary
++--------------+------------------+-----------+--------+-------+---------------------+
+| HW Interface | Loop             | Direction | Length | Width | Location            |
++--------------+------------------+-----------+--------+-------+---------------------+
+| m_axi_gmem1  | VITIS_LOOP_165_1 | read      | 100    | 32    | src/vadd.cpp:165:23 |
+| m_axi_gmem2  |                  | write     | 6      | 32    | src/vadd.cpp:198:1  |
++--------------+------------------+-----------+--------+-------+---------------------+
+
+* Inferred Bursts and Widening Missed
++--------------+----------+------------------+---------------------------------------------------------------------------------------------------------+------------+---------------------+
+| HW Interface | Variable | Loop             | Problem                                                                                                 | Resolution | Location            |
++--------------+----------+------------------+---------------------------------------------------------------------------------------------------------+------------+---------------------+
+| m_axi_gmem0  | rands    | VITIS_LOOP_143_1 | Could not widen since type float size is greater than or equal to the max_widen_bitwidth threshold of 0 | 214-353    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  | rands    | VITIS_LOOP_143_1 | Could not widen since type float size is greater than or equal to the max_widen_bitwidth threshold of 0 | 214-353    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  | rands    | VITIS_LOOP_143_1 | Could not widen since type float size is greater than or equal to the max_widen_bitwidth threshold of 0 | 214-353    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  | rands    | VITIS_LOOP_143_1 | Could not widen since type float size is greater than or equal to the max_widen_bitwidth threshold of 0 | 214-353    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  | rands    | VITIS_LOOP_143_1 | Could not widen since type float size is greater than or equal to the max_widen_bitwidth threshold of 0 | 214-353    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  | rands    | VITIS_LOOP_143_1 | Could not widen since type float size is greater than or equal to the max_widen_bitwidth threshold of 0 | 214-353    | src/vadd.cpp:143:23 |
+| m_axi_gmem1  | orig     | VITIS_LOOP_165_1 | Could not widen since type float size is greater than or equal to the max_widen_bitwidth threshold of 0 | 214-353    | src/vadd.cpp:165:23 |
+| m_axi_gmem2  | proj     |                  | Could not widen since type float size is greater than or equal to the max_widen_bitwidth threshold of 0 | 214-353    | src/vadd.cpp:198:1  |
+| m_axi_gmem0  |          |                  | Could not burst due to multiple potential reads to the same bundle in the same region.                  | 214-224    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  |          |                  | Could not burst due to multiple potential reads to the same bundle in the same region.                  | 214-224    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  |          |                  | Could not burst due to multiple potential reads to the same bundle in the same region.                  | 214-224    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  |          |                  | Could not burst due to multiple potential reads to the same bundle in the same region.                  | 214-224    | src/vadd.cpp:143:23 |
+| m_axi_gmem0  |          |                  | Could not burst due to multiple potential reads to the same bundle in the same region.                  | 214-224    | src/vadd.cpp:143:23 |
++--------------+----------+------------------+---------------------------------------------------------------------------------------------------------+------------+---------------------+
+
+    * Resolution URL: www.xilinx.com/cgi-bin/docs/rdoc?v=2022.1;t=hls+guidance;d=XXX-YYY.html (replace XXX-YYY with column value)
+
+================================================================
+== Bind Op Report
+================================================================
++------------------------------------------------+-----+--------+-------------+------+---------+---------+
+| Name                                           | DSP | Pragma | Variable    | Op   | Impl    | Latency |
++------------------------------------------------+-----+--------+-------------+------+---------+---------+
+| + vadd                                         | 288 |        |             |      |         |         |
+|  + ReadMemory_orig                             | 0   |        |             |      |         |         |
+|   + ReadMemory_orig_Pipeline_VITIS_LOOP_165_1  | 0   |        |             |      |         |         |
+|     add_ln165_fu_133_p2                        | -   |        | add_ln165   | add  | fabric  | 0       |
+|  + ReadMemory_rands                            | 0   |        |             |      |         |         |
+|    add_ln143_fu_96_p2                          | -   |        | add_ln143   | add  | fabric  | 0       |
+|    add_ln143_1_fu_112_p2                       | -   |        | add_ln143_1 | add  | fabric  | 0       |
+|    add_ln143_2_fu_128_p2                       | -   |        | add_ln143_2 | add  | fabric  | 0       |
+|    add_ln143_3_fu_144_p2                       | -   |        | add_ln143_3 | add  | fabric  | 0       |
+|    add_ln143_4_fu_160_p2                       | -   |        | add_ln143_4 | add  | fabric  | 0       |
+|   + ReadMemory_rands_Pipeline_VITIS_LOOP_143_1 | 0   |        |             |      |         |         |
+|     add_ln143_fu_264_p2                        | -   |        | add_ln143   | add  | fabric  | 0       |
+|     add_ln174_fu_274_p2                        | -   |        | add_ln174   | add  | fabric  | 0       |
+|     add_ln174_1_fu_290_p2                      | -   |        | add_ln174_1 | add  | fabric  | 0       |
+|     add_ln174_2_fu_306_p2                      | -   |        | add_ln174_2 | add  | fabric  | 0       |
+|     add_ln174_3_fu_322_p2                      | -   |        | add_ln174_3 | add  | fabric  | 0       |
+|     add_ln174_4_fu_338_p2                      | -   |        | add_ln174_4 | add  | fabric  | 0       |
+|     add_ln174_5_fu_354_p2                      | -   |        | add_ln174_5 | add  | fabric  | 0       |
+|  + PE_dotproduct                               | 48  |        |             |      |         |         |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U50           | 3   |        | mul         | fmul | maxdsp  | 1       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U51           | 3   |        | mul4        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U40          | 2   |        | add         | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U52           | 3   |        | mul7        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U41          | 2   |        | add8        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U53           | 3   |        | mul1        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U42          | 2   |        | add5        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U54           | 3   |        | mul2        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U43          | 2   |        | add6        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U55           | 3   |        | mul3        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U44          | 2   |        | add7        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U56           | 3   |        | mul5        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U45          | 2   |        | add9        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U57           | 3   |        | mul6        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U46          | 2   |        | add1        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U58           | 3   |        | mul8        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U47          | 2   |        | add2        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U59           | 3   |        | mul9        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U48          | 2   |        | add3        | fadd | fulldsp | 3       |
+|    fadd_32ns_32ns_32_4_no_dsp_1_U49            | -   |        | sum         | fadd | fabric  | 3       |
+|    i_fu_250_p2                                 | -   |        | i           | add  | fabric  | 0       |
+|  + PE_dotproduct_1                             | 48  |        |             |      |         |         |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U76           | 3   |        | mul         | fmul | maxdsp  | 1       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U77           | 3   |        | mul4        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U66          | 2   |        | add         | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U78           | 3   |        | mul7        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U67          | 2   |        | add8        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U79           | 3   |        | mul1        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U68          | 2   |        | add6        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U80           | 3   |        | mul2        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U69          | 2   |        | add7        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U81           | 3   |        | mul3        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U70          | 2   |        | add9        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U82           | 3   |        | mul5        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U71          | 2   |        | add1        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U83           | 3   |        | mul6        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U72          | 2   |        | add2        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U84           | 3   |        | mul8        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U73          | 2   |        | add3        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U85           | 3   |        | mul9        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U74          | 2   |        | add4        | fadd | fulldsp | 3       |
+|    fadd_32ns_32ns_32_4_no_dsp_1_U75            | -   |        | sum         | fadd | fabric  | 3       |
+|    i_fu_250_p2                                 | -   |        | i           | add  | fabric  | 0       |
+|  + PE_dotproduct_2                             | 48  |        |             |      |         |         |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U99           | 3   |        | mul         | fmul | maxdsp  | 1       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U100          | 3   |        | mul4        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U89          | 2   |        | add         | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U101          | 3   |        | mul7        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U90          | 2   |        | add8        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U102          | 3   |        | mul1        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U91          | 2   |        | add7        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U103          | 3   |        | mul2        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U92          | 2   |        | add9        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U104          | 3   |        | mul3        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U93          | 2   |        | add1        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U105          | 3   |        | mul5        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U94          | 2   |        | add2        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U106          | 3   |        | mul6        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U95          | 2   |        | add3        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U107          | 3   |        | mul8        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U96          | 2   |        | add4        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U108          | 3   |        | mul9        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U97          | 2   |        | add5        | fadd | fulldsp | 3       |
+|    fadd_32ns_32ns_32_4_no_dsp_1_U98            | -   |        | sum         | fadd | fabric  | 3       |
+|    i_fu_250_p2                                 | -   |        | i           | add  | fabric  | 0       |
+|  + PE_dotproduct_3                             | 48  |        |             |      |         |         |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U122          | 3   |        | mul         | fmul | maxdsp  | 1       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U123          | 3   |        | mul4        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U112         | 2   |        | add         | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U124          | 3   |        | mul7        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U113         | 2   |        | add8        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U125          | 3   |        | mul1        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U114         | 2   |        | add9        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U126          | 3   |        | mul2        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U115         | 2   |        | add1        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U127          | 3   |        | mul3        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U116         | 2   |        | add2        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U128          | 3   |        | mul5        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U117         | 2   |        | add3        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U129          | 3   |        | mul6        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U118         | 2   |        | add4        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U130          | 3   |        | mul8        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U119         | 2   |        | add5        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U131          | 3   |        | mul9        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U120         | 2   |        | add6        | fadd | fulldsp | 3       |
+|    fadd_32ns_32ns_32_4_no_dsp_1_U121           | -   |        | sum         | fadd | fabric  | 3       |
+|    i_fu_250_p2                                 | -   |        | i           | add  | fabric  | 0       |
+|  + PE_dotproduct_4                             | 48  |        |             |      |         |         |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U145          | 3   |        | mul         | fmul | maxdsp  | 1       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U146          | 3   |        | mul4        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U135         | 2   |        | add         | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U147          | 3   |        | mul7        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U136         | 2   |        | add8        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U148          | 3   |        | mul1        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U137         | 2   |        | add1        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U149          | 3   |        | mul2        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U138         | 2   |        | add2        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U150          | 3   |        | mul3        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U139         | 2   |        | add3        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U151          | 3   |        | mul5        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U140         | 2   |        | add4        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U152          | 3   |        | mul6        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U141         | 2   |        | add5        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U153          | 3   |        | mul8        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U142         | 2   |        | add6        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U154          | 3   |        | mul9        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U143         | 2   |        | add7        | fadd | fulldsp | 3       |
+|    fadd_32ns_32ns_32_4_no_dsp_1_U144           | -   |        | sum         | fadd | fabric  | 3       |
+|    i_fu_250_p2                                 | -   |        | i           | add  | fabric  | 0       |
+|  + PE_dotproduct_5                             | 48  |        |             |      |         |         |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U168          | 3   |        | mul         | fmul | maxdsp  | 1       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U169          | 3   |        | mul4        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U158         | 2   |        | add         | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U170          | 3   |        | mul7        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U159         | 2   |        | add8        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U171          | 3   |        | mul1        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U160         | 2   |        | add1        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U172          | 3   |        | mul2        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U161         | 2   |        | add2        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U173          | 3   |        | mul3        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U162         | 2   |        | add3        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U174          | 3   |        | mul5        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U163         | 2   |        | add4        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U175          | 3   |        | mul6        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U164         | 2   |        | add5        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U176          | 3   |        | mul8        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U165         | 2   |        | add6        | fadd | fulldsp | 3       |
+|    fmul_32ns_32ns_32_2_max_dsp_1_U177          | 3   |        | mul9        | fmul | maxdsp  | 1       |
+|    fadd_32ns_32ns_32_4_full_dsp_1_U166         | 2   |        | add7        | fadd | fulldsp | 3       |
+|    fadd_32ns_32ns_32_4_no_dsp_1_U167           | -   |        | sum         | fadd | fabric  | 3       |
+|    i_fu_250_p2                                 | -   |        | i           | add  | fabric  | 0       |
++------------------------------------------------+-----+--------+-------------+------+---------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
++-------------------+------+------+--------+---------------+---------+------+---------+
+| Name              | BRAM | URAM | Pragma | Variable      | Storage | Impl | Latency |
++-------------------+------+------+--------+---------------+---------+------+---------+
+| + vadd            | 0    | 0    |        |               |         |      |         |
+|   proj_c_U        | -    | -    |        | proj_c        | fifo    | srl  | 0       |
+|   random_1_U      | -    | -    |        | random_1      | fifo    | srl  | 0       |
+|   random_2_U      | -    | -    |        | random_2      | fifo    | srl  | 0       |
+|   random_3_U      | -    | -    |        | random_3      | fifo    | srl  | 0       |
+|   random_4_U      | -    | -    |        | random_4      | fifo    | srl  | 0       |
+|   random_5_U      | -    | -    |        | random_5      | fifo    | srl  | 0       |
+|   random_6_U      | -    | -    |        | random_6      | fifo    | srl  | 0       |
+|   origin_pipe_1_U | -    | -    |        | origin_pipe_1 | fifo    | srl  | 0       |
+|   origin_pipe_2_U | -    | -    |        | origin_pipe_2 | fifo    | srl  | 0       |
+|   origin_pipe_3_U | -    | -    |        | origin_pipe_3 | fifo    | srl  | 0       |
+|   origin_pipe_4_U | -    | -    |        | origin_pipe_4 | fifo    | srl  | 0       |
+|   origin_pipe_5_U | -    | -    |        | origin_pipe_5 | fifo    | srl  | 0       |
+|   origin_pipe_6_U | -    | -    |        | origin_pipe_6 | fifo    | srl  | 0       |
+|   out_1_U         | -    | -    |        | out_1         | fifo    | srl  | 0       |
+|   out_2_U         | -    | -    |        | out_2         | fifo    | srl  | 0       |
+|   out_3_U         | -    | -    |        | out_3         | fifo    | srl  | 0       |
+|   out_4_U         | -    | -    |        | out_4         | fifo    | srl  | 0       |
+|   out_5_U         | -    | -    |        | out_5         | fifo    | srl  | 0       |
+|   out_6_U         | -    | -    |        | out_6         | fifo    | srl  | 0       |
++-------------------+------+------+--------+---------------+---------+------+---------+
+
+
+================================================================
+== Pragma Report
+================================================================
+* Pragmas with Warnings
++-----------------+------------------------------+---------------------------------------+----------------------------------------------------------------------------------------------------------+
+| Type            | Options                      | Location                              | Messages                                                                                                 |
++-----------------+------------------------------+---------------------------------------+----------------------------------------------------------------------------------------------------------+
+| pipeline        | II=1 enable_flush rewind     | src/vadd.cpp:65 in pe_dotproduct      | The 'enable_flush' option of the 'HLS pipeline' directive or pragma is deprecated, use style=flp instead |
+| array_partition | variable=proj dim=1 complete | src/vadd.cpp:191 in writememory, proj | Array_Partition/Array_Reshape pragma is ignored, because variable is scalar type                         |
++-----------------+------------------------------+---------------------------------------+----------------------------------------------------------------------------------------------------------+
+
+* Valid Pragma Syntax
++-----------------+---------------------------------------+-------------------------------------------------+
+| Type            | Options                               | Location                                        |
++-----------------+---------------------------------------+-------------------------------------------------+
+| array_partition | variable=random_buffer dim=1 complete | src/vadd.cpp:25 in pe_dotproduct, random_buffer |
+| array_partition | variable=origin_buffer dim=1 complete | src/vadd.cpp:26 in pe_dotproduct, origin_buffer |
+| pipeline        | II=1                                  | src/vadd.cpp:166 in readmemory_orig             |
+| interface       | m_axi port = rands bundle=gmem0       | src/vadd.cpp:221 in vadd                        |
+| interface       | m_axi port = orig bundle=gmem1        | src/vadd.cpp:222 in vadd                        |
+| interface       | m_axi port = proj bundle=gmem2        | src/vadd.cpp:223 in vadd                        |
+| interface       | s_axilite port = rands                | src/vadd.cpp:225 in vadd                        |
+| interface       | s_axilite port = orig                 | src/vadd.cpp:226 in vadd                        |
+| interface       | s_axilite port = size_d               | src/vadd.cpp:228 in vadd                        |
+| interface       | s_axilite port = size_m               | src/vadd.cpp:229 in vadd                        |
+| interface       | s_axilite port = proj                 | src/vadd.cpp:230 in vadd                        |
+| dataflow        |                                       | src/vadd.cpp:255 in vadd                        |
++-----------------+---------------------------------------+-------------------------------------------------+
+
+

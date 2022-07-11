@@ -1,0 +1,400 @@
+<ENTRY>
+{
+ "thisFile": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/xclbin/vadd.hw.xclbin.link_summary",
+ "connectId": "",
+ "serverToken": "",
+ "timestamp": "0"
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_CmdStep",
+ "dateTimestamp": "Mon Jul 11 15:14:11 2022",
+ "timestampMillis": "1657545251577",
+ "buildStep": {
+  "cmdId": "fa5fd4fe-691e-4f70-8702-4de06b642ec3",
+  "name": "v++",
+  "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/link.steps.log",
+  "commandLine": "/tools/Xilinx/Vitis/2022.1/bin/unwrapped/lnx64.o/v++  --vivado.prop \"run.__KERNEL__.{STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS}={-directive sdx_optimization_effort_high}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_route_design_summary steps {route_design} runs {impl_1} options {-max_paths 10}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_post_route_phys_opt_design_summary steps {post_route_phys_opt_design} runs {impl_1} options {-max_paths 10}\" -g -t hw --platform xilinx_u55c_gen3x16_xdma_3_202210_1 --save-temps -l --temp_dir ./_x.hw -o xclbin/vadd.hw.xclbin xclbin/vadd.hw.xo ",
+  "args": [
+   "-g",
+   "-t",
+   "hw",
+   "--platform",
+   "xilinx_u55c_gen3x16_xdma_3_202210_1",
+   "--save-temps",
+   "-l",
+   "--temp_dir",
+   "./_x.hw",
+   "-o",
+   "xclbin/vadd.hw.xclbin",
+   "xclbin/vadd.hw.xo"
+  ],
+  "iniFiles": [],
+  "cwd": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:11 2022",
+ "timestampMillis": "1657545251579",
+ "status": {
+  "cmdId": "fa5fd4fe-691e-4f70-8702-4de06b642ec3",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_FlowMetaData",
+ "dateTimestamp": "Mon Jul 11 15:14:19 2022",
+ "timestampMillis": "1657545259034",
+ "buildSummary": {
+  "hardwarePlatform": "xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm",
+  "hardwareDsa": "",
+  "platformDirectory": "/opt/xilinx/platforms/xilinx_u55c_gen3x16_xdma_3_202210_1",
+  "runtime": "OpenCL",
+  "systemConfig": "Linux",
+  "flow": "BF_LINK",
+  "target": "TT_HW",
+  "binaryContainer": {
+   "base": {
+    "type": "BT_UKNOWN",
+    "name": "vadd.hw",
+    "file": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/xclbin/vadd.hw.xclbin",
+    "reports": [],
+    "uuid": ""
+   },
+   "kernels": []
+  },
+  "kernels": [
+   {
+    "base": {
+     "type": "KERNEL",
+     "name": "vadd",
+     "file": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/xclbin/vadd.hw.xo",
+     "reports": [],
+     "uuid": ""
+    },
+    "sources": [
+     "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/xo/vadd/vadd/cpu_sources/vadd.cpp"
+    ],
+    "psSources": [],
+    "cuNames": [
+     "vadd_1"
+    ],
+    "type": "HLS",
+    "frequency": 0,
+    "freqUnits": ""
+   }
+  ],
+  "toolVersion": "Vitis V++ Compiler Release 2022.1. SW Build 3524075 on 2022-04-13-17:42:45"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_SubCmdStep",
+ "dateTimestamp": "Mon Jul 11 15:14:19 2022",
+ "timestampMillis": "1657545259244",
+ "buildStep": {
+  "cmdId": "3a12ddf4-a172-4cea-b601-50454913838b",
+  "name": "system_link",
+  "logFile": "",
+  "commandLine": "system_link --xo /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/xclbin/vadd.hw.xo -keep --xpfm /opt/xilinx/platforms/xilinx_u55c_gen3x16_xdma_3_202210_1/xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm --target hw --output_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int --temp_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/sys_link",
+  "args": [
+   "--xo",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/xclbin/vadd.hw.xo",
+   "-keep",
+   "--xpfm",
+   "/opt/xilinx/platforms/xilinx_u55c_gen3x16_xdma_3_202210_1/xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm",
+   "--target",
+   "hw",
+   "--output_dir",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int",
+   "--temp_dir",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/sys_link"
+  ],
+  "iniFiles": [],
+  "cwd": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:19 2022",
+ "timestampMillis": "1657545259245",
+ "status": {
+  "cmdId": "3a12ddf4-a172-4cea-b601-50454913838b",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:42 2022",
+ "timestampMillis": "1657545282688",
+ "status": {
+  "cmdId": "3a12ddf4-a172-4cea-b601-50454913838b",
+  "state": "CS_PASSED"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_SubCmdStep",
+ "dateTimestamp": "Mon Jul 11 15:14:42 2022",
+ "timestampMillis": "1657545282699",
+ "buildStep": {
+  "cmdId": "1a2b3b13-c147-4c29-b65f-94b3f7828f84",
+  "name": "cf2sw",
+  "logFile": "",
+  "commandLine": "cf2sw -sdsl /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/sdsl.dat -rtd /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/cf2sw.rtd -nofilter /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/cf2sw_full.rtd -xclbin /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/xclbin_orig.xml -o /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/xclbin_orig.1.xml",
+  "args": [
+   "-sdsl",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/sdsl.dat",
+   "-rtd",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/cf2sw.rtd",
+   "-nofilter",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/cf2sw_full.rtd",
+   "-xclbin",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/xclbin_orig.xml",
+   "-o",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/xclbin_orig.1.xml"
+  ],
+  "iniFiles": [],
+  "cwd": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:42 2022",
+ "timestampMillis": "1657545282700",
+ "status": {
+  "cmdId": "1a2b3b13-c147-4c29-b65f-94b3f7828f84",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:48 2022",
+ "timestampMillis": "1657545288179",
+ "status": {
+  "cmdId": "1a2b3b13-c147-4c29-b65f-94b3f7828f84",
+  "state": "CS_PASSED"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_SubCmdStep",
+ "dateTimestamp": "Mon Jul 11 15:14:48 2022",
+ "timestampMillis": "1657545288189",
+ "buildStep": {
+  "cmdId": "015e19c7-7859-4705-ba0d-3336a560f800",
+  "name": "rtd2_system_diagram",
+  "logFile": "",
+  "commandLine": "rtd2SystemDiagram",
+  "args": [],
+  "iniFiles": [],
+  "cwd": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:48 2022",
+ "timestampMillis": "1657545288189",
+ "status": {
+  "cmdId": "015e19c7-7859-4705-ba0d-3336a560f800",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Mon Jul 11 15:14:48 2022",
+ "timestampMillis": "1657545288588",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/systemDiagramModel.json",
+  "name": "",
+  "fileType": "JSON",
+  "reportType": "SYSTEM_DIAGRAM",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:48 2022",
+ "timestampMillis": "1657545288592",
+ "status": {
+  "cmdId": "015e19c7-7859-4705-ba0d-3336a560f800",
+  "state": "CS_PASSED"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_SubCmdStep",
+ "dateTimestamp": "Mon Jul 11 15:14:48 2022",
+ "timestampMillis": "1657545288606",
+ "buildStep": {
+  "cmdId": "cf906562-317e-446d-927d-c662c07e4f28",
+  "name": "vpl",
+  "logFile": "",
+  "commandLine": "vpl -t hw -f xilinx_u55c_gen3x16_xdma_3_202210_1 -g --remote_ip_cache /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/.ipcache -s --output_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int --log_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/logs/link --report_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/reports/link --config /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/vplConfig.ini -k /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/kernel_info.dat --webtalk_flag Vitis --temp_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link --no-info --iprepo /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/xo/ip_repo/xilinx_com_hls_vadd_1_0 --messageDb /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/run_link/vpl.pb /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/dr.bd.tcl",
+  "args": [
+   "-t",
+   "hw",
+   "-f",
+   "xilinx_u55c_gen3x16_xdma_3_202210_1",
+   "-g",
+   "--remote_ip_cache",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/.ipcache",
+   "-s",
+   "--output_dir",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int",
+   "--log_dir",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/logs/link",
+   "--report_dir",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/reports/link",
+   "--config",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/vplConfig.ini",
+   "-k",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/kernel_info.dat",
+   "--webtalk_flag",
+   "Vitis",
+   "--temp_dir",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link",
+   "--no-info",
+   "--iprepo",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/xo/ip_repo/xilinx_com_hls_vadd_1_0",
+   "--messageDb",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/run_link/vpl.pb",
+   "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/dr.bd.tcl"
+  ],
+  "iniFiles": [
+   {
+    "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/vplConfig.ini",
+    "content": "[advanced]\nmisc=report=type report_timing_summary name impl_report_timing_summary_route_design_summary steps {route_design} runs {impl_1} options {-max_paths 10}\nmisc=report=type report_timing_summary name impl_report_timing_summary_post_route_phys_opt_design_summary steps {post_route_phys_opt_design} runs {impl_1} options {-max_paths 10}\nparam=compiler.enablePerformanceTrace=1\nparam=hw_emu.enableDebugWaveform=1\nparam=hw_emu.enableProfiling=1\nparam=compiler.vppCurrentWorkingDir=/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d\nmisc=BinaryName=vadd.hw\n\n[connectivity]\nnk=vadd:1:vadd_1\n\n[vivado]\nprop=run.__KERNEL__.{STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS}={-directive sdx_optimization_effort_high}\n\n"
+   }
+  ],
+  "cwd": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:48 2022",
+ "timestampMillis": "1657545288607",
+ "status": {
+  "cmdId": "cf906562-317e-446d-927d-c662c07e4f28",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_CmdStep",
+ "dateTimestamp": "Mon Jul 11 15:14:50 2022",
+ "timestampMillis": "1657545290152",
+ "buildStep": {
+  "cmdId": "b1a6948c-4861-4de4-a7bf-e173cdb4c3ac",
+  "name": "vpl",
+  "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/link.steps.log",
+  "commandLine": "/tools/Xilinx/Vitis/2022.1/bin/unwrapped/lnx64.o/vpl -t hw -f xilinx_u55c_gen3x16_xdma_3_202210_1 -g --remote_ip_cache /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/.ipcache -s --output_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int --log_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/logs/link --report_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/reports/link --config /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/vplConfig.ini -k /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/kernel_info.dat --webtalk_flag Vitis --temp_dir /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link --no-info --iprepo /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/xo/ip_repo/xilinx_com_hls_vadd_1_0 --messageDb /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/run_link/vpl.pb /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/dr.bd.tcl ",
+  "args": [],
+  "iniFiles": [],
+  "cwd": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/run_link"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:50 2022",
+ "timestampMillis": "1657545290153",
+ "status": {
+  "cmdId": "b1a6948c-4861-4de4-a7bf-e173cdb4c3ac",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_VivadoProject",
+ "dateTimestamp": "Mon Jul 11 15:14:57 2022",
+ "timestampMillis": "1657545297586",
+ "vivadoProject": {
+  "openDir": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/vivado/vpl",
+  "openScript": "openprj.tcl",
+  "relativeProject": "prj/prj.xpr"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_SubCmdStep",
+ "dateTimestamp": "Mon Jul 11 15:14:57 2022",
+ "timestampMillis": "1657545297589",
+ "buildStep": {
+  "cmdId": "67f5a3b0-658f-40c5-bf65-cc37d9f0231e",
+  "name": "vivado",
+  "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/vivado/vpl/vivado.log",
+  "commandLine": "vivado -log vivado.log -applog -m64 -messageDb vivado.pb -mode batch -source vpl.tcl -notrace",
+  "args": [
+   "-log",
+   "vivado.log",
+   "-applog",
+   " -m64",
+   "-messageDb",
+   "vivado.pb",
+   "-mode",
+   "batch",
+   "-source",
+   "vpl.tcl",
+   "-notrace"
+  ],
+  "iniFiles": [],
+  "cwd": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/run_link"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Mon Jul 11 15:14:57 2022",
+ "timestampMillis": "1657545297591",
+ "status": {
+  "cmdId": "67f5a3b0-658f-40c5-bf65-cc37d9f0231e",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Mon Jul 11 15:15:42 2022",
+ "timestampMillis": "1657545342720",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/link/int/automation_summary_update_bd.txt",
+  "name": "",
+  "fileType": "TEXT",
+  "reportType": "VITIS_DESIGN_FLOW",
+  "cmdId": ""
+ }
+}
+</ENTRY>
