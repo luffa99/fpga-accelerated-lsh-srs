@@ -11,7 +11,7 @@ xclbin Information
    Kernels:                vadd
    Signature:              
    Content:                Bitstream
-   UUID (xclbin):          c74dbeb4-5c31-1fa1-82bd-bd16b51ff7ee
+   UUID (xclbin):          c8b31c23-6293-c716-f8de-82f469d066c1
    UUID (IINTF):           b7ac1abe1e3e1cb686d5a81232452676
    Sections:               BITSTREAM, MEM_TOPOLOGY, IP_LAYOUT, CONNECTIVITY, 
                            CLOCK_FREQ_TOPOLOGY, BUILD_METADATA, 
@@ -348,7 +348,7 @@ Kernel: vadd
 
 Definition
 ----------
-   Signature: vadd (void* rand1, void* rand2, void* rand3, void* rand4, void* rand5, void* rand6, void* orig, void* proj, unsigned int amount, unsigned int size_m)
+   Signature: vadd (void* rand1, void* rand2, void* rand3, void* rand4, void* rand5, void* rand6, void* orig, void* proj, unsigned int amount, unsigned int vector_size)
 
 Ports
 -----
@@ -455,7 +455,7 @@ Instance:        vadd_1
    Port:              S_AXI_CONTROL
    Memory:            <not applicable>
 
-   Argument:          size_m
+   Argument:          vector_size
    Register Offset:   0x78
    Port:              S_AXI_CONTROL
    Memory:            <not applicable>
