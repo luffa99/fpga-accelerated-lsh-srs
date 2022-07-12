@@ -20,7 +20,6 @@
     }       
 
 //Array size
-#define DATA_SIZE 100
 
 std::string xclbin_file_name;
 

@@ -11,7 +11,7 @@
 * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 * License for the specific language governing permissions and limitations
-* under the License.
+* under the License. 
 */
 
 // #include "xcl2.hpp"
@@ -22,17 +22,26 @@
 #include "math.h"
 #include "host.hpp"
 
-#define DATA_SIZE 100 // <<-- vectors of size 6
 #define LOWER_SIZE 6
 
 int main(int argc, char** argv) {
-    if (argc != 2) {
-        std::cout << "Usage: " << argv[0] << " <XCLBIN File>" << std::endl;
+    if (argc != 4) {
+        std::cout << "Usage: " << argv[0] << " <XCLBIN File> <Size of vectors (multiple of 10)> <Amount of vectors to project>" << std::endl;
+        return EXIT_FAILURE;
+    }
+    int vector_size = atoi(argv[2]);  // Size of vectors
+    int AMOUNT = atoi(argv[3]);
+    if (vector_size%10 != 0 || vector_size < 10) {
+        std::cout << "Size of vectors must be a multiple of 10! You gave " << argv[2] << std::endl;
+        return EXIT_FAILURE;
+    }
+    if (AMOUNT < 1) {
+        std::cout << "The amount of vectors must be > 0. You gave " << argv[3] << std::endl;
         return EXIT_FAILURE;
     }
 
     std::string binaryFile = argv[1];
-    size_t vector_size_bytes = sizeof(float) * DATA_SIZE;
+    size_t vector_size_bytes = sizeof(float) * vector_size;
     size_t vector_size_result_bytes = sizeof(float) * LOWER_SIZE;
     cl_int err;
     cl::Context context;
@@ -49,11 +58,15 @@ int main(int argc, char** argv) {
     // boundary. It will
     // ensure that user buffer is used when user create Buffer/Mem object with
     // CL_MEM_USE_HOST_PTR
-    int size_d = DATA_SIZE;
-    int size_m = LOWER_SIZE;
-    std::vector<float, aligned_allocator<float> > rands(DATA_SIZE*LOWER_SIZE);
-    std::vector<float, aligned_allocator<float> > orig(DATA_SIZE);
-    std::vector<float, aligned_allocator<float> > proj(LOWER_SIZE);
+
+    std::vector<float, aligned_allocator<float> > rand1(vector_size);
+    std::vector<float, aligned_allocator<float> > rand2(vector_size);
+    std::vector<float, aligned_allocator<float> > rand3(vector_size);
+    std::vector<float, aligned_allocator<float> > rand4(vector_size);
+    std::vector<float, aligned_allocator<float> > rand5(vector_size);
+    std::vector<float, aligned_allocator<float> > rand6(vector_size);
+    std::vector<float, aligned_allocator<float> > orig(vector_size*AMOUNT);
+    std::vector<float, aligned_allocator<float> > proj(LOWER_SIZE*AMOUNT);
 
     std::random_device rd;
     std::mt19937 mt(rd());
@@ -63,10 +76,56 @@ int main(int argc, char** argv) {
     rng.seed(dist2(mt));
     std::uniform_real_distribution<float> dist;
     // Create the test data
-    std::for_each(rands.begin(), rands.end(), [&](float &i) { i = dist(rng); });
+    std::for_each(rand1.begin(), rand1.end(), [&](float &i) { i = dist(rng); });
+    std::for_each(rand2.begin(), rand2.end(), [&](float &i) { i = dist(rng); });
+    std::for_each(rand3.begin(), rand3.end(), [&](float &i) { i = dist(rng); });
+    std::for_each(rand4.begin(), rand4.end(), [&](float &i) { i = dist(rng); });
+    std::for_each(rand5.begin(), rand5.end(), [&](float &i) { i = dist(rng); });
+    std::for_each(rand6.begin(), rand6.end(), [&](float &i) { i = dist(rng); });
     std::for_each(orig.begin(), orig.end(), [&](float &i) { i = dist(rng); });
 
+    // Check generated data
+    /*std::cout << "Rand1" << std::endl;
+    for(int i=0; i<vector_size;i++){
+        std::cout << rand1[i];
+    }
+    std::cout << std::endl;
+    std::cout << "Rand2" << std::endl;
+    for(int i=0; i<vector_size;i++){
+        std::cout << rand2[i];
+    }
+    std::cout << std::endl;
+    std::cout << "Rand3" << std::endl;
+    for(int i=0; i<vector_size;i++){
+        std::cout << rand3[i];
+    }
+    std::cout << std::endl;
+    std::cout << "Rand4" << std::endl;
+    for(int i=0; i<vector_size;i++){
+        std::cout << rand4[i];
+    }
+    std::cout << std::endl;
+    std::cout << "Rand5" << std::endl;
+    for(int i=0; i<vector_size;i++){
+        std::cout << rand5[i];
+    }
+    std::cout << std::endl;
+    std::cout << "Rand6" << std::endl;
+    for(int i=0; i<vector_size;i++){
+        std::cout << rand6[i];
+    }
+    std::cout << std::endl;
 
+    std::cout << "Origs" << std::endl;
+    for(int j=0; j<AMOUNT; j++) {
+        std::cout << "Orig " << j << std::endl;
+        for(int i=0; i<vector_size;i++){
+            std::cout << orig[j*vector_size+i];
+        }
+        std::cout << std::endl;
+    }*/
+
+ 
     // OPENCL HOST CODE AREA START
     std::vector<cl::Device> devices = get_devices();
     xclbin_file_name = argv[1];
@@ -104,22 +163,38 @@ int main(int argc, char** argv) {
     // Allocate Buffer in Global Memory
     // Buffers are allocated using CL_MEM_USE_HOST_PTR for efficient memory and
     // Device-to-host communication
-    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes*LOWER_SIZE,
-                                         rands.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                         rand1.data(), &err));
     OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand2.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand3.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in4(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand4.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in5(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand5.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in6(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand6.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in7(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes*AMOUNT,
                                          orig.data(), &err));
-    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, vector_size_result_bytes,
+    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, vector_size_result_bytes*AMOUNT,
                                             proj.data(), &err));
-
-    int size = DATA_SIZE;
+    int amount = AMOUNT;
+    int size = vector_size;
     OCL_CHECK(err, err = krnl_vector_add.setArg(0, buffer_in1));
     OCL_CHECK(err, err = krnl_vector_add.setArg(1, buffer_in2));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(2, buffer_output));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(3, size));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(4, size_m));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(2, buffer_in3));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(3, buffer_in4));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(4, buffer_in5));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(5, buffer_in6));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(6, buffer_in7));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(7, buffer_output));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(8, amount));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(9, size));
+
 
     // Copy input data to device global memory
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_in1, buffer_in2}, 0 /* 0 means from host*/));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_in1, buffer_in2, buffer_in3, buffer_in4, buffer_in5, buffer_in6, buffer_in7}, 0 /* 0 means from host*/));
 
     // Launch the Kernel
     // For HLS kernels global and local size is always (1,1,1). So, it is
@@ -131,29 +206,48 @@ int main(int argc, char** argv) {
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> float_ms = end - start;
-    std::cout << "Kernel execution elapsed time is " << float_ms.count() << " milliseconds" << std::endl;
-
+    std::cout << "Kernel: " << float_ms.count() << " milliseconds" << std::endl;
 
     // Copy Result from Device Global Memory to Host Local Memory
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_output}, CL_MIGRATE_MEM_OBJECT_HOST));
     q.finish();
-    // OPENCL HOST CODE AREA END
+    // OPENCL HOST CODE AREA END 
 
-    std::vector<float> proj_host(LOWER_SIZE);
+    std::vector<float> proj_host(LOWER_SIZE*AMOUNT);
 
-    for (int j=0; j<size_m; j++){
-        float acc = 0;
-        for (int i=0; i<size_d; i++){
-            acc += rands[j*size_d+i] * orig[i];
+    start = std::chrono::high_resolution_clock::now();
+    for(int a=0; a<AMOUNT;a++) {
+        float acc_1 = 0;
+        float acc_2 = 0;
+        float acc_3 = 0;
+        float acc_4 = 0;
+        float acc_5 = 0;
+        float acc_6 = 0;
+        for (int i=0; i<vector_size; i++){
+            acc_1 += rand1[i] * orig[i+vector_size*a];
+            acc_2 += rand2[i] * orig[i+vector_size*a];
+            acc_3 += rand3[i] * orig[i+vector_size*a];
+            acc_4 += rand4[i] * orig[i+vector_size*a];
+            acc_5 += rand5[i] * orig[i+vector_size*a];
+            acc_6 += rand6[i] * orig[i+vector_size*a];
         }
-        proj_host[j] = acc;
+
+        proj_host[0+6*a] = acc_1;
+        proj_host[1+6*a] = acc_2;
+        proj_host[2+6*a] = acc_3;
+        proj_host[3+6*a] = acc_4;
+        proj_host[4+6*a] = acc_5;
+        proj_host[5+6*a] = acc_6;
     }
+    end = std::chrono::high_resolution_clock::now();
+    float_ms = end - start;
+    std::cout << "Host:   " << float_ms.count() << " milliseconds" << std::endl;
 
     // Compare the results of the Device to the simulation
     bool match = true;
     std::cout.precision(7);
     std::cout << "Precision: 1e-5"<<std::endl;
-    for (int i = 0; i < size_m; i++) {
+    for (int i = 0; i < LOWER_SIZE*AMOUNT; i++) {
 
         std::cout << "i = " << i << "\tCPU result = " << proj_host[i]
                     << "\tDevice result = " << proj[i] << "\tDiff: " << proj_host[i] - proj[i] <<std::endl;
@@ -167,8 +261,8 @@ int main(int argc, char** argv) {
 
     std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
 
-    std::cout << "Resulted  projection: ";
-    for(int i=0; i<size_m;i++){
+    std::cout << "Resulted  projection (1): ";
+    for(int i=0; i<LOWER_SIZE;i++){
         std::cout << proj_host[i] << "\t";
     }
     std::cout << "\n";
