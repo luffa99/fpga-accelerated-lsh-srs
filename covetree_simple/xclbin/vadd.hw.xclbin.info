@@ -11,7 +11,7 @@ xclbin Information
    Kernels:                vadd
    Signature:              
    Content:                Bitstream
-   UUID (xclbin):          d4b3bf2f-33d1-2928-a22a-beb47e198034
+   UUID (xclbin):          6bb4400c-8534-1a33-9e76-41fde9d0177d
    UUID (IINTF):           b7ac1abe1e3e1cb686d5a81232452676
    Sections:               DEBUG_IP_LAYOUT, BITSTREAM, MEM_TOPOLOGY, IP_LAYOUT, 
                            CONNECTIVITY, CLOCK_FREQ_TOPOLOGY, BUILD_METADATA, 
@@ -348,7 +348,7 @@ Kernel: vadd
 
 Definition
 ----------
-   Signature: vadd (unsigned int size, void* points_coords_dram, void* points_children_dram, void* querys, void* outs, unsigned int maxlevel, unsigned int minlevel)
+   Signature: vadd (unsigned int n_points_real, void* points_coords_dram, void* points_children_dram, void* querys, void* outs, unsigned int maxlevel, unsigned int minlevel, unsigned int n_query)
 
 Ports
 -----
@@ -367,18 +367,18 @@ Ports
    Port:          M_AXI_GMEM2
    Mode:          master
    Range (bytes): 0xFFFFFFFF
-   Data Width:    64 bits
+   Data Width:    32 bits
    Port Type:     addressable
 
    Port:          M_AXI_GMEM3
    Mode:          master
    Range (bytes): 0xFFFFFFFF
-   Data Width:    64 bits
+   Data Width:    32 bits
    Port Type:     addressable
 
    Port:          S_AXI_CONTROL
    Mode:          slave
-   Range (bytes): 0x58
+   Range (bytes): 0x60
    Data Width:    32 bits
    Port Type:     addressable
 
@@ -386,7 +386,7 @@ Ports
 Instance:        vadd_1
    Base Address: 0x800000
 
-   Argument:          size
+   Argument:          n_points_real
    Register Offset:   0x10
    Port:              S_AXI_CONTROL
    Memory:            <not applicable>
@@ -418,6 +418,11 @@ Instance:        vadd_1
 
    Argument:          minlevel
    Register Offset:   0x50
+   Port:              S_AXI_CONTROL
+   Memory:            <not applicable>
+
+   Argument:          n_query
+   Register Offset:   0x58
    Port:              S_AXI_CONTROL
    Memory:            <not applicable>
 ==============================================================================

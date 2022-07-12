@@ -23,6 +23,9 @@ import time
 # import cPickle as pickle
 import pickle
 import sys
+import csv
+import datetime
+
 
 def distance(p, q):
     # print "distance"
@@ -44,6 +47,7 @@ def test_covertree():
     
     n_points = int(sys.argv[1])
     maxchildren = int(sys.argv[2])
+    want_output = int(sys.argv[3])
 
     # k = 1
     
@@ -60,13 +64,13 @@ def test_covertree():
     b_t = gt() - t
     # print "Building time:", b_t, "seconds"
 
-    print ("==== Check that all cover tree invariants are satisfied ====")
-    if ct.check_invariants():
-        print ("OK!")
-        passed_tests += 1
-    else:
-        print ("NOT OK!")
-    total_tests += 1
+    # print ("==== Check that all cover tree invariants are satisfied ====")
+    # if ct.check_invariants():
+    #     print ("OK!")
+    #     passed_tests += 1
+    # else:
+    #     print ("NOT OK!")
+    # total_tests += 1
     
     # print "==== Write test1.dot, dotty file of the built tree ===="
     with open("test1.dot", "w") as testDottyFile1:
@@ -104,7 +108,7 @@ def test_covertree():
                     queue.append(neighbour)
 
     # Driver Code
-    print ("Building graph to export")
+    # print ("Building graph to export")
     bfs(visited, ct.root)    # function calling
     points = sorted(points.items(), key=lambda x: int(x[0]))
     points = list(map(lambda i : i[1], points))
@@ -113,7 +117,6 @@ def test_covertree():
             extension = [(69,-1) for el in range(maxchildren-len(node[1]))] ## 69 needs to be > max value!!
             node[1].extend(extension)
 
-    query = (float(sys.argv[3]),float(sys.argv[4]),float(sys.argv[5]),float(sys.argv[6]),float(sys.argv[7]),float(sys.argv[8]))
 
     #print(points)
     # for i, p in enumerate(points):
@@ -159,41 +162,77 @@ def test_covertree():
     print ("==== Test (PYTHON) " + str(k) + "-nearest neighbors cover tree query ====")
     #query = (0.5,0.5,0.5)
 
-    print ("Query: ")
-    print (query)
-
-    # naive nearest neighbor
-    t = gt()
-    naive_results = knn(k, query, points_fn, distance)
-    # print "resultNN =", resultNN
-    n_t = gt() - t
-    # print "Time to run a naive " + str(k) + "-nn query:", n_t, "seconds"
-
-    #cover-tree nearest neighbor
-    t = gt()
-    results = ct.knn(k, query, True)
-    # print "result =", result
-    ct_t = gt() - t
-    # print "Time to run a cover tree " + str(k) + "-nn query:", ct_t, "seconds"
     
-    if all([distance(r, nr) != 0 for r, nr in zip(results, naive_results)]):
-        print ("NOT OK!")
-        print (results)
-        print ("!=")
-        print (naive_results)
-    else:
-        print ("OK!")
-        print (results)
-        # print "=="
-        # print naive_results
-        # print "Cover tree query is", n_t/ct_t, "faster"
-        passed_tests += 1
-    total_tests += 1
+
+    with open('querys.txt', newline='') as f:
+        rows = list(csv.reader(f))      # Read all rows into a list
+
+    querys = []
+    for row in rows:    # Skip the header row and convert first values to integers
+        querys.append(float(row[0]))
+    
+    n_querys = len(querys) // 6;
+
+    # print(querys,n_querys)
+
+    # query = (float(sys.argv[3]),float(sys.argv[4]),float(sys.argv[5]),float(sys.argv[6]),float(sys.argv[7]),float(sys.argv[8]))
+    print ("Querys: ",n_querys)
+
+    tot_results = []
+    g_time = 0
+    for x in range(0,n_querys):
+
+        query = querys[x*6:x*6+6]
+
+        if(want_output):
+            print ("Query #",x)
+            print (query)
+
+        # t = gt()
+        start_time = datetime.datetime.now()    
+        #cover-tree nearest neighbor
+        results = ct.knn(k, query, True)
+        # print "result =", result
+        end_time = datetime.datetime.now()
+        time_diff = (end_time - start_time)
+        execution_time = time_diff.total_seconds() * 1000
+        g_time += execution_time
+        # print(g_time)
+        # ct_t = gt() - t
+        # g_time += ct_t
+        # print "Time to run a cover tree " + str(k) + "-nn query:", ct_t, "seconds"
+        
+        # naive nearest neighbor
+        t = gt()
+        naive_results = knn(k, query, points_fn, distance)
+        # print "resultNN =", resultNN
+        n_t = gt() - t
+        # print "Time to run a naive " + str(k) + "-nn query:", n_t, "seconds"
+
+
+        if all([distance(r, nr) != 0 for r, nr in zip(results, naive_results)]):
+            print ("NOT OK!")
+            print (results)
+            print ("!=")
+            print (naive_results)
+        else:
+            if(want_output):
+                print ("OK!")
+                print (results)
+            # print "=="
+            # print naive_results
+            # print "Cover tree query is", n_t/ct_t, "faster"
+            passed_tests += 1
+        total_tests += 1
+        tot_results.append(results[0])
 
     with open('results.txt', 'w') as x:
-        for r in results:
+        for r in tot_results:
             for a in r:
                 x.write(str(a)+'\n')
+
+    with open('time.txt', 'w') as x:
+        x.write(str(g_time)) # in ms
 
     return
     # you need pylab for that

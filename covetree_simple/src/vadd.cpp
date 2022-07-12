@@ -7,7 +7,7 @@
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 16  // Maximum number of children for every node (fixed vector)
-#define n_points 100   // Number of po#defines to generate
+#define n_points 1000   // Number of po#defines to generate at maximum
 #define dummy_level 69
 
 #define _minlevel -4
@@ -36,13 +36,14 @@ float distance( float const in1[dimension],
 extern "C" {
 
 
-void vadd(int const size,
+void vadd(int const n_points_real,
         const float * points_coords_dram,
         const int * points_children_dram,
         const float * querys,
         float * outs,
         int maxlevel,
-        int minlevel) {
+        int minlevel,
+        int n_query) {
 
 // Memory mapping
 #pragma HLS INTERFACE m_axi port = points_coords_dram bundle=gmem0
@@ -55,9 +56,10 @@ void vadd(int const size,
 #pragma HLS INTERFACE s_axilite port = querys 
 #pragma HLS INTERFACE s_axilite port = outs 
 
-#pragma HLS INTERFACE s_axilite port = size 
+#pragma HLS INTERFACE s_axilite port = n_points_real 
 #pragma HLS INTERFACE s_axilite port = maxlevel 
 #pragma HLS INTERFACE s_axilite port = minlevel 
+#pragma HLS INTERFACE s_axilite port = n_query 
 
 // Let's partition the array -> this should allow optimizations
 
@@ -75,7 +77,7 @@ int points_children [n_points][maxchildren*2];
 #pragma HLS array_partition variable=points_children block factor=16 dim=2
 
     // Copying data structure in on-chip memory:
-    for(int i=0; i<n_points; i++){
+    for(int i=0; i<n_points_real; i++){
         for(int j=0; j<dimension; j++){
             points_coords[i][j] = points_coords_dram[i*dimension+j];
         }
@@ -86,7 +88,7 @@ int points_children [n_points][maxchildren*2];
 
     // Search 100 query points!
     // TODO: parametrize the loop size
-    for(int q=0; q<100;q++) {
+    for(int q=0; q<n_query;q++) {
 
         // Select actual query
         float query[dimension];
@@ -96,14 +98,14 @@ int points_children [n_points][maxchildren*2];
 
         // Distances from query point
         float dists [n_points] = {-1};  
-        for (int i=0; i<n_points; i++){
+        for (int i=0; i<n_points_real; i++){
             dists[i] = -1;
         }
 
         // Set of points: use array as queue
         int queue_ptr = 0;              // A pointer to the end of the queue
         int queue [n_points] = {-1};
-        for (int i=0; i<n_points; i++){
+        for (int i=0; i<n_points_real; i++){
             queue[i] = -1;
         }
 
@@ -116,7 +118,7 @@ int points_children [n_points][maxchildren*2];
         levels_loop:
         for(int l=maxlevel; l >= minlevel; l--){
         // for(int l= _maxlevel; l >= _minlevel; l--){
-            std::cout << "L: " << l << std::endl;
+            // std::cout << "L: " << l << std::endl;
 
             // std::cout << "Round " << l << std::endl;
             // Inspect all children of points in p_set
@@ -137,7 +139,7 @@ int points_children [n_points][maxchildren*2];
                 //     std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
                 // }
                 int p = queue[i];
-                std::cout << "P: " << p << std::endl;
+                // std::cout << "P: " << p << std::endl;
 
                 children_loop:
                 for(int j=0; j<maxchildren*2; j+=2) {
@@ -193,11 +195,11 @@ int points_children [n_points][maxchildren*2];
                 reduced_position += modify_position;
             }
             
-            std::cout << "B: " << queue_ptr << std::endl;
+            // std::cout << "B: " << queue_ptr << std::endl;
 
             queue_ptr = reduced_position;
 
-            std::cout << "A: " << queue_ptr << std::endl;
+            // std::cout << "A: " << queue_ptr << std::endl;
 
             // if(l==-1) {
             //     break;

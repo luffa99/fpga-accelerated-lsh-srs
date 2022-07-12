@@ -9,10 +9,10 @@
 <ENTRY>
 {
  "type": "ET_CmdStep",
- "dateTimestamp": "Mon Jul 11 10:36:29 2022",
- "timestampMillis": "1657528589957",
+ "dateTimestamp": "Tue Jul 12 15:04:13 2022",
+ "timestampMillis": "1657631053054",
  "buildStep": {
-  "cmdId": "ec29a504-b7f2-4902-bf6a-0870dd8ae1e1",
+  "cmdId": "0166c6bb-84e0-45fe-bb24-a6ef91a35ec6",
   "name": "v++",
   "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/link.steps.log",
   "commandLine": "/tools/Xilinx/Vitis/2022.1/bin/unwrapped/lnx64.o/v++  --vivado.prop \"run.__KERNEL__.{STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS}={-directive sdx_optimization_effort_high}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_route_design_summary steps {route_design} runs {impl_1} options {-max_paths 10}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_post_route_phys_opt_design_summary steps {post_route_phys_opt_design} runs {impl_1} options {-max_paths 10}\" -g -t hw --platform xilinx_u55c_gen3x16_xdma_3_202210_1 --save-temps --config connectivity.cfg -l --temp_dir ./_x.hw -o xclbin/vadd.hw.xclbin xclbin/vadd.hw.xo ",
@@ -45,10 +45,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:36:29 2022",
- "timestampMillis": "1657528589959",
+ "dateTimestamp": "Tue Jul 12 15:04:13 2022",
+ "timestampMillis": "1657631053056",
  "status": {
-  "cmdId": "ec29a504-b7f2-4902-bf6a-0870dd8ae1e1",
+  "cmdId": "0166c6bb-84e0-45fe-bb24-a6ef91a35ec6",
   "state": "CS_RUNNING"
  }
 }
@@ -56,8 +56,8 @@
 <ENTRY>
 {
  "type": "ET_FlowMetaData",
- "dateTimestamp": "Mon Jul 11 10:36:37 2022",
- "timestampMillis": "1657528597886",
+ "dateTimestamp": "Tue Jul 12 15:04:22 2022",
+ "timestampMillis": "1657631062772",
  "buildSummary": {
   "hardwarePlatform": "xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm",
   "hardwareDsa": "",
@@ -104,10 +104,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 10:36:38 2022",
- "timestampMillis": "1657528598116",
+ "dateTimestamp": "Tue Jul 12 15:04:23 2022",
+ "timestampMillis": "1657631063081",
  "buildStep": {
-  "cmdId": "5f8d742b-b637-43ca-a8e3-8c6eb3aabb1f",
+  "cmdId": "bfffca31-e91d-4af1-b58a-4b5d6f0ed1ec",
   "name": "system_link",
   "logFile": "",
   "commandLine": "system_link --xo /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/xclbin/vadd.hw.xo -keep --config /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/syslinkConfig.ini --xpfm /opt/xilinx/platforms/xilinx_u55c_gen3x16_xdma_3_202210_1/xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm --target hw --output_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int --temp_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/sys_link",
@@ -139,10 +139,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:36:38 2022",
- "timestampMillis": "1657528598116",
+ "dateTimestamp": "Tue Jul 12 15:04:23 2022",
+ "timestampMillis": "1657631063081",
  "status": {
-  "cmdId": "5f8d742b-b637-43ca-a8e3-8c6eb3aabb1f",
+  "cmdId": "bfffca31-e91d-4af1-b58a-4b5d6f0ed1ec",
   "state": "CS_RUNNING"
  }
 }
@@ -150,10 +150,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:37:02 2022",
- "timestampMillis": "1657528622836",
+ "dateTimestamp": "Tue Jul 12 15:04:53 2022",
+ "timestampMillis": "1657631093224",
  "status": {
-  "cmdId": "5f8d742b-b637-43ca-a8e3-8c6eb3aabb1f",
+  "cmdId": "bfffca31-e91d-4af1-b58a-4b5d6f0ed1ec",
   "state": "CS_PASSED"
  }
 }
@@ -161,10 +161,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 10:37:02 2022",
- "timestampMillis": "1657528622873",
+ "dateTimestamp": "Tue Jul 12 15:04:53 2022",
+ "timestampMillis": "1657631093234",
  "buildStep": {
-  "cmdId": "d74685cb-d065-4c82-a8b6-2eb49425b3b8",
+  "cmdId": "89cb55e8-14f5-4f70-a2fc-983a36e276f9",
   "name": "cf2sw",
   "logFile": "",
   "commandLine": "cf2sw -sdsl /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/sdsl.dat -rtd /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/cf2sw.rtd -nofilter /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/cf2sw_full.rtd -xclbin /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/xclbin_orig.xml -o /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/xclbin_orig.1.xml",
@@ -188,10 +188,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:37:02 2022",
- "timestampMillis": "1657528622874",
+ "dateTimestamp": "Tue Jul 12 15:04:53 2022",
+ "timestampMillis": "1657631093234",
  "status": {
-  "cmdId": "d74685cb-d065-4c82-a8b6-2eb49425b3b8",
+  "cmdId": "89cb55e8-14f5-4f70-a2fc-983a36e276f9",
   "state": "CS_RUNNING"
  }
 }
@@ -199,10 +199,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:37:08 2022",
- "timestampMillis": "1657528628589",
+ "dateTimestamp": "Tue Jul 12 15:04:59 2022",
+ "timestampMillis": "1657631099900",
  "status": {
-  "cmdId": "d74685cb-d065-4c82-a8b6-2eb49425b3b8",
+  "cmdId": "89cb55e8-14f5-4f70-a2fc-983a36e276f9",
   "state": "CS_PASSED"
  }
 }
@@ -210,10 +210,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 10:37:08 2022",
- "timestampMillis": "1657528628600",
+ "dateTimestamp": "Tue Jul 12 15:04:59 2022",
+ "timestampMillis": "1657631099909",
  "buildStep": {
-  "cmdId": "d49fccf3-effc-48b8-9d46-22d9eada6139",
+  "cmdId": "b9ebb453-855d-4c9f-9bb1-c9293a833690",
   "name": "rtd2_system_diagram",
   "logFile": "",
   "commandLine": "rtd2SystemDiagram",
@@ -226,10 +226,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:37:08 2022",
- "timestampMillis": "1657528628601",
+ "dateTimestamp": "Tue Jul 12 15:04:59 2022",
+ "timestampMillis": "1657631099910",
  "status": {
-  "cmdId": "d49fccf3-effc-48b8-9d46-22d9eada6139",
+  "cmdId": "b9ebb453-855d-4c9f-9bb1-c9293a833690",
   "state": "CS_RUNNING"
  }
 }
@@ -237,8 +237,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 10:37:09 2022",
- "timestampMillis": "1657528629010",
+ "dateTimestamp": "Tue Jul 12 15:05:00 2022",
+ "timestampMillis": "1657631100505",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/systemDiagramModel.json",
   "name": "",
@@ -251,10 +251,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:37:09 2022",
- "timestampMillis": "1657528629013",
+ "dateTimestamp": "Tue Jul 12 15:05:00 2022",
+ "timestampMillis": "1657631100508",
  "status": {
-  "cmdId": "d49fccf3-effc-48b8-9d46-22d9eada6139",
+  "cmdId": "b9ebb453-855d-4c9f-9bb1-c9293a833690",
   "state": "CS_PASSED"
  }
 }
@@ -262,10 +262,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 10:37:09 2022",
- "timestampMillis": "1657528629028",
+ "dateTimestamp": "Tue Jul 12 15:05:00 2022",
+ "timestampMillis": "1657631100524",
  "buildStep": {
-  "cmdId": "dbac6aa5-22f8-4433-bcce-3e63f56bf9e9",
+  "cmdId": "0a2c45e0-3faf-4de5-b122-36f15cdcccf7",
   "name": "vpl",
   "logFile": "",
   "commandLine": "vpl -t hw -f xilinx_u55c_gen3x16_xdma_3_202210_1 -g --kernel_frequency 135 --remote_ip_cache /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/.ipcache -s --trace_memory HBM[0] --output_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int --log_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/logs/link --report_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link --config /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vplConfig.ini -k /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/kernel_info.dat --webtalk_flag Vitis --temp_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link --no-info --iprepo /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/xo/ip_repo/xilinx_com_hls_vadd_1_0 --messageDb /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/run_link/vpl.pb /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/dr.bd.tcl",
@@ -316,10 +316,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:37:09 2022",
- "timestampMillis": "1657528629029",
+ "dateTimestamp": "Tue Jul 12 15:05:00 2022",
+ "timestampMillis": "1657631100525",
  "status": {
-  "cmdId": "dbac6aa5-22f8-4433-bcce-3e63f56bf9e9",
+  "cmdId": "0a2c45e0-3faf-4de5-b122-36f15cdcccf7",
   "state": "CS_RUNNING"
  }
 }
@@ -327,10 +327,10 @@
 <ENTRY>
 {
  "type": "ET_CmdStep",
- "dateTimestamp": "Mon Jul 11 10:37:10 2022",
- "timestampMillis": "1657528630582",
+ "dateTimestamp": "Tue Jul 12 15:05:02 2022",
+ "timestampMillis": "1657631102248",
  "buildStep": {
-  "cmdId": "97b0c7b8-c136-42f8-ae0b-77978462072a",
+  "cmdId": "80a73d4b-c417-45ac-af28-80eee4dcfac6",
   "name": "vpl",
   "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/link.steps.log",
   "commandLine": "/tools/Xilinx/Vitis/2022.1/bin/unwrapped/lnx64.o/vpl -t hw -f xilinx_u55c_gen3x16_xdma_3_202210_1 -g --kernel_frequency 135 --remote_ip_cache /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/.ipcache -s --trace_memory HBM[0] --output_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int --log_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/logs/link --report_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link --config /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vplConfig.ini -k /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/kernel_info.dat --webtalk_flag Vitis --temp_dir /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link --no-info --iprepo /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/xo/ip_repo/xilinx_com_hls_vadd_1_0 --messageDb /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/run_link/vpl.pb /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/dr.bd.tcl ",
@@ -343,10 +343,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:37:10 2022",
- "timestampMillis": "1657528630582",
+ "dateTimestamp": "Tue Jul 12 15:05:02 2022",
+ "timestampMillis": "1657631102248",
  "status": {
-  "cmdId": "97b0c7b8-c136-42f8-ae0b-77978462072a",
+  "cmdId": "80a73d4b-c417-45ac-af28-80eee4dcfac6",
   "state": "CS_RUNNING"
  }
 }
@@ -354,8 +354,8 @@
 <ENTRY>
 {
  "type": "ET_VivadoProject",
- "dateTimestamp": "Mon Jul 11 10:37:18 2022",
- "timestampMillis": "1657528638255",
+ "dateTimestamp": "Tue Jul 12 15:05:11 2022",
+ "timestampMillis": "1657631111048",
  "vivadoProject": {
   "openDir": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/vivado/vpl",
   "openScript": "openprj.tcl",
@@ -366,10 +366,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 10:37:18 2022",
- "timestampMillis": "1657528638258",
+ "dateTimestamp": "Tue Jul 12 15:05:11 2022",
+ "timestampMillis": "1657631111051",
  "buildStep": {
-  "cmdId": "c71a346f-2de3-4630-9da6-1c6d834db0ab",
+  "cmdId": "dd878262-f801-4834-ae62-8ec45cd06835",
   "name": "vivado",
   "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/vivado/vpl/vivado.log",
   "commandLine": "vivado -log vivado.log -applog -m64 -messageDb vivado.pb -mode batch -source vpl.tcl -notrace",
@@ -394,10 +394,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:37:18 2022",
- "timestampMillis": "1657528638260",
+ "dateTimestamp": "Tue Jul 12 15:05:11 2022",
+ "timestampMillis": "1657631111052",
  "status": {
-  "cmdId": "c71a346f-2de3-4630-9da6-1c6d834db0ab",
+  "cmdId": "dd878262-f801-4834-ae62-8ec45cd06835",
   "state": "CS_RUNNING"
  }
 }
@@ -405,8 +405,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 10:38:10 2022",
- "timestampMillis": "1657528690368",
+ "dateTimestamp": "Tue Jul 12 15:06:14 2022",
+ "timestampMillis": "1657631174717",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/debug_ip_layout.rtd",
   "name": "",
@@ -419,8 +419,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 10:38:10 2022",
- "timestampMillis": "1657528690881",
+ "dateTimestamp": "Tue Jul 12 15:06:15 2022",
+ "timestampMillis": "1657631175300",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/automation_summary_update_bd.txt",
   "name": "",
@@ -433,10 +433,10 @@
 <ENTRY>
 {
  "type": "ET_CmdStep",
- "dateTimestamp": "Mon Jul 11 10:48:54 2022",
- "timestampMillis": "1657529334074",
+ "dateTimestamp": "Tue Jul 12 15:14:31 2022",
+ "timestampMillis": "1657631671196",
  "buildStep": {
-  "cmdId": "809436e1-559d-4573-8f3c-6c562eee0e50",
+  "cmdId": "956fb8ba-b3b8-4b3e-88af-bdbc1b06244e",
   "name": "vivado.impl",
   "logFile": "",
   "commandLine": "",
@@ -449,10 +449,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:48:54 2022",
- "timestampMillis": "1657529334075",
+ "dateTimestamp": "Tue Jul 12 15:14:31 2022",
+ "timestampMillis": "1657631671197",
  "status": {
-  "cmdId": "809436e1-559d-4573-8f3c-6c562eee0e50",
+  "cmdId": "956fb8ba-b3b8-4b3e-88af-bdbc1b06244e",
   "state": "CS_RUNNING"
  }
 }
@@ -460,10 +460,10 @@
 <ENTRY>
 {
  "type": "ET_CmdStep",
- "dateTimestamp": "Mon Jul 11 10:48:54 2022",
- "timestampMillis": "1657529334077",
+ "dateTimestamp": "Tue Jul 12 15:14:31 2022",
+ "timestampMillis": "1657631671199",
  "buildStep": {
-  "cmdId": "40141a57-44a9-4440-9dc8-b28fd5a04d34",
+  "cmdId": "182bd177-9413-4164-8fc9-76a1f7eeddd9",
   "name": "vivado.impl.impl_1",
   "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/vivado/vpl/prj/prj.runs/impl_1/runme.log",
   "commandLine": "",
@@ -476,10 +476,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 10:48:54 2022",
- "timestampMillis": "1657529334079",
+ "dateTimestamp": "Tue Jul 12 15:14:31 2022",
+ "timestampMillis": "1657631671200",
  "status": {
-  "cmdId": "40141a57-44a9-4440-9dc8-b28fd5a04d34",
+  "cmdId": "182bd177-9413-4164-8fc9-76a1f7eeddd9",
   "state": "CS_RUNNING"
  }
 }
@@ -487,8 +487,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:01:12 2022",
- "timestampMillis": "1657533672365",
+ "dateTimestamp": "Tue Jul 12 16:19:05 2022",
+ "timestampMillis": "1657635545970",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/vivado/vpl/prj/prj.runs/impl_1/system_diagram.json",
   "name": "",
@@ -501,8 +501,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:02:28 2022",
- "timestampMillis": "1657533748735",
+ "dateTimestamp": "Tue Jul 12 16:20:21 2022",
+ "timestampMillis": "1657635621470",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/kernel_service.json",
   "name": "",
@@ -515,8 +515,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:02:28 2022",
- "timestampMillis": "1657533748739",
+ "dateTimestamp": "Tue Jul 12 16:20:21 2022",
+ "timestampMillis": "1657635621473",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/kernel_service.pb",
   "name": "",
@@ -529,8 +529,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:04:40 2022",
- "timestampMillis": "1657533880398",
+ "dateTimestamp": "Tue Jul 12 16:22:32 2022",
+ "timestampMillis": "1657635752461",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/vivado/vpl/prj/prj.runs/impl_1/dr_timing_summary.rpt",
   "name": "",
@@ -543,8 +543,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:04:40 2022",
- "timestampMillis": "1657533880409",
+ "dateTimestamp": "Tue Jul 12 16:22:32 2022",
+ "timestampMillis": "1657635752467",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/vivado/vpl/prj/prj.runs/impl_1/dr_timing_summary.rpt",
   "name": "",
@@ -557,10 +557,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:07 2022",
- "timestampMillis": "1657534507416",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382757",
  "status": {
-  "cmdId": "c71a346f-2de3-4630-9da6-1c6d834db0ab",
+  "cmdId": "dd878262-f801-4834-ae62-8ec45cd06835",
   "state": "CS_PASSED"
  }
 }
@@ -568,8 +568,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:07 2022",
- "timestampMillis": "1657534507969",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382855",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_full_util_synthed.pb",
   "name": "",
@@ -582,50 +582,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:07 2022",
- "timestampMillis": "1657534507975",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_synthed.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "KERNEL_UTILIZATION_SYNTHESIS",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:07 2022",
- "timestampMillis": "1657534507980",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_full_util_synthed.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_UTILIZATION_SYNTHESIS",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:07 2022",
- "timestampMillis": "1657534507985",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_placed.xutil",
-  "name": "",
-  "fileType": "XUTIL",
-  "reportType": "KERNEL_UTILIZATION_PLACEMENT",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:07 2022",
- "timestampMillis": "1657534507990",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382860",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_full_util_routed.pb",
   "name": "",
@@ -638,106 +596,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:07 2022",
- "timestampMillis": "1657534507994",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_slr_util_placed.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_SLR_UTIL_PLACED",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:07 2022",
- "timestampMillis": "1657534507999",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_routed.xutil",
-  "name": "",
-  "fileType": "XUTIL",
-  "reportType": "KERNEL_UTILIZATION_ROUTE",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508007",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_slr_util_routed.pb",
-  "name": "",
-  "fileType": "BINARY_PROTOBUF",
-  "reportType": "GLOBAL_SLR_UTIL_ROUTED",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508012",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_placed.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "KERNEL_UTILIZATION_PLACEMENT",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508016",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_synthed.xutil",
-  "name": "",
-  "fileType": "XUTIL",
-  "reportType": "KERNEL_UTILIZATION_SYNTHESIS",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508021",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_slr_util_placed.pb",
-  "name": "",
-  "fileType": "BINARY_PROTOBUF",
-  "reportType": "GLOBAL_SLR_UTIL_PLACED",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508026",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_slr_util_routed.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_SLR_UTIL_ROUTED",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508031",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382865",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_routed.rpt",
   "name": "",
@@ -750,8 +610,134 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508035",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382869",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_slr_util_placed.rpt",
+  "name": "",
+  "fileType": "TEXT",
+  "reportType": "GLOBAL_SLR_UTIL_PLACED",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382873",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_synthed.xutil",
+  "name": "",
+  "fileType": "XUTIL",
+  "reportType": "KERNEL_UTILIZATION_SYNTHESIS",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382877",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_slr_util_routed.pb",
+  "name": "",
+  "fileType": "BINARY_PROTOBUF",
+  "reportType": "GLOBAL_SLR_UTIL_ROUTED",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382885",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_synthed.rpt",
+  "name": "",
+  "fileType": "TEXT",
+  "reportType": "KERNEL_UTILIZATION_SYNTHESIS",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382889",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_placed.xutil",
+  "name": "",
+  "fileType": "XUTIL",
+  "reportType": "KERNEL_UTILIZATION_PLACEMENT",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382894",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_slr_util_placed.pb",
+  "name": "",
+  "fileType": "BINARY_PROTOBUF",
+  "reportType": "GLOBAL_SLR_UTIL_PLACED",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382898",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_full_util_synthed.rpt",
+  "name": "",
+  "fileType": "TEXT",
+  "reportType": "GLOBAL_UTILIZATION_SYNTHESIS",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382902",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_placed.rpt",
+  "name": "",
+  "fileType": "TEXT",
+  "reportType": "KERNEL_UTILIZATION_PLACEMENT",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382907",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_slr_util_routed.rpt",
+  "name": "",
+  "fileType": "TEXT",
+  "reportType": "GLOBAL_SLR_UTIL_ROUTED",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382915",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_full_util_routed.rpt",
   "name": "",
@@ -764,8 +750,22 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508579",
+ "dateTimestamp": "Tue Jul 12 16:33:02 2022",
+ "timestampMillis": "1657636382919",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_kernel_util_routed.xutil",
+  "name": "",
+  "fileType": "XUTIL",
+  "reportType": "KERNEL_UTILIZATION_ROUTE",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383500",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_hmss_0_0_synth_1_ulp_hmss_0_0_utilization_synth.rpt",
   "name": "",
@@ -778,78 +778,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508585",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/bd_85ad_interconnect2_1_0_synth_1_bd_85ad_interconnect2_1_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508590",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_dpa_hub_0_synth_1_ulp_dpa_hub_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508595",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_dpa_mon0_0_synth_1_ulp_dpa_mon0_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508599",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_dpa_mon1_0_synth_1_ulp_dpa_mon1_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508604",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_dpa_mon2_0_synth_1_ulp_dpa_mon2_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508609",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383505",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_dpa_mon3_0_synth_1_ulp_dpa_mon3_0_utilization_synth.rpt",
   "name": "",
@@ -862,8 +792,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508613",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383509",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_dpa_mon4_0_synth_1_ulp_dpa_mon4_0_utilization_synth.rpt",
   "name": "",
@@ -876,36 +806,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508618",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_dpa_trace_s2mm_0_synth_1_ulp_dpa_trace_s2mm_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508623",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/bd_85ad_hbm_inst_0_synth_1_bd_85ad_hbm_inst_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508628",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383514",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_vadd_1_0_synth_1_ulp_vadd_1_0_utilization_synth.rpt",
   "name": "vadd",
@@ -918,190 +820,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508632",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_xbar_3_synth_1_ulp_xbar_3_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508637",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_auto_cc_5_synth_1_ulp_auto_cc_5_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508642",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_m02_regslice_0_synth_1_ulp_m02_regslice_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508647",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_auto_cc_6_synth_1_ulp_auto_cc_6_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508652",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_m03_regslice_0_synth_1_ulp_m03_regslice_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508656",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_auto_cc_7_synth_1_ulp_auto_cc_7_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508662",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_m01_regslice_3_synth_1_ulp_m01_regslice_3_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508667",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_auto_cc_4_synth_1_ulp_auto_cc_4_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508672",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_s00_regslice_19_synth_1_ulp_s00_regslice_19_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508677",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/ulp_auto_cc_2_synth_1_ulp_auto_cc_2_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508681",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/bd_85ad_interconnect0_6_0_synth_1_bd_85ad_interconnect0_6_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508686",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/bd_85ad_interconnect5_4_0_synth_1_bd_85ad_interconnect5_4_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508691",
- "report": {
-  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/bd_85ad_interconnect4_3_0_synth_1_bd_85ad_interconnect4_3_0_utilization_synth.rpt",
-  "name": "",
-  "fileType": "TEXT",
-  "reportType": "GLOBAL_REPORT_UTILIZATION",
-  "cmdId": ""
- }
-}
-</ENTRY>
-<ENTRY>
-{
- "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508695",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383518",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/bd_85ad_interconnect3_2_0_synth_1_bd_85ad_interconnect3_2_0_utilization_synth.rpt",
   "name": "",
@@ -1114,66 +834,80 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508703",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383522",
+ "report": {
+  "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/syn/bd_85ad_interconnect4_3_0_synth_1_bd_85ad_interconnect4_3_0_utilization_synth.rpt",
+  "name": "",
+  "fileType": "TEXT",
+  "reportType": "GLOBAL_REPORT_UTILIZATION",
+  "cmdId": ""
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383528",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_system_diagram.json",
   "name": "",
   "fileType": "JSON",
   "reportType": "SYSTEM_DIAGRAM_PLUS",
-  "cmdId": "40141a57-44a9-4440-9dc8-b28fd5a04d34"
+  "cmdId": "182bd177-9413-4164-8fc9-76a1f7eeddd9"
  }
 }
 </ENTRY>
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508756",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383580",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_hw_bb_locked_timing_summary_routed.rpt",
   "name": "",
   "fileType": "TEXT",
   "reportType": "GLOBAL_REPORT_TIMING_SUMMARY",
-  "cmdId": "40141a57-44a9-4440-9dc8-b28fd5a04d34"
+  "cmdId": "182bd177-9413-4164-8fc9-76a1f7eeddd9"
  }
 }
 </ENTRY>
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508799",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383620",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_hw_bb_locked_timing_summary_routed.rpx",
   "name": "",
   "fileType": "BINARY_PROTOBUF",
   "reportType": "GLOBAL_REPORT_TIMING_SUMMARY",
-  "cmdId": "40141a57-44a9-4440-9dc8-b28fd5a04d34"
+  "cmdId": "182bd177-9413-4164-8fc9-76a1f7eeddd9"
  }
 }
 </ENTRY>
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508804",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383624",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/imp/impl_1_hw_bb_locked_timing_summary_routed.rpv",
   "name": "",
   "fileType": "BINARY_PROTOBUF",
   "reportType": "GLOBAL_REPORT_TIMING_SUMMARY_CONCISE",
-  "cmdId": "40141a57-44a9-4440-9dc8-b28fd5a04d34"
+  "cmdId": "182bd177-9413-4164-8fc9-76a1f7eeddd9"
  }
 }
 </ENTRY>
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508860",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383660",
  "status": {
-  "cmdId": "97b0c7b8-c136-42f8-ae0b-77978462072a",
+  "cmdId": "80a73d4b-c417-45ac-af28-80eee4dcfac6",
   "state": "CS_PASSED"
  }
 }
@@ -1181,10 +915,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508920",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383679",
  "status": {
-  "cmdId": "dbac6aa5-22f8-4433-bcce-3e63f56bf9e9",
+  "cmdId": "0a2c45e0-3faf-4de5-b122-36f15cdcccf7",
   "state": "CS_PASSED"
  }
 }
@@ -1192,10 +926,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508968",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383723",
  "buildStep": {
-  "cmdId": "7ca8c810-7783-4248-8a81-d34d7981abb6",
+  "cmdId": "c8857019-a469-4efd-88db-5e363ff074b3",
   "name": "rtdgen",
   "logFile": "",
   "commandLine": "rtdgen",
@@ -1208,10 +942,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508969",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383724",
  "status": {
-  "cmdId": "7ca8c810-7783-4248-8a81-d34d7981abb6",
+  "cmdId": "c8857019-a469-4efd-88db-5e363ff074b3",
   "state": "CS_RUNNING"
  }
 }
@@ -1219,8 +953,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508982",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383736",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vadd.hw_xml.rtd",
   "name": "",
@@ -1233,10 +967,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 12:15:08 2022",
- "timestampMillis": "1657534508999",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383746",
  "buildStep": {
-  "cmdId": "a2b1668d-ca69-4b1b-9180-793fc3449c21",
+  "cmdId": "21e30642-0cf2-4a3a-9cf8-d757b3443196",
   "name": "cf2sw",
   "logFile": "",
   "commandLine": "cf2sw -force-enable-memory HBM[0] -a /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/address_map.xml -sdsl /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/sdsl.dat -xclbin /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/xclbin_orig.xml -rtd /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vadd.hw.rtd -o /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vadd.hw.xml",
@@ -1262,10 +996,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:09 2022",
- "timestampMillis": "1657534509000",
+ "dateTimestamp": "Tue Jul 12 16:33:03 2022",
+ "timestampMillis": "1657636383747",
  "status": {
-  "cmdId": "a2b1668d-ca69-4b1b-9180-793fc3449c21",
+  "cmdId": "21e30642-0cf2-4a3a-9cf8-d757b3443196",
   "state": "CS_RUNNING"
  }
 }
@@ -1273,10 +1007,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513519",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388228",
  "status": {
-  "cmdId": "a2b1668d-ca69-4b1b-9180-793fc3449c21",
+  "cmdId": "21e30642-0cf2-4a3a-9cf8-d757b3443196",
   "state": "CS_PASSED"
  }
 }
@@ -1284,10 +1018,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513520",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388229",
  "buildStep": {
-  "cmdId": "6b8fa5e5-8597-4901-8645-dd4e6e0d869f",
+  "cmdId": "f28c0223-1bd0-4b0f-b7c9-36f925ea9340",
   "name": "rtdgen",
   "logFile": "",
   "commandLine": "writeSystemDiagram",
@@ -1303,10 +1037,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513521",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388230",
  "status": {
-  "cmdId": "6b8fa5e5-8597-4901-8645-dd4e6e0d869f",
+  "cmdId": "f28c0223-1bd0-4b0f-b7c9-36f925ea9340",
   "state": "CS_RUNNING"
  }
 }
@@ -1314,8 +1048,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513533",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388241",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/systemDiagramModelSlrBaseAddress.json",
   "name": "",
@@ -1328,10 +1062,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513536",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388244",
  "status": {
-  "cmdId": "6b8fa5e5-8597-4901-8645-dd4e6e0d869f",
+  "cmdId": "f28c0223-1bd0-4b0f-b7c9-36f925ea9340",
   "state": "CS_PASSED"
  }
 }
@@ -1339,10 +1073,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513537",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388244",
  "buildStep": {
-  "cmdId": "c5059de9-c9f6-4188-b838-1edea331a834",
+  "cmdId": "1ad38b19-3376-475e-9323-8cf41b63e436",
   "name": "rtdgen",
   "logFile": "",
   "commandLine": "writeAutomationSummary",
@@ -1357,10 +1091,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513537",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388245",
  "status": {
-  "cmdId": "c5059de9-c9f6-4188-b838-1edea331a834",
+  "cmdId": "1ad38b19-3376-475e-9323-8cf41b63e436",
   "state": "CS_RUNNING"
  }
 }
@@ -1368,8 +1102,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513543",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388250",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/automation_summary.txt",
   "name": "",
@@ -1382,10 +1116,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513545",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388252",
  "status": {
-  "cmdId": "c5059de9-c9f6-4188-b838-1edea331a834",
+  "cmdId": "1ad38b19-3376-475e-9323-8cf41b63e436",
   "state": "CS_PASSED"
  }
 }
@@ -1393,10 +1127,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513552",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388258",
  "status": {
-  "cmdId": "7ca8c810-7783-4248-8a81-d34d7981abb6",
+  "cmdId": "c8857019-a469-4efd-88db-5e363ff074b3",
   "state": "CS_PASSED"
  }
 }
@@ -1404,10 +1138,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513584",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388273",
  "buildStep": {
-  "cmdId": "c16a616a-90da-478a-b6dd-314f9f339136",
+  "cmdId": "89377ae6-0067-427b-b07f-08bf281d5476",
   "name": "xclbinutil",
   "logFile": "",
   "commandLine": "xclbinutil --add-section DEBUG_IP_LAYOUT:JSON:/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/debug_ip_layout.rtd --add-section BITSTREAM:RAW:/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/partial.bit --force --target hw --key-value SYS:dfx_enable:true --add-section :JSON:/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vadd.hw.rtd --append-section :JSON:/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/appendSection.rtd --add-section CLOCK_FREQ_TOPOLOGY:JSON:/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vadd.hw_xml.rtd --add-section BUILD_METADATA:JSON:/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vadd.hw_build.rtd --add-section EMBEDDED_METADATA:RAW:/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/vadd.hw.xml --add-section SYSTEM_METADATA:RAW:/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/link/int/systemDiagramModelSlrBaseAddress.json --key-value SYS:PlatformVBNV:xilinx_u55c_gen3x16_xdma_3_202210_1 --output /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/xclbin/vadd.hw.xclbin",
@@ -1446,10 +1180,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:13 2022",
- "timestampMillis": "1657534513585",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388273",
  "status": {
-  "cmdId": "c16a616a-90da-478a-b6dd-314f9f339136",
+  "cmdId": "89377ae6-0067-427b-b07f-08bf281d5476",
   "state": "CS_RUNNING"
  }
 }
@@ -1457,10 +1191,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:14 2022",
- "timestampMillis": "1657534514237",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388840",
  "status": {
-  "cmdId": "c16a616a-90da-478a-b6dd-314f9f339136",
+  "cmdId": "89377ae6-0067-427b-b07f-08bf281d5476",
   "state": "CS_PASSED"
  }
 }
@@ -1468,10 +1202,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 12:15:14 2022",
- "timestampMillis": "1657534514247",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388849",
  "buildStep": {
-  "cmdId": "034c468d-6aaa-4e6b-a3d1-7c663e20862f",
+  "cmdId": "e776bed9-c212-4627-a152-fbe05cbf27f5",
   "name": "xclbinutilinfo",
   "logFile": "",
   "commandLine": "xclbinutil --quiet --force --info /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/xclbin/vadd.hw.xclbin.info --input /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/xclbin/vadd.hw.xclbin",
@@ -1491,10 +1225,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:14 2022",
- "timestampMillis": "1657534514247",
+ "dateTimestamp": "Tue Jul 12 16:33:08 2022",
+ "timestampMillis": "1657636388849",
  "status": {
-  "cmdId": "034c468d-6aaa-4e6b-a3d1-7c663e20862f",
+  "cmdId": "e776bed9-c212-4627-a152-fbe05cbf27f5",
   "state": "CS_RUNNING"
  }
 }
@@ -1502,10 +1236,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:14 2022",
- "timestampMillis": "1657534514867",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389465",
  "status": {
-  "cmdId": "034c468d-6aaa-4e6b-a3d1-7c663e20862f",
+  "cmdId": "e776bed9-c212-4627-a152-fbe05cbf27f5",
   "state": "CS_PASSED"
  }
 }
@@ -1513,10 +1247,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Mon Jul 11 12:15:14 2022",
- "timestampMillis": "1657534514877",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389474",
  "buildStep": {
-  "cmdId": "27cffc61-9150-41d3-9cac-e03f35bb120b",
+  "cmdId": "ca741971-5c21-4b7d-8e23-11f2ef2089ad",
   "name": "generate_sc_driver",
   "logFile": "",
   "commandLine": "",
@@ -1529,10 +1263,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:14 2022",
- "timestampMillis": "1657534514878",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389474",
  "status": {
-  "cmdId": "27cffc61-9150-41d3-9cac-e03f35bb120b",
+  "cmdId": "ca741971-5c21-4b7d-8e23-11f2ef2089ad",
   "state": "CS_RUNNING"
  }
 }
@@ -1540,10 +1274,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:14 2022",
- "timestampMillis": "1657534514882",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389477",
  "status": {
-  "cmdId": "27cffc61-9150-41d3-9cac-e03f35bb120b",
+  "cmdId": "ca741971-5c21-4b7d-8e23-11f2ef2089ad",
   "state": "CS_PASSED"
  }
 }
@@ -1551,8 +1285,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:14 2022",
- "timestampMillis": "1657534514926",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389517",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/system_estimate_vadd.hw.xtxt",
   "name": "",
@@ -1565,8 +1299,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:15 2022",
- "timestampMillis": "1657534515143",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389772",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/reports/link/v++_link_vadd.hw_guidance.html",
   "name": "",
@@ -1579,8 +1313,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:15 2022",
- "timestampMillis": "1657534515144",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389773",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/v++_link_vadd.hw_guidance.pb",
   "name": "",
@@ -1593,8 +1327,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Mon Jul 11 12:15:15 2022",
- "timestampMillis": "1657534515149",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389792",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/_x.hw/logs/optraceViewer.html",
   "name": "",
@@ -1607,10 +1341,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Mon Jul 11 12:15:15 2022",
- "timestampMillis": "1657534515154",
+ "dateTimestamp": "Tue Jul 12 16:33:09 2022",
+ "timestampMillis": "1657636389797",
  "status": {
-  "cmdId": "ec29a504-b7f2-4902-bf6a-0870dd8ae1e1",
+  "cmdId": "0166c6bb-84e0-45fe-bb24-a6ef91a35ec6",
   "state": "CS_PASSED"
  }
 }

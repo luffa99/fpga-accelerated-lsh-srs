@@ -29,7 +29,7 @@
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 16  // Maximum number of children for every node (fixed vector)
-#define n_points 100   // Number of po#defines to generate
+#define n_points 1000   // Number of po#defines to generate
 #define dummy_level 69
 
 #define BANK_NAME(n) n | XCL_MEM_TOPOLOGY
@@ -62,36 +62,42 @@ const int bank[32] = {
 */
 void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
                     std::vector<int,aligned_allocator<int>>  &points_children,
-                    float result_py [dimension],
+                    float * result_py,
                     int &n_points_real,
                     std::vector<float,aligned_allocator<float>> &query,
                     int &maxlevel,
-                    int &minlevel) {
+                    int &minlevel,
+                    int n_query,
+                    int want_output) {
 
     std::string str; 
 
-    // Generate random query point
-    for(int i=0; i<dimension*100; i++) {
+    // Generate random query point and save them to file querys.txt
+
+    std::ofstream myfile("querys.txt");
+
+    if(myfile.is_open())
+    {
+       
+    }
+    else std::cerr<<"Unable to open file";
+    for(int i=0; i<dimension*n_query; i++) {
         // This will generate a random number from 0.0 to 1.0, inclusive.
         srand(time(NULL)+i);
         query[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        myfile<<std::to_string(query[i]) << std::endl;
     }
+        
+    myfile.close();
 
-
+    
     // Call python script to generate tree 
-    system(("rm generated_tree_"+std::to_string(n_points)+".txt").c_str() );
-    system(("python src/python/generate_covertree.py "+std::to_string(n_points)+" "+std::to_string(maxchildren)
-        +" "+std::to_string(query[0])
-        +" "+std::to_string(query[1])
-        +" "+std::to_string(query[2])
-        +" "+std::to_string(query[3])
-        +" "+std::to_string(query[4])
-        +" "+std::to_string(query[5])
-        +" "+std::to_string(query[6])
-        ).c_str() );
+    system(("rm generated_tree_"+std::to_string(n_points_real)+".txt").c_str() );
+    system(("python src/python/generate_covertree.py "+std::to_string(n_points_real)+" "+std::to_string(maxchildren)+" "+std::to_string(want_output)).c_str() );
+
 
     std::ifstream file;
-    file.open("generated_tree_"+std::to_string(n_points)+".txt");
+    file.open("generated_tree_"+std::to_string(n_points_real)+".txt");
     if(!file) { // file couldn't be opened
       std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
       exit(1);
@@ -106,7 +112,7 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
     std::getline(file, str);
     minlevel = std::stof(str);
 
-    n_points_real = n_points - ignored;
+    n_points_real = n_points_real - ignored;
 
     std::cout << "==== TEST (C++) " << std::endl;
     std::cout << "Considering " << n_points_real << " points!" << std::endl;
@@ -142,7 +148,7 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
       std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
       exit(1);
     }
-    for (int i=0; i<dimension;i++){
+    for (int i=0; i<dimension*n_query;i++){
         std::getline(file, str);
         result_py[i] = std::stof(str);
         // std::cout << result_py[i] << std::endl;
@@ -150,10 +156,29 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
 }
 
 int main(int argc, char** argv) {
-    if (argc != 2) {
-        std::cout << "Usage: " << argv[0] << " <XCLBIN File>" << std::endl;
+    int n_query = 10;
+    int n_points_real = 100;
+
+    if (argc != 5) {
+        std::cout << "Usage: " << argv[0] << " <XCLBIN File> <Number of points in the tree> <Number of test querys> <output 1/0>" << std::endl;
         return EXIT_FAILURE;
     }
+
+    n_points_real = atoi(argv[2]);
+    n_query = atoi(argv[3]);
+    int want_output = atoi(argv[4]);
+
+    if(n_points_real > n_points || n_points_real < 0) {
+        std::cout << "Invalid number of points. Value must be >0 and <" << n_points<<". You gave "<<n_points_real<<std::endl;
+         return EXIT_FAILURE;
+    }
+    if(n_query < 0) {
+        std::cout << "Invalid number of querys. Value must be >0. You gave "<<n_query<<std::endl;
+        return EXIT_FAILURE;
+    }
+
+    std::cout << "Parameters: n_query="<<n_query<<" | n_points_real=" << n_points_real <<std::endl;
+
 
     std::string binaryFile = argv[1];
 
@@ -162,12 +187,11 @@ int main(int argc, char** argv) {
     // int points_children_2 [n_points][maxchildren*2] = {};
     // Results arrays
     // float result_hw [dimension*100] = {};
-    std::vector<float,aligned_allocator<float>> result_hw (dimension*100);
-    float result_py [dimension] = {};
+    std::vector<float,aligned_allocator<float>> result_hw (dimension*n_query);
+    float result_py [dimension*n_query] = {};
     // Utils
     // float query [dimension*100];
-    std::vector<float,aligned_allocator<float>> query (dimension*100);
-    int n_points_real = n_points;
+    std::vector<float,aligned_allocator<float>> query (dimension*n_query);
     int maxlevel = dummy_level;
     int minlevel = dummy_level; 
 
@@ -175,10 +199,10 @@ int main(int argc, char** argv) {
     // Convert to 1d arrays...
     // float points_coords [n_points*dimension] = {};
     // int points_children [n_points*maxchildren*2] = {};
-    std::vector<float,aligned_allocator<float>> points_coords(n_points*dimension);
-    std::vector<int,aligned_allocator<int>> points_children(n_points*maxchildren*2);
+    std::vector<float,aligned_allocator<float>> points_coords(n_points_real*dimension);
+    std::vector<int,aligned_allocator<int>> points_children(n_points_real*maxchildren*2);
 
-    generateTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel);
+    generateTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel, n_query, want_output);
 
     // TODO!!!!!!!!!!!!!!!
     // size_t vector_size_bytes = sizeof(int) * dimension;
@@ -302,13 +326,13 @@ int main(int argc, char** argv) {
     // Allocate Buffer in Global Memory
     // Buffers are allocated using CL_MEM_USE_HOST_PTR for efficient memory and
     // Device-to-host communication
-    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*n_points*dimension,
+    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*n_points_real*dimension,
                                          &buffer_in1Ext, &err));
-    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(int)*n_points*maxchildren*2,
+    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(int)*n_points_real*maxchildren*2,
                                          &buffer_in2Ext, &err));
-    OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*dimension*100,
+    OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*dimension*n_query,
                                          &buffer_in3Ext, &err));
-    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*dimension*100,
+    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*dimension*n_query,
                                             &buffer_outputExt, &err));
 
    
@@ -321,6 +345,7 @@ int main(int argc, char** argv) {
     OCL_CHECK(err, err = krnl_vector_add.setArg(4, buffer_output));
     OCL_CHECK(err, err = krnl_vector_add.setArg(5, maxlevel));
     OCL_CHECK(err, err = krnl_vector_add.setArg(6, minlevel));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(7, n_query));
 
     // Copy input data to device global memory
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_in1, buffer_in2, buffer_in3}, 0 /* 0 means from host*/));
@@ -329,18 +354,37 @@ int main(int argc, char** argv) {
     // For HLS kernels global and local size is always (1,1,1). So, it is
     // recommended
     // to always use enqueueTask() for invoking HLS kernel
+    auto start = std::chrono::high_resolution_clock::now();
+
     OCL_CHECK(err, err = q.enqueueTask(krnl_vector_add));
+
 
     // Copy Result from Device Global Memory to Host Local Memory
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_output}, CL_MIGRATE_MEM_OBJECT_HOST));
     q.finish();
     // OPENCL HOST CODE AREA END
 
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> float_ms = end - start;
+    std::cout << "Kernel time: " << float_ms.count() << " milliseconds" << std::endl;
 
+    // Get time of python execution
+    std::ifstream file;
+    std::string str; 
+    file.open("time.txt");
+    if(!file) { // file couldn't be opened
+      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+      exit(1);
+    }
+
+    float time = 0.0;
+    std::getline(file, str);
+    time = std::stof(str);
+    std::cout << "Python time: " << time <<std::endl; 
 
     // Compare the results of the Device to the simulation
     bool match = true;
-    for (int i = 0; i < dimension; i++) { 
+    for (int i = 0; i < dimension*n_query; i++) { 
         if (result_hw[i] != result_py[i]) {
             std::cout << "Error: Result mismatch" << std::endl;
             std::cout << "i = " << 0 << " CPU result = " << result_py[i]
@@ -349,27 +393,30 @@ int main(int argc, char** argv) {
         }
     }
 
-    std::cout << "Query point was:" <<std::endl;
-    std::cout << "(";
-    for (int i=0; i < dimension; i++){
-        if (i < dimension - 1) {
-            std::cout << query[i] << ", ";
-        } else {
-            std::cout << query[i] << ")" << std::endl;
+    if(want_output) {
+        for(int j=0; j<n_query;j++) {
+            std::cout << "Query point (" << j << ") was:" <<std::endl;
+            std::cout << "(";
+            for (int i=0; i < dimension; i++){
+                if (i < dimension - 1) {
+                    std::cout << query[i+j*dimension] << ", ";
+                } else {
+                    std::cout << query[i+j*dimension] << ")" << std::endl;
+                }
+            }
+
+
+            std::cout << "Found point (" << j << ") is:" <<std::endl;
+            std::cout << "[(";
+            for (int i=0; i < dimension; i++){
+                if (i < dimension - 1) {
+                    std::cout << result_hw[i+j*dimension] << ", ";
+                } else {
+                    std::cout << result_hw[i+j*dimension] << ")]" << std::endl;
+                }
+            }
         }
     }
-
-
-    std::cout << "Found point is:" <<std::endl;
-    std::cout << "[(";
-    for (int i=0; i < dimension; i++){
-         if (i < dimension - 1) {
-            std::cout << result_hw[i] << ", ";
-        } else {
-            std::cout << result_hw[i] << ")]" << std::endl;
-        }
-    }
-
     std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
     return (match ? EXIT_SUCCESS : EXIT_FAILURE);
 }
