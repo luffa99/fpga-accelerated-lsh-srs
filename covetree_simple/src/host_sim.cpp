@@ -10,14 +10,14 @@
 #include <iostream>
 #include <unistd.h>
 #include "host.hpp"
-// #include <hls_vector.h>
+// #include <hls_vector.h> 
 // #include <hls_stream.h>
 #include "assert.h"
 // #include "hls_math.h"
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 128  // Maximum number of children for every node (fixed vector)
-#define n_points 1000   // Number of po#defines to generate
+#define n_points 10000   // Number of po#defines to generate
 #define dummy_level 69
 
 
@@ -57,6 +57,7 @@ void vadd(int const n_points_real,
     int points_children [n_points][maxchildren*2];
 
 
+
     // std::cout << "amap: "  << std::endl;
 
     // Copying data structure in on-chip memory:
@@ -72,13 +73,28 @@ void vadd(int const n_points_real,
         }
     }
 
+
+    // Debug: check max children
+    int maxj = 0;
+    for(int i=0; i<n_points_real; i++){
+        for(int j=0; j<maxchildren*2; j+=2) {
+            // std::cout << points_children[i][j] << " ";
+            if(points_children[i][j] == 69){
+                break;
+            }
+            maxj = j > maxj ? j : maxj;
+        }
+    }
+    maxj = maxj/2 + 1;
+    std::cout << "Max children: " << maxj << std::endl;
+
     // std::cout << "Points coords is: " <<std::endl;
     // for(int i=0; i< n_points; i++) {
     //     for(int j=0; j< dimension;j++) {
     //         std::cout << points_coords[i][j] << " ";
     //     }
     // }
-
+    int max_qp = 0;
     // Search n_query query points!
     for(int q=0; q<n_query;q++) {
 
@@ -97,7 +113,7 @@ void vadd(int const n_points_real,
 
         // Set of points: use array as queue
         int queue_ptr = 0;              // A pointer to the end of the queue
-        int queue [n_points] = {-1};
+        int queue [n_points/2] = {-1};
         for (int i=0; i<n_points_real; i++){
             queue[i] = -1;
         }
@@ -189,7 +205,7 @@ void vadd(int const n_points_real,
             }
             
             // std::cout << "B: " << queue_ptr << std::endl;
-
+            max_qp = queue_ptr > max_qp ? queue_ptr : max_qp;
             queue_ptr = reduced_position;
 
             // std::cout << "A: " << queue_ptr << std::endl;
@@ -198,6 +214,8 @@ void vadd(int const n_points_real,
             //     break;
             // }
         }
+
+        std::cout << "Max queue: " << max_qp << std::endl;
 
         // We visited all levels, now just take the minimum
         float min_distance = 19990102;
@@ -229,7 +247,7 @@ void vadd(int const n_points_real,
 */
 void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
                     std::vector<int,aligned_allocator<int>>  &points_children,
-                    float result_py [dimension],
+                    std::vector <float> &result_py,
                     int &n_points_real,
                     std::vector<float,aligned_allocator<float>> &query,
                     int &maxlevel,
@@ -358,7 +376,7 @@ int main(int argc, char** argv) {
     // Results arrays
     // float result_hw [dimension*100] = {};
     std::vector<float,aligned_allocator<float>> result_hw (dimension*n_query);
-    float result_py [dimension*n_query] = {};
+    std::vector<float> result_py (dimension*n_query);
     // Utils
     // float query [dimension*100];
     std::vector<float,aligned_allocator<float>> query (dimension*n_query);

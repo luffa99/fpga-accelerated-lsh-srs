@@ -6,7 +6,7 @@
 #include <iostream>
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
-#define maxchildren 16  // Maximum number of children for every node (fixed vector)
+#define maxchildren 128  // Maximum number of children for every node (fixed vector)
 #define n_points 1000   // Number of po#defines to generate at maximum
 #define dummy_level 69
 
@@ -104,7 +104,7 @@ int points_children [n_points][maxchildren*2];
 
         // Set of points: use array as queue
         int queue_ptr = 0;              // A pointer to the end of the queue
-        int queue [n_points] = {-1};
+        int queue [n_points/2] = {-1};
         for (int i=0; i<n_points_real; i++){
             queue[i] = -1;
         }

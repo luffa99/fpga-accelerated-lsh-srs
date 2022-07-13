@@ -28,7 +28,7 @@
 #include "host.hpp"
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
-#define maxchildren 16  // Maximum number of children for every node (fixed vector)
+#define maxchildren 128  // Maximum number of children for every node (fixed vector)
 #define n_points 1000   // Number of po#defines to generate
 #define dummy_level 69
 
