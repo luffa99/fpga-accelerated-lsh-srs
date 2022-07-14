@@ -29,7 +29,7 @@
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 128  // Maximum number of children for every node (fixed vector)
-#define n_points 1000000   // Number of po#defines to generate
+#define n_points 1000   // Number of po#defines to generate
 #define dummy_level 69
 
 #define BANK_NAME(n) n | XCL_MEM_TOPOLOGY

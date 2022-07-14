@@ -299,15 +299,27 @@ class CoverTree:
     # p
     #
     def _getChildrenDist_(self, p, Qi_p_ds, i):
+        def distance_in(p, q):
+            from numpy import subtract, dot, sqrt
+            x = subtract(p, q)
+            return sqrt(dot(x, x))
         Q = sum([n.getOnlyChildren(i) for n, _ in Qi_p_ds], [])
         if self.jobs > 1 and len(Q) >= self.min_len_parallel:
-            df = self.distance
+            # df = self.distance
+            df = distance_in
             ds = Parallel(n_jobs = self.jobs)(delayed(df)(p, q.data) for q in Q)
-            Q_p_ds = zip(Q, ds)
+            # print(len(Q))
+            # print(len(ds))
+            # print(Q)
+            # print(ds)
+            Q_p_ds = list(zip(Q, ds))
         else:
             Q_p_ds = [(q, self.distance(p, q.data)) for q in Q]
+            # print(Q_p_ds)
             
-        #print("With children: " +str(len(Qi_p_ds + Q_p_ds)))
+        # print("With children: " +str(len(Qi_p_ds + Q_p_ds)))
+        # print(Qi_p_ds)
+        # print(Q_p_ds)
         return Qi_p_ds + Q_p_ds
 
     #

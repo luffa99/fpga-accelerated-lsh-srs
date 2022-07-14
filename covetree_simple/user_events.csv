@@ -1,0 +1,52 @@
+HEADER
+VTF File Version,1.1
+VTF File Type,0
+PID,25713
+Generated on,2022-07-14 15:54:16
+Resolution,ms
+Min Resolution,ns
+Trace Version,1.1
+TraceID,25715
+
+STRUCTURE
+Group_Start,User and Internal Events
+Dynamic_Row,1,General,User Events from APIs and Internally Generated Events
+Group_End,User and Internal Events
+
+MAPPING
+24,0:0:0
+23,1:1:1
+31,Device Trace Buffer Full
+18,HBM[0]
+30,HBM[1]
+29,HBM[2]
+25,HBM[3]
+12,clCreateBuffer
+6,clCreateCommandQueue
+5,clCreateContext
+10,clCreateKernel
+8,clCreateProgramWithBinary
+15,clEnqueueMigrateMemObjects
+17,clEnqueueTask
+19,clFinish
+3,clGetDeviceIDs
+7,clGetDeviceInfo
+1,clGetPlatformIDs
+2,clGetPlatformInfo
+26,clReleaseCommandQueue
+28,clReleaseContext
+9,clReleaseDevice
+27,clReleaseKernel
+16,clReleaseMemObject
+11,clReleaseProgram
+4,clRetainDevice
+14,clRetainMemObject
+13,clSetKernelArg
+22,vadd
+21,vadd.hw
+20,xilinx_u55c_gen3x16_xdma_base_3
+
+EVENTS
+262217,0,362.399144,1,USER_MARKER,31
+
+DEPENDENCIES
