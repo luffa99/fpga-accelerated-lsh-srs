@@ -7,7 +7,7 @@
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 128  // Maximum number of children for every node (fixed vector)
-#define n_points 1000   // Number of po#defines to generate at maximum
+#define n_points 1000000   // Number of po#defines to generate at maximum
 #define dummy_level 69
 
 #define _minlevel -4
@@ -37,8 +37,8 @@ extern "C" {
 
 
 void vadd(int const n_points_real,
-        const float * points_coords_dram,
-        const int * points_children_dram,
+        const float * points_coords,
+        const int * points_children,
         const float * querys,
         float * outs,
         int maxlevel,
@@ -46,13 +46,13 @@ void vadd(int const n_points_real,
         int n_query) {
 
 // Memory mapping
-#pragma HLS INTERFACE m_axi port = points_coords_dram bundle=gmem0
-#pragma HLS INTERFACE m_axi port = points_children_dram bundle=gmem1
+#pragma HLS INTERFACE m_axi port = points_coords bundle=gmem0
+#pragma HLS INTERFACE m_axi port = points_children bundle=gmem1
 #pragma HLS INTERFACE m_axi port = querys bundle=gmem2
 #pragma HLS INTERFACE m_axi port = outs bundle=gmem3
 
-#pragma HLS INTERFACE s_axilite port = points_coords_dram
-#pragma HLS INTERFACE s_axilite port = points_children_dram
+#pragma HLS INTERFACE s_axilite port = points_coords
+#pragma HLS INTERFACE s_axilite port = points_children
 #pragma HLS INTERFACE s_axilite port = querys 
 #pragma HLS INTERFACE s_axilite port = outs 
 
@@ -66,25 +66,25 @@ void vadd(int const n_points_real,
 /* Partitioning of points_coords in 6 parts: so we can access each dimension
 in parallel and speed-up the distance computation */
 // #pragma HLS array_partition variable=points_coords_dram block factor=6 dim=2
-float points_coords [n_points][dimension];
-#pragma HLS array_partition variable=points_coords block factor=6 dim=2
+// float points_coords [n_points][dimension];
+// #pragma HLS array_partition variable=points_coords block factor=6 dim=2
 
 /*  Partitioning of points_children in maxchildren part: this may optimize
 the children_loop below
 */
 // #pragma HLS array_partition variable=points_children_dram block factor=16 dim=2
-int points_children [n_points][maxchildren*2];
-#pragma HLS array_partition variable=points_children block factor=16 dim=2
+// int points_children [n_points][maxchildren*2];
+// #pragma HLS array_partition variable=points_children block factor=16 dim=2
 
-    // Copying data structure in on-chip memory:
-    for(int i=0; i<n_points_real; i++){
-        for(int j=0; j<dimension; j++){
-            points_coords[i][j] = points_coords_dram[i*dimension+j];
-        }
-        for(int j=0; j<maxchildren*2; j++) {
-            points_children[i][j] = points_children_dram[i*maxchildren*2+j];
-        }
-    }
+    // // Copying data structure in on-chip memory:
+    // for(int i=0; i<n_points_real; i++){
+    //     for(int j=0; j<dimension; j++){
+    //         points_coords[i][j] = points_coords_dram[i*dimension+j];
+    //     }
+    //     for(int j=0; j<maxchildren*2; j++) {
+    //         points_children[i][j] = points_children_dram[i*maxchildren*2+j];
+    //     }
+    // }
 
     // Search 100 query points!
     // TODO: parametrize the loop size
@@ -112,7 +112,7 @@ int points_children [n_points][maxchildren*2];
         // Insert root in queue and save distance
         queue[queue_ptr] = 0;
         queue_ptr++;
-        dists[0] = distance(points_coords[0], query);
+        dists[0] = distance(points_coords, query);
 
         // Iteration on levels
         levels_loop:
@@ -160,12 +160,12 @@ int points_children [n_points][maxchildren*2];
                     // We found a child at level l
                     // int chil2d = points_children[i][j+1];
                     // std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
-                    if(points_children[p][j] == l) {
-                        int child = points_children[p][j+1];
+                    if(points_children[p*maxchildren*2+j] == l) {
+                        int child = points_children[p*maxchildren*2+j+1];
                         // Add child to queue and save distance
                         queue[queue_ptr] = child;
                         queue_ptr++;
-                        dists[child] = distance(points_coords[child],query);
+                        dists[child] = distance(points_coords+child*dimension,query);
 
                         // OK for k=1
                         if(dists[child] < min_distance){
@@ -220,7 +220,7 @@ int points_children [n_points][maxchildren*2];
 
         // Save result corresponding to query
         for(int i=0; i<dimension; i++) {
-            outs[q*dimension+i] = points_coords[min_index][i];
+            outs[q*dimension+i] = points_coords[min_index*dimension+i];
         }
     }
 

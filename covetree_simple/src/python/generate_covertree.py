@@ -202,6 +202,8 @@ def test_covertree():
         # g_time += ct_t
         # print "Time to run a cover tree " + str(k) + "-nn query:", ct_t, "seconds"
         
+        ##SKIPPING FOR EFFICIENCY
+        '''
         # naive nearest neighbor
         t = gt()
         naive_results = knn(k, query, points_fn, distance)
@@ -223,7 +225,7 @@ def test_covertree():
             # print naive_results
             # print "Cover tree query is", n_t/ct_t, "faster"
             passed_tests += 1
-        total_tests += 1
+        total_tests += 1'''
         tot_results.append(results[0])
 
     with open('results.txt', 'w') as x:
