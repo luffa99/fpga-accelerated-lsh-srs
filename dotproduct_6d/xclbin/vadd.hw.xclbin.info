@@ -11,7 +11,7 @@ xclbin Information
    Kernels:                vadd
    Signature:              
    Content:                Bitstream
-   UUID (xclbin):          760847f1-ed30-b56c-2146-6eb33ca812b9
+   UUID (xclbin):          fc63d43d-fd98-ba48-767f-a94d9811b15f
    UUID (IINTF):           b7ac1abe1e3e1cb686d5a81232452676
    Sections:               BITSTREAM, MEM_TOPOLOGY, IP_LAYOUT, CONNECTIVITY, 
                            CLOCK_FREQ_TOPOLOGY, BUILD_METADATA, 
@@ -348,50 +348,14 @@ Kernel: vadd
 
 Definition
 ----------
-   Signature: vadd (void* rand1, void* rand2, void* rand3, void* rand4, void* rand5, void* rand6, void* orig, void* proj, unsigned int amount, unsigned int vector_size)
+   Signature: vadd (void* rand1, void* proj, unsigned int amount, unsigned int vector_size)
 
 Ports
 -----
    Port:          M_AXI_GMEM2
    Mode:          master
    Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
-   Port Type:     addressable
-
-   Port:          M_AXI_GMEM3
-   Mode:          master
-   Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
-   Port Type:     addressable
-
-   Port:          M_AXI_GMEM4
-   Mode:          master
-   Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
-   Port Type:     addressable
-
-   Port:          M_AXI_GMEM5
-   Mode:          master
-   Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
-   Port Type:     addressable
-
-   Port:          M_AXI_GMEM6
-   Mode:          master
-   Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
-   Port Type:     addressable
-
-   Port:          M_AXI_GMEM7
-   Mode:          master
-   Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
-   Port Type:     addressable
-
-   Port:          M_AXI_GMEM0
-   Mode:          master
-   Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
+   Data Width:    512 bits
    Port Type:     addressable
 
    Port:          M_AXI_GMEM1
@@ -402,7 +366,7 @@ Ports
 
    Port:          S_AXI_CONTROL
    Mode:          slave
-   Range (bytes): 0x80
+   Range (bytes): 0x38
    Data Width:    32 bits
    Port Type:     addressable
 
@@ -415,48 +379,18 @@ Instance:        vadd_1
    Port:              M_AXI_GMEM2
    Memory:            HBM[0] (MEM_HBM)
 
-   Argument:          rand2
-   Register Offset:   0x1C
-   Port:              M_AXI_GMEM3
-   Memory:            HBM[0] (MEM_HBM)
-
-   Argument:          rand3
-   Register Offset:   0x28
-   Port:              M_AXI_GMEM4
-   Memory:            HBM[0] (MEM_HBM)
-
-   Argument:          rand4
-   Register Offset:   0x34
-   Port:              M_AXI_GMEM5
-   Memory:            HBM[0] (MEM_HBM)
-
-   Argument:          rand5
-   Register Offset:   0x40
-   Port:              M_AXI_GMEM6
-   Memory:            HBM[0] (MEM_HBM)
-
-   Argument:          rand6
-   Register Offset:   0x4C
-   Port:              M_AXI_GMEM7
-   Memory:            HBM[0] (MEM_HBM)
-
-   Argument:          orig
-   Register Offset:   0x58
-   Port:              M_AXI_GMEM0
-   Memory:            HBM[0] (MEM_HBM)
-
    Argument:          proj
-   Register Offset:   0x64
+   Register Offset:   0x1C
    Port:              M_AXI_GMEM1
    Memory:            HBM[0] (MEM_HBM)
 
    Argument:          amount
-   Register Offset:   0x70
+   Register Offset:   0x28
    Port:              S_AXI_CONTROL
    Memory:            <not applicable>
 
    Argument:          vector_size
-   Register Offset:   0x78
+   Register Offset:   0x30
    Port:              S_AXI_CONTROL
    Memory:            <not applicable>
 ==============================================================================

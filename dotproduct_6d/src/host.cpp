@@ -27,13 +27,13 @@
 
 int main(int argc, char** argv) {
     if (argc != 4) {
-        std::cout << "Usage: " << argv[0] << " <XCLBIN File> <Size of vectors (multiple of 10)> <Amount of vectors to project>" << std::endl;
+        std::cout << "Usage: " << argv[0] << " <XCLBIN File> <Size of vectors> <Amount of vectors to project>" << std::endl;
         return EXIT_FAILURE;
     }
     int vector_size = atoi(argv[2]);  // Size of vectors
     int AMOUNT = atoi(argv[3]);
-    if (vector_size%10 != 0 || vector_size < 10 || vector_size > MAX_VECT_SIZE) {
-        std::cout << "Size of vectors must be a multiple of 10! You gave " << argv[2] << std::endl;
+    if (vector_size%16!=0 || vector_size < 16 || vector_size > MAX_VECT_SIZE) {
+        std::cout << "Size of vectors must be > 16 and < " << MAX_VECT_SIZE << "! You gave " << argv[2] << std::endl;
         return EXIT_FAILURE;
     }
     if (AMOUNT < 1) {
@@ -86,10 +86,11 @@ int main(int argc, char** argv) {
     std::for_each(orig.begin(), orig.end(), [&](float &i) { i = dist(rng); });
 
     // Check generated data
+    /*int c = 1;
     std::cout << "Rand1" << std::endl;
     for(int i=0; i<vector_size;i++){
-        std::cout << rand1[i];
-    }/*
+        std::cout << "("<<c++<<") " <<rand1[i] << " ";
+    }
     std::cout << std::endl;
     std::cout << "Rand2" << std::endl;
     for(int i=0; i<vector_size;i++){
@@ -166,37 +167,37 @@ int main(int argc, char** argv) {
     // Device-to-host communication
     OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
                                          rand1.data(), &err));
-    // OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
-    //                                     rand2.data(), &err));
-    // OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
-    //                                     rand3.data(), &err));
-    // OCL_CHECK(err, cl::Buffer buffer_in4(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
-    //                                     rand4.data(), &err));
-    // OCL_CHECK(err, cl::Buffer buffer_in5(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
-    //                                     rand5.data(), &err));
-    // OCL_CHECK(err, cl::Buffer buffer_in6(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
-    //                                     rand6.data(), &err));
-    // OCL_CHECK(err, cl::Buffer buffer_in7(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes*AMOUNT,
-    //                                      orig.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand2.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand3.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in4(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand4.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in5(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand5.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in6(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes,
+                                        rand6.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in7(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, vector_size_bytes*AMOUNT,
+                                         orig.data(), &err));
     OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, vector_size_result_bytes*AMOUNT,
                                             proj.data(), &err));
     int amount = AMOUNT;
     int size = vector_size;
     int arg = 0;
     OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, buffer_in1));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(1, buffer_in2));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(2, buffer_in3));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(3, buffer_in4));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(4, buffer_in5));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(5, buffer_in6));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(6, buffer_in7));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, buffer_in2));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, buffer_in3));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, buffer_in4));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, buffer_in5));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, buffer_in6));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, buffer_in7));
     OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, buffer_output));
     OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, amount));
     OCL_CHECK(err, err = krnl_vector_add.setArg(arg++, size));
 
 
     // Copy input data to device global memory
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_in1/*, buffer_in2, buffer_in3, buffer_in4, buffer_in5, buffer_in6, buffer_in7*/}, 0 /* 0 means from host*/));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_in1, buffer_in2, buffer_in3, buffer_in4, buffer_in5, buffer_in6, buffer_in7}, 0 /* 0 means from host*/));
 
     // Launch the Kernel
     // For HLS kernels global and local size is always (1,1,1). So, it is
