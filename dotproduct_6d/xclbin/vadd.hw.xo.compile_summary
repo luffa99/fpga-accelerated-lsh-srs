@@ -9,10 +9,10 @@
 <ENTRY>
 {
  "type": "ET_CmdStep",
- "dateTimestamp": "Fri Jul 15 00:07:24 2022",
- "timestampMillis": "1657836444272",
+ "dateTimestamp": "Wed Aug 17 12:43:38 2022",
+ "timestampMillis": "1660733018971",
  "buildStep": {
-  "cmdId": "b21f0ecb-130f-4d42-87a0-0e9f71b2bef0",
+  "cmdId": "e9ce2bec-9051-4562-b057-26b5cfe16038",
   "name": "v++",
   "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/vadd.hw/vadd.hw.steps.log",
   "commandLine": "/tools/Xilinx/Vitis/2022.1/bin/unwrapped/lnx64.o/v++  --vivado.prop \"run.__KERNEL__.{STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS}={-directive sdx_optimization_effort_high}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_route_design_summary steps {route_design} runs {impl_1} options {-max_paths 10}\" --advanced.misc \"report=type report_timing_summary name impl_report_timing_summary_post_route_phys_opt_design_summary steps {post_route_phys_opt_design} runs {impl_1} options {-max_paths 10}\" -g -t hw --platform xilinx_u55c_gen3x16_xdma_3_202210_1 --save-temps -c -k vadd --temp_dir ./_x.hw -o xclbin/vadd.hw.xo src/vadd.cpp ",
@@ -40,10 +40,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Fri Jul 15 00:07:24 2022",
- "timestampMillis": "1657836444274",
+ "dateTimestamp": "Wed Aug 17 12:43:38 2022",
+ "timestampMillis": "1660733018973",
  "status": {
-  "cmdId": "b21f0ecb-130f-4d42-87a0-0e9f71b2bef0",
+  "cmdId": "e9ce2bec-9051-4562-b057-26b5cfe16038",
   "state": "CS_RUNNING"
  }
 }
@@ -51,8 +51,8 @@
 <ENTRY>
 {
  "type": "ET_FlowMetaData",
- "dateTimestamp": "Fri Jul 15 00:07:30 2022",
- "timestampMillis": "1657836450596",
+ "dateTimestamp": "Wed Aug 17 12:43:45 2022",
+ "timestampMillis": "1660733025205",
  "buildSummary": {
   "hardwarePlatform": "xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm",
   "hardwareDsa": "",
@@ -87,10 +87,10 @@
 <ENTRY>
 {
  "type": "ET_SubCmdStep",
- "dateTimestamp": "Fri Jul 15 00:07:30 2022",
- "timestampMillis": "1657836450604",
+ "dateTimestamp": "Wed Aug 17 12:43:45 2022",
+ "timestampMillis": "1660733025214",
  "buildStep": {
-  "cmdId": "214f3f86-661a-476b-9c6d-3c974d6e5507",
+  "cmdId": "792caff6-d822-43b1-92d3-4b7c0e19915f",
   "name": "vitis_hls",
   "logFile": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/vadd.hw/vadd/vitis_hls.log",
   "commandLine": "vitis_hls -f /pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/vadd.hw/vadd/vadd.tcl -messageDb vitis_hls.pb",
@@ -109,10 +109,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Fri Jul 15 00:07:30 2022",
- "timestampMillis": "1657836450605",
+ "dateTimestamp": "Wed Aug 17 12:43:45 2022",
+ "timestampMillis": "1660733025216",
  "status": {
-  "cmdId": "214f3f86-661a-476b-9c6d-3c974d6e5507",
+  "cmdId": "792caff6-d822-43b1-92d3-4b7c0e19915f",
   "state": "CS_RUNNING"
  }
 }
@@ -120,10 +120,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Fri Jul 15 00:08:09 2022",
- "timestampMillis": "1657836489301",
+ "dateTimestamp": "Wed Aug 17 12:44:56 2022",
+ "timestampMillis": "1660733096216",
  "status": {
-  "cmdId": "214f3f86-661a-476b-9c6d-3c974d6e5507",
+  "cmdId": "792caff6-d822-43b1-92d3-4b7c0e19915f",
   "state": "CS_PASSED"
  }
 }
@@ -131,8 +131,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Fri Jul 15 00:08:09 2022",
- "timestampMillis": "1657836489672",
+ "dateTimestamp": "Wed Aug 17 12:44:57 2022",
+ "timestampMillis": "1660733097006",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/vadd.hw/vadd/vadd/solution/.autopilot/db/vadd.design.xml",
   "name": "vadd",
@@ -145,8 +145,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Fri Jul 15 00:08:09 2022",
- "timestampMillis": "1657836489674",
+ "dateTimestamp": "Wed Aug 17 12:44:57 2022",
+ "timestampMillis": "1660733097009",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/vadd.hw/vadd/vadd/solution/.autopilot/db/.message_syn.xml",
   "name": "vadd",
@@ -159,8 +159,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Fri Jul 15 00:08:09 2022",
- "timestampMillis": "1657836489684",
+ "dateTimestamp": "Wed Aug 17 12:44:57 2022",
+ "timestampMillis": "1660733097021",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/reports/vadd.hw/hls_reports/vadd_csynth.rpt",
   "name": "vadd",
@@ -173,8 +173,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Fri Jul 15 00:08:09 2022",
- "timestampMillis": "1657836489686",
+ "dateTimestamp": "Wed Aug 17 12:44:57 2022",
+ "timestampMillis": "1660733097023",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/vadd.hw/vadd/vadd/solution/syn/report/vadd_csynth.xml",
   "name": "vadd",
@@ -187,8 +187,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Fri Jul 15 00:08:09 2022",
- "timestampMillis": "1657836489704",
+ "dateTimestamp": "Wed Aug 17 12:44:57 2022",
+ "timestampMillis": "1660733097050",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/reports/vadd.hw/system_estimate_vadd.hw.xtxt",
   "name": "",
@@ -201,8 +201,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Fri Jul 15 00:08:10 2022",
- "timestampMillis": "1657836490282",
+ "dateTimestamp": "Wed Aug 17 12:44:58 2022",
+ "timestampMillis": "1660733098183",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/reports/vadd.hw/v++_compile_vadd.hw_guidance.html",
   "name": "",
@@ -215,8 +215,8 @@
 <ENTRY>
 {
  "type": "ET_Report",
- "dateTimestamp": "Fri Jul 15 00:08:10 2022",
- "timestampMillis": "1657836490284",
+ "dateTimestamp": "Wed Aug 17 12:44:58 2022",
+ "timestampMillis": "1660733098184",
  "report": {
   "path": "/pub/scratch/lfalardi/my_bachelor_thesis/dotproduct_6d/_x.hw/v++_compile_vadd.hw_guidance.pb",
   "name": "",
@@ -229,10 +229,10 @@
 <ENTRY>
 {
  "type": "ET_Status",
- "dateTimestamp": "Fri Jul 15 00:08:10 2022",
- "timestampMillis": "1657836490290",
+ "dateTimestamp": "Wed Aug 17 12:44:58 2022",
+ "timestampMillis": "1660733098191",
  "status": {
-  "cmdId": "b21f0ecb-130f-4d42-87a0-0e9f71b2bef0",
+  "cmdId": "e9ce2bec-9051-4562-b057-26b5cfe16038",
   "state": "CS_PASSED"
  }
 }
