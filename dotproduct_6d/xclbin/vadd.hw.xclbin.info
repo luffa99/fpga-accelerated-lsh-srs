@@ -11,7 +11,7 @@ xclbin Information
    Kernels:                vadd
    Signature:              
    Content:                Bitstream
-   UUID (xclbin):          7dc3a068-d93c-4e14-ab9d-3b6ca4680bbb
+   UUID (xclbin):          94b74ba3-19b3-fafd-002b-33dcb3f585e4
    UUID (IINTF):           b7ac1abe1e3e1cb686d5a81232452676
    Sections:               BITSTREAM, MEM_TOPOLOGY, IP_LAYOUT, CONNECTIVITY, 
                            CLOCK_FREQ_TOPOLOGY, BUILD_METADATA, 
@@ -391,13 +391,13 @@ Ports
    Port:          M_AXI_GMEM0
    Mode:          master
    Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
+   Data Width:    512 bits
    Port Type:     addressable
 
    Port:          M_AXI_GMEM1
    Mode:          master
    Range (bytes): 0xFFFFFFFF
-   Data Width:    32 bits
+   Data Width:    256 bits
    Port Type:     addressable
 
    Port:          S_AXI_CONTROL

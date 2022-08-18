@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
     std::for_each(orig.begin(), orig.end(), [&](float &i) { i = dist(rng); });
 
     // Check generated data
-    /*int c = 1;
+    int c = 1;
     std::cout << "Rand1" << std::endl;
     for(int i=0; i<vector_size;i++){
         std::cout << "("<<c++<<") " <<rand1[i] << " ";
@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
             std::cout << orig[j*vector_size+i];
         }
         std::cout << std::endl;
-    }*/
+    }
 
  
     // OPENCL HOST CODE AREA START
