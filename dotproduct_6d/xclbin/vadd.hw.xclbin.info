@@ -11,7 +11,7 @@ xclbin Information
    Kernels:                vadd
    Signature:              
    Content:                Bitstream
-   UUID (xclbin):          94b74ba3-19b3-fafd-002b-33dcb3f585e4
+   UUID (xclbin):          4f36cc5e-30a1-0d4f-7cb6-ff87d46f1bc9
    UUID (IINTF):           b7ac1abe1e3e1cb686d5a81232452676
    Sections:               BITSTREAM, MEM_TOPOLOGY, IP_LAYOUT, CONNECTIVITY, 
                            CLOCK_FREQ_TOPOLOGY, BUILD_METADATA, 
@@ -49,7 +49,7 @@ Scalable Clocks
    Name:      DATA_CLK
    Index:     2
    Type:      DATA
-   Frequency: 300 MHz
+   Frequency: 194 MHz
 
 System Clocks
 ------
@@ -57,7 +57,7 @@ System Clocks
    Type:           SCALABLE 
    Default Freq:   300 MHz
    Requested Freq: 300 MHz
-   Achieved Freq:  300 MHz
+   Achieved Freq:  194.5 MHz
 
    Name:           ulp_ucs_aclk_kernel_01 
    Type:           SCALABLE 
@@ -397,7 +397,7 @@ Ports
    Port:          M_AXI_GMEM1
    Mode:          master
    Range (bytes): 0xFFFFFFFF
-   Data Width:    256 bits
+   Data Width:    64 bits
    Port Type:     addressable
 
    Port:          S_AXI_CONTROL

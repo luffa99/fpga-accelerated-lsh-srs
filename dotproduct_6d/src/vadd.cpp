@@ -79,7 +79,7 @@ void ReadMemory_rands ( int const vector_size,
 
     // TODO copy rands into BRAM (local array), then use it
     // This is convenient because I access the same array in DRAM many times
-    int rands_local[MAX_VECT_SIZE];
+    float rands_local[MAX_VECT_SIZE];
     for(int i=0; i<var_size;i++){
         rands_local[i] = rands[i];
     }

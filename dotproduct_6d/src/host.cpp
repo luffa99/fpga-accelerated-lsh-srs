@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
     std::for_each(orig.begin(), orig.end(), [&](float &i) { i = dist(rng); });
 
     // Check generated data
-    int c = 1;
+    /*int c = 1;
     std::cout << "Rand1" << std::endl;
     for(int i=0; i<vector_size;i++){
         std::cout << "("<<c++<<") " <<rand1[i] << " ";
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
         }
         std::cout << std::endl;
     }
-
+*/
  
     // OPENCL HOST CODE AREA START
     std::vector<cl::Device> devices = get_devices();
@@ -253,8 +253,8 @@ int main(int argc, char** argv) {
     std::cout << "Precision: 2e-5"<<std::endl;
     for (int i = 0; i < LOWER_SIZE*AMOUNT; i++) {
 
-        std::cout << "i = " << i << "\tCPU result = " << proj_host[i]
-                    << "\tDevice result = " << proj[i] << "\tDiff: " << proj_host[i] - proj[i] << std::endl;
+        //std::cout << "i = " << i << "\tCPU result = " << proj_host[i]
+        //            << "\tDevice result = " << proj[i] << "\tDiff: " << proj_host[i] - proj[i] << std::endl;
 
         if (abs(proj_host[i] - proj[i]) >= 2e-5 && abs(proj_host[i] - proj[i])/proj_host[i] >= 2e-5) {
             std::cout << "Error: Result mismatch" << std::endl
