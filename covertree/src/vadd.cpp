@@ -174,8 +174,8 @@ void query( int n_points_real,
             int maxlevel,
             int minlevel,
             int n_query,
-            int const points_children[n_points][maxchildren*2],
-            float const points_coords[n_points][dimension],
+            int const * points_children_dram,
+            float const * points_coords_dram,
             float * outs,
             stream<float> &out_1,
             stream<float> &out_2,
@@ -185,6 +185,33 @@ void query( int n_points_real,
             stream<float> &out_6,
             float * proj
             ) {
+
+    ////////////////// Covertree preconfiguration ////////////////////////////////
+
+    // Let's partition the array -> this should allow optimizations
+
+    /* Partitioning of points_coords in 6 parts: so we can access each dimension
+    in parallel and speed-up the distance computation */
+    // #pragma HLS array_partition variable=points_coords_dram block factor=6 dim=2
+    float points_coords [n_points][dimension];
+    #pragma HLS array_partition variable=points_coords block factor=6 dim=2
+
+    /*  Partitioning of points_children in maxchildren part: this may optimize
+    the children_loop below
+    */
+    // #pragma HLS array_partition variable=points_children_dram block factor=16 dim=2
+    int points_children [n_points][maxchildren*2];
+    #pragma HLS array_partition variable=points_children block factor=16 dim=2
+
+    // Copying data structure in on-chip memory:
+    for(int i=0; i<n_points_real; i++){
+        for(int j=0; j<dimension; j++){
+            points_coords[i][j] = points_coords_dram[i*dimension+j];
+        }
+        for(int j=0; j<maxchildren*2; j++) {
+            points_children[i][j] = points_children_dram[i*maxchildren*2+j];
+        }
+    }
 
     for(int q=0; q<n_query;q++) {
         // Select actual query
@@ -395,34 +422,6 @@ void vadd(  int const * points_children_dram,   // Childrens of points in the da
     #pragma HLS INTERFACE s_axilite port = amount 
     #pragma HLS INTERFACE s_axilite port = vector_size
 
-
-    ////////////////// Covertree preconfiguration ////////////////////////////////
-
-    // Let's partition the array -> this should allow optimizations
-
-    /* Partitioning of points_coords in 6 parts: so we can access each dimension
-    in parallel and speed-up the distance computation */
-    // #pragma HLS array_partition variable=points_coords_dram block factor=6 dim=2
-    float points_coords [n_points][dimension];
-    #pragma HLS array_partition variable=points_coords block factor=6 dim=2
-
-    /*  Partitioning of points_children in maxchildren part: this may optimize
-    the children_loop below
-    */
-    // #pragma HLS array_partition variable=points_children_dram block factor=16 dim=2
-    int points_children [n_points][maxchildren*2];
-    #pragma HLS array_partition variable=points_children block factor=16 dim=2
-
-    // Copying data structure in on-chip memory:
-    for(int i=0; i<n_points_real; i++){
-        for(int j=0; j<dimension; j++){
-            points_coords[i][j] = points_coords_dram[i*dimension+j];
-        }
-        for(int j=0; j<maxchildren*2; j++) {
-            points_children[i][j] = points_children_dram[i*maxchildren*2+j];
-        }
-    }
-
     ///////////////// PROJECTION preconfig ///////////////////////////////
     stream<ap_uint512_t> random_1;
     stream<ap_uint512_t> random_2;
@@ -460,7 +459,7 @@ void vadd(  int const * points_children_dram,   // Childrens of points in the da
     PE_dotproduct(vector_size, amount, random_5, origin_pipe_5, out_5);
     PE_dotproduct(vector_size, amount, random_6, origin_pipe_6, out_6);
 
-    query(n_points_real, maxlevel, minlevel, amount, points_children, points_coords, outs, 
+    query(n_points_real, maxlevel, minlevel, amount, points_children_dram, points_coords_dram, outs, 
         out_1, out_2, out_3, out_4, out_5, out_6, proj);
     // Search 100 query points!
     // TODO: parametrize the loop size
