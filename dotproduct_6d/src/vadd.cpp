@@ -86,7 +86,7 @@ void ReadMemory_rands ( int const vector_size,
 
     // Now put the date into the stream, in chunks of 512 bits
     ap_uint512_t temp;
-    int size = var_size*var_amount*32;  // Size is ALWAYS a multiple of 16 and so a multiple of 512
+    float size = var_size*var_amount*32;  // Size is ALWAYS a multiple of 16 and so a multiple of 512
     int i = 0;
     while (size >= 512) {
         for(int j=0; j<16; j++) {
@@ -113,7 +113,7 @@ void ReadMemory_orig (  int const vector_size,
 
     // Broadcast origin vector, into 6 streams, in chunks of 512 bits
     ap_uint512_t temp;
-    int size = var_size*var_amount*32;
+    float size = var_size*var_amount*32;
     int i = 0;
     while (size >= 512) { // Size is ALWAYS a multiple of 16 and so a multiple of 512
         for(int j=0; j<16; j++) {

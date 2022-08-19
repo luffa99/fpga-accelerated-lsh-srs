@@ -7,10 +7,14 @@
     "generation": {
         "this_file": "\/pub\/scratch\/lfalardi\/my_bachelor_thesis\/dotproduct_6d\/xrt.run_summary",
         "source": "vp",
-        "PID": "227334",
-        "timestamp": "1660818064103"
+        "PID": "234047",
+        "timestamp": "1660821712426"
     },
     "files": [
+        {
+            "name": "opencl_trace.csv",
+            "type": "VP_TRACE"
+        },
         {
             "name": "device_trace_0.csv",
             "type": "VP_TRACE"

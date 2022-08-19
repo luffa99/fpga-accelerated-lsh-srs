@@ -213,8 +213,8 @@ int main(int argc, char** argv) {
     q.finish();
 
     auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> float_ms = end - start;
-    std::cout << "Kernel: " << float_ms.count() << " milliseconds" << std::endl;
+    std::chrono::duration<double, std::milli> float_ms_1 = end - start;
+    std::cout << "Kernel: " << float_ms_1.count() << " milliseconds" << std::endl;
     // OPENCL HOST CODE AREA END 
 
     std::vector<float> proj_host(LOWER_SIZE*AMOUNT);
@@ -244,8 +244,10 @@ int main(int argc, char** argv) {
         proj_host[5+6*a] = acc_6;
     }
     end = std::chrono::high_resolution_clock::now();
-    float_ms = end - start;
+     std::chrono::duration<double, std::milli> float_ms = end - start;
     std::cout << "Host:   " << float_ms.count() << " milliseconds" << std::endl;
+
+    std::cout << "Speedup: " << float_ms.count() / float_ms_1.count() << std::endl; 
 
     // Compare the results of the Device to the simulation
     bool match = true;

@@ -155,6 +155,77 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
     }
 }
 
+void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_coords,
+                    std::vector<int,aligned_allocator<int>>  &points_children,
+                    float * result_py,
+                    int &n_points_real,
+                    std::vector<float,aligned_allocator<float>> &query,
+                    int &maxlevel,
+                    int &minlevel,
+                    int n_query,
+                    int want_output) {
+
+    std::string str; 
+
+    // Generate random query point and save them to file querys.txt
+
+    std::ifstream file;
+    file.open("../covertree/querys.txt");
+    if(!file) { // file couldn't be opened
+      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+      exit(1);
+    }
+    for(int i=0; i<n_query*dimension; i++){            
+        std::getline(file, str);
+        query[i] =  std::stof(str);
+    }
+
+    file.close();
+    file.open("../covertree/generated_tree_"+std::to_string(n_points_real)+".txt");
+    if(!file) { // file couldn't be opened
+      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+      exit(1);
+    }
+
+    // Due to construction constraints (such as max. number of children) some nodes cannot 
+    // be entered the tree. At the moment just ignore them
+    std::getline(file, str);
+    int ignored = std::stof(str);
+    std::getline(file, str);
+    maxlevel = std::stof(str);
+    std::getline(file, str);
+    minlevel = std::stof(str);
+
+    n_points_real = n_points_real - ignored;
+
+    std::cout << "==== TEST (C++) " << std::endl;
+    std::cout << "Considering " << n_points_real << " points!" << std::endl;
+    
+    for (int i=0; i<n_points_real;i++){
+        for(int j=0; j<dimension;j++){
+            std::getline(file, str);
+            //std::cout << str << std::endl;
+            points_coords[i*dimension+j] = std::stof(str);
+        }
+        for(int j=0; j<maxchildren*2; j++){
+            std::getline(file, str);
+            points_children[i*maxchildren*2+j] = std::stoi(str);
+        }
+    }
+
+    file.close();
+    file.open("../covertree/results.txt");
+    if(!file) { // file couldn't be opened
+      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+      exit(1);
+    }
+    for (int i=0; i<dimension*n_query;i++){
+        std::getline(file, str);
+        result_py[i] = std::stof(str);
+        // std::cout << result_py[i] << std::endl;
+    }
+}
+
 int main(int argc, char** argv) {
     int n_query = 10;
     int n_points_real = 100;
@@ -202,7 +273,7 @@ int main(int argc, char** argv) {
     std::vector<float,aligned_allocator<float>> points_coords(n_points_real*dimension);
     std::vector<int,aligned_allocator<int>> points_children(n_points_real*maxchildren*2);
 
-    generateTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel, n_query, want_output);
+    importGeneratedTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel, n_query, want_output);
 
     // TODO!!!!!!!!!!!!!!!
     // size_t vector_size_bytes = sizeof(int) * dimension;
