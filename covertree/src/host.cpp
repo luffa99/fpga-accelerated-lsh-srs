@@ -443,11 +443,12 @@ int main(int argc, char** argv) {
     //////////////////////////////   TEMPLATE END  //////////////////////////////
 
     //////////////////////////////   TEMPLATE START  //////////////////////////////
-    buffer_in1Ext.obj = points_children.data();
+
+    buffer_in1Ext.obj = points_coords.data();
     buffer_in1Ext.param = 0;
     buffer_in1Ext.flags = bank[0];
 
-    buffer_in2Ext.obj = points_coords.data();
+    buffer_in2Ext.obj = points_children.data();
     buffer_in2Ext.param = 0;
     buffer_in2Ext.flags = bank[1];
 
@@ -490,9 +491,9 @@ int main(int argc, char** argv) {
     // Allocate Buffer in Global Memory
     // Buffers are allocated using CL_MEM_USE_HOST_PTR for efficient memory and
     // Device-to-host communication
-    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(int)*n_points_real*maxchildren*2,
+    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*n_points_real*dimension,
                                          &buffer_in1Ext, &err));
-    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*n_points_real*dimension,
+    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(int)*n_points_real*maxchildren*2,
                                          &buffer_in2Ext, &err));
 
     OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, vector_size_bytes,
@@ -519,6 +520,7 @@ int main(int argc, char** argv) {
    
 
     int narg = 0;
+    std::cout << "max/min" << maxlevel << "/"<<minlevel<<std::endl;
     OCL_CHECK(err, err = krnl_vector_add.setArg(narg++, buffer_in1));
     OCL_CHECK(err, err = krnl_vector_add.setArg(narg++, buffer_in2));
     OCL_CHECK(err, err = krnl_vector_add.setArg(narg++, buffer_in3));

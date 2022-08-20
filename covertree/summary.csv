@@ -1,6 +1,6 @@
 Profile Summary
-Generated on: 2022-08-19 20:14:46
-Msec since Epoch: 1660932886598
+Generated on: 2022-08-20 13:55:47
+Msec since Epoch: 1660996547877
 Profiled application: cvtree
 Target platform: Xilinx
 Tool version: 2022.1
@@ -13,52 +13,52 @@ Flow mode: System Run
 
 OpenCL API Calls
 API Name,Number Of Calls,Total Time (ms),Minimum Time (ms),Average Time (ms),Maximum Time (ms),
-clCreateBuffer,11,0.145064,0.008125,0.0131876,0.050465,
-clCreateCommandQueue,1,0.012012,0.012012,0.012012,0.012012,
-clCreateContext,1,7.79109,7.79109,7.79109,7.79109,
-clCreateKernel,1,0.550553,0.550553,0.550553,0.550553,
-clCreateProgramWithBinary,1,9963.27,9963.27,9963.27,9963.27,
-clEnqueueMigrateMemObjects,2,0.154011,0.002765,0.0770055,0.151246,
-clEnqueueTask,1,0.069361,0.069361,0.069361,0.069361,
-clFinish,1,12.2904,12.2904,12.2904,12.2904,
-clGetDeviceIDs,2,0.002495,0.000792,0.0012475,0.001703,
-clGetDeviceInfo,2,6.40075,0.003717,3.20037,6.39703,
-clGetPlatformIDs,2,0.014147,0.000972,0.0070735,0.013175,
-clGetPlatformInfo,2,0.002154,0.000882,0.001077,0.001272,
-clReleaseCommandQueue,1,0.002465,0.002465,0.002465,0.002465,
-clReleaseContext,1,0.026911,0.026911,0.026911,0.026911,
-clReleaseDevice,4,0.007163,0.000911,0.00179075,0.004268,
-clReleaseKernel,1,2.55021,2.55021,2.55021,2.55021,
-clReleaseMemObject,33,0.027231,0.000601,0.000825182,0.002305,
-clReleaseProgram,1,0.001863,0.001863,0.001863,0.001863,
-clRetainDevice,4,0.005821,0.000511,0.00145525,0.003707,
-clRetainMemObject,22,0.016229,0.000591,0.000737682,0.001352,
-clSetKernelArg,16,0.018956,0.000551,0.00118475,0.004448,
+clCreateBuffer,11,0.147458,0.008366,0.0134053,0.035507,
+clCreateCommandQueue,1,0.011612,0.011612,0.011612,0.011612,
+clCreateContext,1,8.27966,8.27966,8.27966,8.27966,
+clCreateKernel,1,0.553118,0.553118,0.553118,0.553118,
+clCreateProgramWithBinary,1,68.9428,68.9428,68.9428,68.9428,
+clEnqueueMigrateMemObjects,2,0.139464,0.002555,0.069732,0.136909,
+clEnqueueTask,1,0.069421,0.069421,0.069421,0.069421,
+clFinish,1,12.5029,12.5029,12.5029,12.5029,
+clGetDeviceIDs,2,0.002596,0.000762,0.001298,0.001834,
+clGetDeviceInfo,2,6.62835,0.003407,3.31417,6.62494,
+clGetPlatformIDs,2,0.009769,0.000922,0.0048845,0.008847,
+clGetPlatformInfo,2,0.002134,0.000882,0.001067,0.001252,
+clReleaseCommandQueue,1,0.002836,0.002836,0.002836,0.002836,
+clReleaseContext,1,0.027381,0.027381,0.027381,0.027381,
+clReleaseDevice,4,0.005921,0.000872,0.00148025,0.002866,
+clReleaseKernel,1,3.26954,3.26954,3.26954,3.26954,
+clReleaseMemObject,33,0.026741,0.000601,0.000810333,0.002424,
+clReleaseProgram,1,0.002254,0.002254,0.002254,0.002254,
+clRetainDevice,4,0.006101,0.000551,0.00152525,0.003937,
+clRetainMemObject,22,0.015528,0.000601,0.000705818,0.001352,
+clSetKernelArg,16,0.017844,0.000571,0.00111525,0.004349,
 
 Kernel Execution
 Kernel,Number Of Enqueues,Total Time (ms),Minimum Time (ms),Average Time (ms),Maximum Time (ms),
-vadd,1,11.9244,11.9244,11.9244,11.9244,
+vadd,1,12.0599,12.0599,12.0599,12.0599,
 
 Top Kernel Execution
 Kernel Instance Address,Kernel,Context ID,Command Queue ID,Device,Start Time (ms),Duration (ms),Global Work Size,Local Work Size,
-94074667880320,vadd,0,0,xilinx_u55c_gen3x16_xdma_base_3-0,10084.7,11.9244,1:1:1,1:1:1,
+94285432131456,vadd,0,0,xilinx_u55c_gen3x16_xdma_base_3-0,190.177,12.0599,1:1:1,1:1:1,
 
 Top Memory Writes: Host to Global Memory
 Buffer Address,Context ID,Command Queue ID,Start Time (ms),Duration (ms),Buffer Size (KB),Writing Rate(MB/s),
-1048576,0,0,10084.5,0.165784,1049.02,6327.66,
+1048576,0,0,189.96,0.181394,1049.02,5783.12,
 
 Top Memory Reads: Host to Global Memory
 Buffer Address,Context ID,Command Queue ID,Start Time (ms),Duration (ms),Buffer Size (KB),Reading Rate(MB/s),
-4831838208,0,0,10096.7,0.070133,0.48,6.84414,
+4831838208,0,0,202.323,0.132651,0.48,3.61852,
 
 Data Transfer: Host to Global Memory
 Context:Number of Devices,Transfer Type,Number Of Buffer Transfers,Transfer Rate (MB/s),Average Bandwidth Utilization (%),Average Buffer Size (KB),Total Time (ms),Average Time (ms),
-context0:1,READ,1,6.84414,0.0434442,0.48,0.070133,0.070133,
-context0:1,WRITE,1,6327.66,40.1658,1049.02,0.165784,0.165784,
+context0:1,READ,1,3.61852,0.0229691,0.48,0.132651,0.132651,
+context0:1,WRITE,1,5783.12,36.7093,1049.02,0.181394,0.181394,
 
 Compute Unit Utilization
 Device,Compute Unit,Kernel,Global Work Size,Local Work Size,Number Of Calls,Dataflow Execution,Max Overlapping Executions,Dataflow Acceleration,Total Time (ms),Minimum Time (ms),Average Time (ms),Maximum Time (ms),Clock Frequency (MHz),
-xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1,vadd,1:1:1,1:1:1,1,Yes,1,1.000000x,11.7455,11.7455,11.7455,11.7455,135,
+xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1,vadd,1:1:1,1:1:1,1,Yes,1,1.000000x,11.8716,11.8716,11.8716,11.8716,135,
 
 
 
@@ -66,27 +66,27 @@ xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1,vadd,1:1:1,1:1:1,1,Yes,1,1.000000x,11.7
 
 Data Transfer: Kernels to Global Memory
 Device,Compute Unit/Port Name,Kernel Arguments,Memory Resources,Transfer Type,Number Of Transfers,Transfer Rate (MB/s),Average Bandwidth Utilization (%),Average Size (KB),Average Latency (ns),
-xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem0,points_coords_dram,HBM[1],READ,1004,104.113,0.540847,0.023,31.1056,
-xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem8,rand3,HBM[4],READ,1000,2969.01,15.4234,1.024,46.561,
-xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem9,rand4,HBM[5],READ,1,200.93,1.04379,0.064,43,
-xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem1,points_children_dram,HBM[0],READ,1,200.93,1.04379,0.064,43,
+xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem0,points_coords_dram,HBM[0],READ,1004,102.939,0.534747,0.023,31.4582,
+xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem8,rand3,HBM[4],READ,1000,2988.07,15.5224,1.024,46.264,
+xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem9,rand4,HBM[5],READ,1,205.714,1.06865,0.064,42,
+xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem1,points_children_dram,HBM[1],READ,1,200.93,1.04379,0.064,43,
 xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem10,points_children_dram|rand5,HBM[6],WRITE,10,190.588,0.990069,0.024,17,
 xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem11,points_children_dram|rand6,HBM[7],READ,10,1216.9,6.32157,0.064,26.2,
 xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem3,outs,HBM[9],WRITE,10,190.588,0.990069,0.024,17,
 xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem4,orig,HBM[8],READ,1,200.93,1.04379,0.064,43,
 xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem5,proj,HBM[10],READ,1,200.93,1.04379,0.064,43,
 xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem6,rand1,HBM[2],READ,1,200.93,1.04379,0.064,43,
-xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem7,rand2,HBM[3],READ,1,200.93,1.04379,0.064,43,
+xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1/m_axi_gmem7,rand2,HBM[3],READ,1,196.364,1.02007,0.064,44,
 
 Top Data Transfer: Kernels to Global Memory
 Device,Compute Unit,Number of Transfers,Average Bytes per Transfer,Transfer Efficiency (%),Total Data Transfer (MB),Total Write (MB),Total Read (MB),Total Transfer Rate (MB/s),
-xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1,1004,23.9044,0.583603,0.024,0,0.024,104.113,
+xilinx_u55c_gen3x16_xdma_base_3-0,vadd_1,1004,23.9044,0.583603,0.024,0,0.024,102.939,
 
 
 
 Guidance Parameters
 Parameter,Element,Value,
-DEVICE_EXEC_TIME,xilinx_u55c_gen3x16_xdma_base_3-0,11.9244,
+DEVICE_EXEC_TIME,xilinx_u55c_gen3x16_xdma_base_3-0,12.0599,
 CU_CALLS,xilinx_u55c_gen3x16_xdma_base_3-0|vadd_1,1,
 NUM_MONITORS,xilinx_u55c_gen3x16_xdma_base_3-0|XCL_PERF_MON_MEMORY|11,11,
 NUM_MONITORS,xilinx_u55c_gen3x16_xdma_base_3-0|XCL_PERF_MON_ACCEL|1,1,
@@ -152,15 +152,15 @@ TRACE_BUFFER_FULL,xilinx_u55c_gen3x16_xdma_base_3-0,false
 MEMORY_TYPE_BIT_WIDTH,xilinx_u55c_gen3x16_xdma_base_3-0|HBM,256,
 MEMORY_TYPE_BIT_WIDTH,xilinx_u55c_gen3x16_xdma_base_3-0|DDR,512,
 MEMORY_TYPE_BIT_WIDTH,xilinx_u55c_gen3x16_xdma_base_3-0|PLRAM,512,
-APPLICATION_RUN_TIME_MS,all,10168,
+APPLICATION_RUN_TIME_MS,all,264.909,
 MIGRATE_MEM,host,2,
 P2P_HOST_TRANSFERS,host,0,
 OBJECTS_RELEASED,all,1,
 CU_CONTEXT_EN,all,0,
 MAX_PARALLEL_KERNEL_ENQUEUES,vadd,1,
-COMMAND_QUEUE_OOO,94074665746896,0,
-KERNEL_BUFFER_INFO,vadd|points_children_dram|HBM[0]|1,1024000,
-KERNEL_BUFFER_INFO,vadd|points_coords_dram|HBM[1]|1,24000,
+COMMAND_QUEUE_OOO,94285429998032,0,
+KERNEL_BUFFER_INFO,vadd|points_coords_dram|HBM[0]|1,24000,
+KERNEL_BUFFER_INFO,vadd|points_children_dram|HBM[1]|1,1024000,
 KERNEL_BUFFER_INFO,vadd|rand1|HBM[2]|1,64,
 KERNEL_BUFFER_INFO,vadd|rand2|HBM[3]|1,64,
 KERNEL_BUFFER_INFO,vadd|rand3|HBM[4]|1,64,
@@ -170,10 +170,10 @@ KERNEL_BUFFER_INFO,vadd|rand6|HBM[7]|1,64,
 KERNEL_BUFFER_INFO,vadd|orig|HBM[8]|1,640,
 KERNEL_BUFFER_INFO,vadd|outs|HBM[9]|1,240,
 KERNEL_BUFFER_INFO,vadd|proj|HBM[10]|1,240,
-BUFFER_RD_ACTIVE_TIME_MS,all,0.070133,
-BUFFER_WR_ACTIVE_TIME_MS,all,0.165784,
-BUFFER_TX_ACTIVE_TIME_MS,all,12.2932,
-TOTAL_KERNEL_RUN_TIME_MS,all,11.7455,
+BUFFER_RD_ACTIVE_TIME_MS,all,0.132651,
+BUFFER_WR_ACTIVE_TIME_MS,all,0.181394,
+BUFFER_TX_ACTIVE_TIME_MS,all,12.4958,
+TOTAL_KERNEL_RUN_TIME_MS,all,11.8716,
 XRT_INI_SETTING,opencl_summary,0,Generation of OpenCL summary report (deprecated)
 XRT_INI_SETTING,opencl_trace,1,Generation of trace of OpenCL APIs and memory transfers
 XRT_INI_SETTING,opencl_device_counter,0,Hardware counters added to OpenCL summary file (deprecated)

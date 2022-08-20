@@ -170,7 +170,7 @@ float distance( float const in1[dimension],
     return ans; 
 }
 
-void query( int n_points_real,
+void query( int const n_points_real,
             int maxlevel,
             int minlevel,
             int n_query,
@@ -365,10 +365,10 @@ void query( int n_points_real,
     }
 }
 
-extern "C" {
+extern "C" { 
 
-void vadd(  int const * points_children_dram,   // Childrens of points in the datastructure
-            float const * points_coords_dram,   // Coordinate of points in the data structure
+void vadd(  float const * points_coords_dram,   // Coordinate of points in the data structure
+            int const * points_children_dram,   // Childrens of points in the datastructure
             float const *rand1,                 // Random vectors used for projection
             float const *rand2,
             float const *rand3,
