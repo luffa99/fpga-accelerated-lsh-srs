@@ -280,12 +280,12 @@ int main(int argc, char** argv) {
     std::for_each(rand6.begin(), rand6.end(), [&](float &i) { i = static_cast <float> (rand()) / static_cast <float> (RAND_MAX); });
     std::for_each(orig.begin(), orig.end(), [&](float &i) { i = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)/pow(10,floor(log10(vector_size))); });
 
-    float time = 0.0;
+    float time_host = 0.0;
     auto start = std::chrono::high_resolution_clock::now();
     host_projection(rand1, rand2, rand3, rand4, rand5, rand6, orig, query, vector_size, AMOUNT);    
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<float, std::milli> duration_host_projection = end - start;
-    time = time + duration_host_projection.count(); 
+    time_host = time_host + duration_host_projection.count(); 
 
     if(want_output) {
         int c = 1;
@@ -521,6 +521,7 @@ int main(int argc, char** argv) {
 
     int narg = 0;
     std::cout << "max/min" << maxlevel << "/"<<minlevel<<std::endl;
+    std::cout <<n_points_real << std::endl;
     OCL_CHECK(err, err = krnl_vector_add.setArg(narg++, buffer_in1));
     OCL_CHECK(err, err = krnl_vector_add.setArg(narg++, buffer_in2));
     OCL_CHECK(err, err = krnl_vector_add.setArg(narg++, buffer_in3));
@@ -570,8 +571,8 @@ int main(int argc, char** argv) {
     }
 
     std::getline(file, str);
-    time = time + std::stof(str);
-    std::cout << "Python time: " << time <<std::endl; 
+    time_host = time_host + std::stof(str);
+    std::cout << "Python time: " << time_host <<std::endl; 
 
 
     // Debug compare projected vectors!
@@ -643,7 +644,21 @@ int main(int argc, char** argv) {
     std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
 
     std::cout << "Kernel time: " << float_ms.count() << " milliseconds" << std::endl;
-    std::cout << "Python time: " << time <<std::endl; 
+    std::cout << "Python time: " << time_host <<std::endl; 
 
+    // Print to file!
+    // current date/time based on current system
+    time_t now = time(0);
+    // convert now to string form
+    char* dt = ctime(&now);
+    std::string dts = dt;
+    dts.erase(std::remove(dts.begin(), dts.end(), '\n'), dts.cend());
+
+    std::cout << now << std::endl;
+
+    std::string filename("../test_and_performance/data.txt");
+    std::ofstream file_append;
+    file_append.open(filename, std::ios_base::app);
+    file_append << now<<';'<<dts << ';' << match << ';' << n_query << ';' << n_points_real << ';' << vector_size << ';'<< float_ms.count() << ';' << time_host << ';'<< time_host/float_ms.count() << std::endl;
     return (match ? EXIT_SUCCESS : EXIT_FAILURE);
 }

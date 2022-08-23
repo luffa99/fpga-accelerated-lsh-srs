@@ -167,9 +167,10 @@ float distance( float const in1[dimension],
     This is not necessary since we only need to compare distances, and removing it
     can be an optimization
     */
-    return ans; 
+    return hls::sqrt(ans); 
 }
-
+// Gather next vector to search, from the projected ones
+        
 void query( int const n_points_real,
             int maxlevel,
             int minlevel,
@@ -186,22 +187,20 @@ void query( int const n_points_real,
             float * proj
             ) {
 
-    ////////////////// Covertree preconfiguration ////////////////////////////////
+   // Let's partition the array -> this should allow optimizations
 
-    // Let's partition the array -> this should allow optimizations
+/* Partitioning of points_coords in 6 parts: so we can access each dimension
+in parallel and speed-up the distance computation */
+// #pragma HLS array_partition variable=points_coords_dram block factor=6 dim=2
+float points_coords [n_points][dimension];
+#pragma HLS array_partition variable=points_coords block factor=6 dim=2
 
-    /* Partitioning of points_coords in 6 parts: so we can access each dimension
-    in parallel and speed-up the distance computation */
-    // #pragma HLS array_partition variable=points_coords_dram block factor=6 dim=2
-    float points_coords [n_points][dimension];
-    #pragma HLS array_partition variable=points_coords block factor=6 dim=2
-
-    /*  Partitioning of points_children in maxchildren part: this may optimize
-    the children_loop below
-    */
-    // #pragma HLS array_partition variable=points_children_dram block factor=16 dim=2
-    int points_children [n_points][maxchildren*2];
-    #pragma HLS array_partition variable=points_children block factor=16 dim=2
+/*  Partitioning of points_children in maxchildren part: this may optimize
+the children_loop below
+*/
+// #pragma HLS array_partition variable=points_children_dram block factor=16 dim=2
+int points_children [n_points][maxchildren*2];
+#pragma HLS array_partition variable=points_children block factor=16 dim=2
 
     // Copying data structure in on-chip memory:
     for(int i=0; i<n_points_real; i++){
@@ -213,14 +212,12 @@ void query( int const n_points_real,
         }
     }
 
+    // Search 100 query points!
+    // TODO: parametrize the loop size
     for(int q=0; q<n_query;q++) {
+
         // Select actual query
         float query[dimension];
-        // for(int i=0; i<dimension; i++){
-        //     query[i] = querys[q*dimension+i];
-        // }
-
-        // Gather next vector to search, from the projected ones
         query[0] = out_1.read();
         query[1] = out_2.read();
         query[2] = out_3.read();
@@ -244,7 +241,7 @@ void query( int const n_points_real,
 
         // Set of points: use array as queue
         int queue_ptr = 0;              // A pointer to the end of the queue
-        int queue [n_points/2] = {-1};
+        int queue [n_points] = {-1};
         for (int i=0; i<n_points_real; i++){
             queue[i] = -1;
         }
@@ -363,6 +360,7 @@ void query( int const n_points_real,
             outs[q*dimension+i] = points_coords[min_index][i];
         }
     }
+
 }
 
 extern "C" { 
