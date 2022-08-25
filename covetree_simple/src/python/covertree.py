@@ -19,6 +19,7 @@ from collections import Counter
 from joblib import Parallel, delayed
 # import cStringIO
 import io
+from decimal import *
 
 # method that returns true iff only one element of the container is True
 def unique(container):
@@ -220,14 +221,24 @@ class CoverTree:
     def knn_iter(self, k, p):
         Qi_p_ds = [(self.root, self.distance(p, self.root.data))]
         for i in reversed(range(self.minlevel, self.maxlevel + 1)):
-            #print("Round "+str(i))
-
+            # print("L: "+str(i))
+            # print("CoverSet")
             # for ch,d in Qi_p_ds:
             #     print(str(ch.id))
             # get the children of the current Qi_p_ds and
             # the best distance at the same time
             Q_p_ds = self._getChildrenDist_(p, Qi_p_ds, i)
-            _, d_p_Q = self._kmin_p_ds_(k, Q_p_ds)[-1]
+            closest, d_p_Q = self._kmin_p_ds_(k, Q_p_ds)[-1]
+            c1, d1 = self._kmin_p_ds_(2, Q_p_ds)[-1]
+            c2, d2 = self._kmin_p_ds_(3, Q_p_ds)[-1]
+
+            # print("CoverSet+Children")
+            # for ch,d in Q_p_ds:
+            #     print(str(ch.id))
+            # # closest point DEBUG:
+            # print("C: "+str(closest.id)+" | "+str(d_p_Q))
+            # print("C2: ",c1.id,d1)
+            # print("C3: ",c2.id,d2)
 
             #create the next set
             Qi_p_ds = [(q, d) for q, d in Q_p_ds if d <= d_p_Q + self.base**i]

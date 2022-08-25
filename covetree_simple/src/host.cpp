@@ -68,7 +68,8 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
                     int &maxlevel,
                     int &minlevel,
                     int n_query,
-                    int want_output) {
+                    int want_output,
+                    int &passedTests) {
 
     std::string str; 
 
@@ -82,13 +83,29 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
     }
     else std::cerr<<"Unable to open file";
     for(int i=0; i<dimension*n_query; i++) {
-        // This will generate a random number from 0.0 to 1.0, inclusive.
+        // // This will generate a random number from 0.0 to 1.0, inclusive.
         srand(time(NULL)+i);
         query[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         myfile<<std::to_string(query[i]) << std::endl;
     }
-        
     myfile.close();
+
+    // Write pts to file:
+    std::ofstream myfile2("pts.txt");
+    if(myfile2.is_open())
+    {
+    }
+    else std::cerr<<"Unable to open file";
+    for(int i=0; i<dimension*n_points_real; i+=6) {
+        myfile2 << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) 
+        << std::endl;
+    }
+    myfile2.close();
 
     
     // Call python script to generate tree 
@@ -153,8 +170,10 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
         result_py[i] = std::stof(str);
         // std::cout << result_py[i] << std::endl;
     }
+    std::getline(file, str);
+    passedTests = std::stof(str);
+    file.close();
 }
-
 void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_coords,
                     std::vector<int,aligned_allocator<int>>  &points_children,
                     float * result_py,
@@ -171,6 +190,7 @@ void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_
 
     std::ifstream file;
     file.open("../covertree/querys.txt");
+    // file.open("querys.txt");
     if(!file) { // file couldn't be opened
       std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
       exit(1);
@@ -182,13 +202,14 @@ void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_
 
     file.close();
     file.open("../covertree/generated_tree_"+std::to_string(n_points_real)+".txt");
+    // file.open("generated_tree_"+std::to_string(n_points_real)+".txt");
     if(!file) { // file couldn't be opened
       std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
       exit(1);
     }
 
     // Due to construction constraints (such as max. number of children) some nodes cannot 
-    // be entered the tree. At the moment just ignore them
+    // be entered the tree. At the moment  just ignore them
     std::getline(file, str);
     int ignored = std::stof(str);
     std::getline(file, str);
@@ -214,7 +235,8 @@ void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_
     }
 
     file.close();
-    file.open("../covertree/results.txt");
+    file.open("../covertree/results.txt");    
+    // file.open("results.txt");
     if(!file) { // file couldn't be opened
       std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
       exit(1);
@@ -272,7 +294,7 @@ int main(int argc, char** argv) {
     // int points_children [n_points*maxchildren*2] = {};
     std::vector<float,aligned_allocator<float>> points_coords(n_points_real*dimension);
     std::vector<int,aligned_allocator<int>> points_children(n_points_real*maxchildren*2);
-
+    int passedTests = 0;
     importGeneratedTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel, n_query, want_output);
 
     // TODO!!!!!!!!!!!!!!!
@@ -408,7 +430,7 @@ int main(int argc, char** argv) {
 
    
 
-
+    std::cout << "max/min/n_points_real/AMOUNT" << maxlevel << "/" <<minlevel << "/" << n_points_real <<"/" <<n_query  <<std::endl;
     OCL_CHECK(err, err = krnl_vector_add.setArg(0, n_points_real));
     OCL_CHECK(err, err = krnl_vector_add.setArg(1, buffer_in1));
     OCL_CHECK(err, err = krnl_vector_add.setArg(2, buffer_in2));
@@ -437,30 +459,32 @@ int main(int argc, char** argv) {
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> float_ms = end - start;
-    std::cout << "Kernel time: " << float_ms.count() << " milliseconds" << std::endl;
+    // std::cout << "Kernel time: " << float_ms.count() << " milliseconds" << std::endl;
 
     // Get time of python execution
-    std::ifstream file;
-    std::string str; 
-    file.open("time.txt");
-    if(!file) { // file couldn't be opened
-      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
-      exit(1);
-    }
+    // std::ifstream file;
+    // std::string str; 
+    // file.open("time.txt");
+    // if(!file) { // file couldn't be opened
+    //   std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+    //   exit(1);
+    // }
 
-    float time = 0.0;
-    std::getline(file, str);
-    time = std::stof(str);
-    std::cout << "Python time: " << time <<std::endl; 
+    // float time = 0.0;
+    // std::getline(file, str);
+    // time = std::stof(str);
+    // std::cout << "Python time: " << time <<std::endl; 
 
     // Compare the results of the Device to the simulation
+    int failed_tests = 0;
     bool match = true;
     for (int i = 0; i < dimension*n_query; i++) { 
-        if (result_hw[i] != result_py[i]) {
+        if (abs(result_hw[i] - result_py[i]) > 1e-5) {
             std::cout << "Error: Result mismatch" << std::endl;
-            std::cout << "i = " << 0 << " CPU result = " << result_py[i]
+            std::cout << "i = " << i << " CPU result = " << result_py[i]
                       << " Device result = " << result_hw[i] << std::endl;
             match = false;
+            failed_tests += 1;
         }
     }
 
@@ -488,6 +512,14 @@ int main(int argc, char** argv) {
             }
         }
     }
-    std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
+    // std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
+    // std::cout << "FAILED " << failed_tests/6 <<"/"<<n_query << std::endl;
+    // //Printing to file
+
+    std::cout << std::endl << "KERNEL(CT) CT TEST => " << (match ? "PASSED" : "FAILED") << std::endl;
+    std::cout << "| Failed: " << failed_tests/6 << std::endl;
+    std::cout << "Kernel (CT) time: " << float_ms.count() << "ms" <<std::endl; 
+
+    
     return (match ? EXIT_SUCCESS : EXIT_FAILURE);
 }

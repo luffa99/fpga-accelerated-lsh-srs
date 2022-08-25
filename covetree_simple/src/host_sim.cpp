@@ -17,7 +17,7 @@
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 128  // Maximum number of children for every node (fixed vector)
-#define n_points 10000   // Number of po#defines to generate
+#define n_points 1000   // Number of po#defines to generate
 #define dummy_level 69
 
 
@@ -37,12 +37,12 @@ float distance( float const in1[dimension],
         ans = ans + ( ( a-b ) * (a-b) ); 
     }
 
-    return ans; 
+    return sqrt(ans); 
 }
 
 
 
-void vadd(int const n_points_real,
+void vadd2(int const n_points_real,
         const float * points_coords_dram,
         const int * points_children_dram,   
         const float * querys,
@@ -51,12 +51,13 @@ void vadd(int const n_points_real,
         int minlevel,
         int n_query) {
 
-    // Memory mapping
-    // std::cout << "bmap: "  << std::endl;
+        std::cout << n_points_real << points_coords_dram << points_children_dram << querys << outs << maxlevel << minlevel << n_query <<std::endl;
+
+
+    // Memory mapping    
+    std::cout << "bmap: "  << std::endl;
     float points_coords [n_points][dimension];
     int points_children [n_points][maxchildren*2];
-
-
 
     // std::cout << "amap: "  << std::endl;
 
@@ -74,19 +75,19 @@ void vadd(int const n_points_real,
     }
 
 
-    // Debug: check max children
-    int maxj = 0;
-    for(int i=0; i<n_points_real; i++){
-        for(int j=0; j<maxchildren*2; j+=2) {
-            // std::cout << points_children[i][j] << " ";
-            if(points_children[i][j] == 69){
-                break;
-            }
-            maxj = j > maxj ? j : maxj;
-        }
-    }
-    maxj = maxj/2 + 1;
-    std::cout << "Max children: " << maxj << std::endl;
+    // Debug: check max children 
+    // int maxj = 0;
+    // for(int i=0; i<n_points_real; i++){
+    //     for(int j=0; j<maxchildren*2; j+=2) {
+    //         // std::cout << points_children[i][j] << " ";
+    //         if(points_children[i][j] == 69){
+    //             break;
+    //         }
+    //         maxj = j > maxj ? j : maxj;
+    //     }
+    // }
+    // maxj = maxj/2 + 1;
+    // std::cout << "Max children: " << maxj << std::endl;
 
     // std::cout << "Points coords is: " <<std::endl;
     // for(int i=0; i< n_points; i++) {
@@ -127,7 +128,7 @@ void vadd(int const n_points_real,
         levels_loop:
         for(int l=maxlevel; l >= minlevel; l--){
         // for(int l= _maxlevel; l >= _minlevel; l--){
-            // std::cout << "L: " << l << std::endl;
+            std::cout << "L: " << l << std::endl;
 
             // std::cout << "Round " << l << std::endl;
             // Inspect all children of points in p_set
@@ -140,15 +141,20 @@ void vadd(int const n_points_real,
             // }
 
             // Visit all elements in queue
+            std::cout << "CoverSet" << std::endl;
+            for(int i=0; i<queue_ptr;i++) {
+                std::cout << queue[i] << std::endl;
+            }
+            int min_distance_id = -1;
             queue_loop:
             for(int i=0; i<queue_ptr;i++) {
-                // std::cout << "|=> " << p_set[i] << std::endl;
+                // std::cout << queue[i] << std::endl;
                 // Get children at some level
                 // for(int j=0; j<maxchildren*2; j+=2) {
                 //     std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
                 // }
                 int p = queue[i];
-                // std::cout << "P: " << p << std::endl;
+                // std::cout << "P: " << p << " ["<<i<<"]" << std::endl;
 
                 children_loop:
                 for(int j=0; j<maxchildren*2; j+=2) {
@@ -172,6 +178,7 @@ void vadd(int const n_points_real,
                     if(points_children[p][j] == l) {
                         int child = points_children[p][j+1];
                         // Add child to queue and save distance
+                        // std::cout << "C: "<<child << " @"<<queue_ptr <<std::endl;
                         queue[queue_ptr] = child;
                         queue_ptr++;
                         dists[child] = distance(points_coords[child],query);
@@ -179,6 +186,7 @@ void vadd(int const n_points_real,
                         // OK for k=1
                         if(dists[child] < min_distance){
                             min_distance = dists[child];
+                            min_distance_id = child;
                         }
                     }
                 }
@@ -186,9 +194,24 @@ void vadd(int const n_points_real,
                 // OK for k=1
                 if(dists[p] < min_distance){
                     min_distance = dists[p];
+                    min_distance_id = p;
                 }
                 
             }
+
+            std::cout << "CoverSet+Children" << std::endl;
+            for(int i=0; i<queue_ptr;i++) {
+                std::cout << queue[i] << std::endl;
+            }
+            std::cout << "C: "<< min_distance_id <<" | " << min_distance << " ! "<< distance(points_coords[min_distance_id],query)<<std::endl;
+            std::cout << "(";
+            for(int i=0; i<6;i++){
+                std::cout << points_coords[min_distance_id][i];
+                if(i<5){
+                   std::cout << ", ";
+                }
+            }
+            std::cout << ")" << std::endl;
 
             // We allow only points with distance <= min_distance + 2^l
             int reduced_position = 0;
@@ -247,13 +270,14 @@ void vadd(int const n_points_real,
 */
 void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
                     std::vector<int,aligned_allocator<int>>  &points_children,
-                    std::vector <float> &result_py,
+                    float * result_py,
                     int &n_points_real,
                     std::vector<float,aligned_allocator<float>> &query,
                     int &maxlevel,
                     int &minlevel,
                     int n_query,
-                    int want_output) {
+                    int want_output,
+                    int &passedTests) {
 
     std::string str; 
 
@@ -267,18 +291,35 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
     }
     else std::cerr<<"Unable to open file";
     for(int i=0; i<dimension*n_query; i++) {
-        // This will generate a random number from 0.0 to 1.0, inclusive.
+        // // This will generate a random number from 0.0 to 1.0, inclusive.
         srand(time(NULL)+i);
         query[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         myfile<<std::to_string(query[i]) << std::endl;
     }
-        
     myfile.close();
+
+    // Write pts to file:
+    std::ofstream myfile2("pts.txt");
+    if(myfile2.is_open())
+    {
+    }
+    else std::cerr<<"Unable to open file";
+    for(int i=0; i<dimension*n_points_real; i+=6) {
+        myfile2 << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) << ',' 
+        << std::to_string(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) 
+        << std::endl;
+    }
+    myfile2.close();
 
     
     // Call python script to generate tree 
     system(("rm generated_tree_"+std::to_string(n_points_real)+".txt").c_str() );
     system(("python src/python/generate_covertree.py "+std::to_string(n_points_real)+" "+std::to_string(maxchildren)+" "+std::to_string(want_output)).c_str() );
+
 
     std::ifstream file;
     file.open("generated_tree_"+std::to_string(n_points_real)+".txt");
@@ -306,12 +347,9 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
             std::getline(file, str);
             //std::cout << str << std::endl;
             points_coords[i*dimension+j] = std::stof(str);
-            // std::cout << "D4: " << i*dimension+j << std::endl;
-
         }
         for(int j=0; j<maxchildren*2; j++){
             std::getline(file, str);
-            // std::cout << "D5: " << i*maxchildren*2+j << std::endl;
             points_children[i*maxchildren*2+j] = std::stoi(str);
         }
     }
@@ -340,8 +378,84 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
         result_py[i] = std::stof(str);
         // std::cout << result_py[i] << std::endl;
     }
+    std::getline(file, str);
+    passedTests = std::stof(str);
+    file.close();
 }
 
+void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_coords,
+                    std::vector<int,aligned_allocator<int>>  &points_children,
+                    float * result_py,
+                    int &n_points_real,
+                    std::vector<float,aligned_allocator<float>> &query,
+                    int &maxlevel,
+                    int &minlevel,
+                    int n_query,
+                    int want_output) {
+
+    std::string str; 
+
+    // Generate random query point and save them to file querys.txt
+
+    std::ifstream file;
+    // file.open("../covertree/querys.txt");
+    file.open("querys1.txt");
+    if(!file) { // file couldn't be opened
+      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+      exit(1);
+    }
+    for(int i=0; i<n_query*dimension; i++){            
+        std::getline(file, str);
+        query[i] =  std::stof(str);
+    }
+
+    file.close();
+    // file.open("../covertree/generated_tree_"+std::to_string(n_points_real)+".txt");
+    file.open("generated_tree_"+std::to_string(n_points_real)+".txt");
+    if(!file) { // file couldn't be opened
+      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+      exit(1);
+    }
+
+    // Due to construction constraints (such as max. number of children) some nodes cannot 
+    // be entered the tree. At the moment just ignore them
+    std::getline(file, str);
+    int ignored = std::stof(str);
+    std::getline(file, str);
+    maxlevel = std::stof(str);
+    std::getline(file, str);
+    minlevel = std::stof(str);
+
+    n_points_real = n_points_real - ignored;
+
+    std::cout << "==== TEST (C++) " << std::endl;
+    std::cout << "Considering " << n_points_real << " points!" << std::endl;
+    
+    for (int i=0; i<n_points_real;i++){
+        for(int j=0; j<dimension;j++){
+            std::getline(file, str);
+            //std::cout << str << std::endl;
+            points_coords[i*dimension+j] = std::stof(str);
+        }
+        for(int j=0; j<maxchildren*2; j++){
+            std::getline(file, str);
+            points_children[i*maxchildren*2+j] = std::stoi(str);
+        }
+    }
+
+    file.close();
+    // file.open("../covertree/results.txt");    
+    file.open("results1.txt");
+    if(!file) { // file couldn't be opened
+      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+      exit(1);
+    }
+    for (int i=0; i<dimension*n_query;i++){
+        std::getline(file, str);
+        result_py[i] = std::stof(str);
+        // std::cout << result_py[i] << std::endl;
+    }
+}
 int main(int argc, char** argv) {
 
     std::cout << "C SIMULATION ***********************" << std::endl;
@@ -389,29 +503,30 @@ int main(int argc, char** argv) {
     // int points_children [n_points*maxchildren*2] = {};
     std::vector<float,aligned_allocator<float>> points_coords(n_points*dimension);
     std::vector<int,aligned_allocator<int>> points_children(n_points*maxchildren*2);
+    int passedTests = 0;
 
-    generateTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel, n_query, want_output);
+    generateTree(points_coords, points_children, result_py.data(), n_points_real, query, maxlevel, minlevel, n_query, want_output, passedTests);
 
-    // std::cout << "Generation ok" <<std::endl;
+    std::cout << "Generation ok" <<std::endl;
     // for(int i=0; i< n_points*dimension; i++) {
     //     std::cout << points_coords[i] << " ";
     // }
-    auto a = n_points_real;
+    int const a = n_points_real;
     // std::cout << "a ok" <<std::endl;
-    auto b = points_coords.data();
+    const float * b = points_coords.data();
     // std::cout << "b ok" <<std::endl;
-    auto c = points_children.data();
+    const int * c = points_children.data();
     // std::cout << "c ok" <<std::endl;
-    auto d = query.data();
+    const float * d = query.data();
     // std::cout << "d ok" <<std::endl;
-    auto e = result_hw.data();
+    float * e = result_hw.data();
     // std::cout << "e ok" <<std::endl;
-    auto f = maxlevel;
+    int f = maxlevel;
     // std::cout << "f ok" <<std::endl;
-    auto g = minlevel;
-    // std::cout << "g ok" <<std::endl;
-    vadd(a,b,c,d,e,f,g,n_query);
-    // std::cout << "vadd ok" <<std::endl;
+    int g = minlevel;
+    std::cout << a << b << c << d << e << f << g <<n_query<<std::endl;
+    vadd2(a,b,c,d,e,f,g,n_query);
+    std::cout << "vadd ok" <<std::endl;
     // vadd(n_points_real, points_coords.data(), points_children.data(), query.data(), result_hw.data(), maxlevel,minlevel,n_query);
 
     std::ifstream file;
@@ -465,6 +580,8 @@ int main(int argc, char** argv) {
     }
 
     std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
+    std::cout << "PY TEST " << ((passedTests < n_query) ? "FAILED" : "PASSED") << std::endl;
+
     return (match ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 

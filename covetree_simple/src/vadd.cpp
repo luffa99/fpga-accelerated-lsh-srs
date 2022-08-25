@@ -30,7 +30,7 @@ float distance( float const in1[dimension],
     This is not necessary since we only need to compare distances, and removing it
     can be an optimization
     */
-    return ans; 
+    return hls::sqrt(ans); 
 }
 
 extern "C" {
@@ -104,7 +104,7 @@ int points_children [n_points][maxchildren*2];
 
         // Set of points: use array as queue
         int queue_ptr = 0;              // A pointer to the end of the queue
-        int queue [n_points/2] = {-1};
+        int queue [n_points] = {-1};
         for (int i=0; i<n_points_real; i++){
             queue[i] = -1;
         }

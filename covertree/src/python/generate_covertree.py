@@ -18,6 +18,7 @@ from covertree import CoverTree
 from naiveknn import knn
 # from pylab import plot, show
 from numpy import subtract, dot, sqrt, linalg
+import numpy as np
 from random import random, seed
 import time
 # import cPickle as pickle
@@ -52,6 +53,13 @@ def test_covertree():
     # k = 1
     
     pts = [(random(),random(),random(),random(),random(),random()) for _ in range(n_points)]
+    #Import points from file:
+    # pts = np.genfromtxt("pts.txt",delimiter=",",dtype='float32')
+    # unique, counts = np.unique(pts, return_counts=True)
+
+    # result = np.column_stack((unique, counts)) 
+    # print (counts)
+
 
     gt = time.time
 
@@ -179,6 +187,9 @@ def test_covertree():
     print ("Querys: ",n_querys)
 
     tot_results = []
+    tot_results_2 = []
+    tot_results_3 = []
+    tot_results_4 = []
     g_time = 0
     for x in range(0,n_querys):
 
@@ -206,11 +217,12 @@ def test_covertree():
         
         # naive nearest neighbor
         t = gt()
-        naive_results = knn(k, query, points_fn, distance)
+        naive_results = knn(4, query, points_fn, distance)
         # print "resultNN =", resultNN
         n_t = gt() - t
         # print "Time to run a naive " + str(k) + "-nn query:", n_t, "seconds"
-
+        # print(results)
+        # print(naive_results)
 
         if all([distance(r, nr) != 0 for r, nr in zip(results, naive_results)]):
             print ("NOT OK!")
@@ -220,21 +232,49 @@ def test_covertree():
         else:
             if(want_output):
                 print ("OK!")
-                print (results)
+                # print (results)
             # print "=="
             # print naive_results
             # print "Cover tree query is", n_t/ct_t, "faster"
             passed_tests += 1
         total_tests += 1
         tot_results.append(results[0])
+        tot_results_2.append(naive_results[1])
+        tot_results_3.append(naive_results[2])
+        tot_results_4.append(naive_results[3])
+
+    tot_results.append([passed_tests])
 
     with open('results.txt', 'w') as x:
         for r in tot_results:
             for a in r:
                 x.write(str(a)+'\n')
 
+    with open('results_2.txt', 'w') as x:
+        for r in tot_results_2:
+            for a in r:
+                x.write(str(a)+'\n')
+    
+    with open('results_3.txt', 'w') as x:
+        for r in tot_results_3:
+            for a in r:
+                x.write(str(a)+'\n')
+
+    with open('results_4.txt', 'w') as x:
+        for r in tot_results_4:
+            for a in r:
+                x.write(str(a)+'\n')
+
     with open('time.txt', 'w') as x:
         x.write(str(g_time)) # in ms
+
+    # print ("==== Check that all cover tree invariants are satisfied ====")
+    # if ct.check_invariants():
+    #     print ("OK!")
+    #     passed_tests += 1
+    # else:
+    #     print ("NOT OK!")
+
 
     return
     # you need pylab for that

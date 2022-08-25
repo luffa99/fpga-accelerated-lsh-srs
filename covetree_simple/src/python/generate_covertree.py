@@ -20,6 +20,7 @@ from naiveknn import knn
 from numpy import subtract, dot, sqrt, linalg
 from random import random, seed
 import time
+import numpy as np
 # import cPickle as pickle
 import pickle
 import sys
@@ -28,6 +29,8 @@ import datetime
 
 
 def distance(p, q):
+    # from decimal import Decimal,getcontext
+    # getcontext().prec = 6
     # print "distance"
     # print "p =", p
     # print "q =", q
@@ -51,7 +54,9 @@ def test_covertree():
 
     # k = 1
     
-    pts = [(random(),random(),random(),random(),random(),random()) for _ in range(n_points)]
+    # pts = [(random(),random(),random(),random(),random(),random()) for _ in range(n_points)]
+    pts = np.genfromtxt("pts.txt",delimiter=",",dtype='float32')
+
 
     gt = time.time
 
@@ -203,7 +208,7 @@ def test_covertree():
         # print "Time to run a cover tree " + str(k) + "-nn query:", ct_t, "seconds"
         
         ##SKIPPING FOR EFFICIENCY
-        '''
+        
         # naive nearest neighbor
         t = gt()
         naive_results = knn(k, query, points_fn, distance)
@@ -225,9 +230,9 @@ def test_covertree():
             # print naive_results
             # print "Cover tree query is", n_t/ct_t, "faster"
             passed_tests += 1
-        total_tests += 1'''
+        total_tests += 1
         tot_results.append(results[0])
-
+    tot_results.append([passed_tests])
     with open('results.txt', 'w') as x:
         for r in tot_results:
             for a in r:

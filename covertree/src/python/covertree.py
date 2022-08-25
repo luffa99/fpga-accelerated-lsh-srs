@@ -99,6 +99,7 @@ class CoverTree:
         self.jobs = jobs
         self.min_len_parallel = min_len_parallel
         self.id = 0
+        self.totn= 0
         self.maxchildren = maxchildren
         # for printDotty
         self.__printHash__ = set()
@@ -171,6 +172,9 @@ class CoverTree:
     def insert_iter(self, p, uid):
         Qi_p_ds = [(self.root, self.distance(p, self.root.data))]
         i = self.maxlevel
+        # parent = self.root
+        parent = None
+        # pi = 1
         while True:
             # get the children of the current level
             # and the distance of the all children
@@ -195,6 +199,12 @@ class CoverTree:
                 i -= 1
 
         # insert p
+        if parent == None:
+            # print ("XXX Ignored "+str(self.ignored+1)+" node")
+            # print (p,uid)
+            self.ignored += 1
+            self.id -= 1
+            return
         tot_children = 0
         for x in parent.children:
             tot_children += len(parent.children[x])
@@ -204,6 +214,8 @@ class CoverTree:
             self.ignored += 1
             self.id -= 1
             return
+
+        self.totn += 1
         parent.addChild(Node(p, uid), pi)
         #print "Adding child",p,pi
         # update self.minlevel
