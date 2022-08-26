@@ -3,8 +3,8 @@
 #include "host.hpp"
 
 #define dimension 6     // (Projected) Vector dimension in the data structure
-#define maxchildren 128 // Maximum number of children for every node (fixed vector)
-#define n_points 1000   // Number of points to be in the data strucuture
+#define maxchildren 100 // Maximum number of children for every node (fixed vector)
+#define n_points 2000   // Number of points to be in the data strucuture
 #define dummy_level 69
 #define MAX_VECT_SIZE 1024
 #define BANK_NAME(n) n | XCL_MEM_TOPOLOGY
@@ -42,8 +42,9 @@ void generateTree(std::vector<float, aligned_allocator<float>> &points_coords,
                   int &minlevel,
                   int AMOUNT,
                   int want_output,
-                  int &passedTests)
-{
+                  std::vector<float,aligned_allocator<float>> &pts,
+                  int &passedTests) {
+
     std::string str;
     // Generate random query point and save them to file querys.txt
     std::ofstream myfile("querys.txt");
@@ -59,6 +60,24 @@ void generateTree(std::vector<float, aligned_allocator<float>> &points_coords,
     }
     myfile.close();
 
+    // Write pts to file:
+    std::ofstream myfile2("pts.txt");
+    if(myfile2.is_open())
+    {
+    }
+    else {std::cerr<<"Unable to open file pts.txt\n";exit(1);}
+    for(int i=0; i<dimension*n_points_real; i+=6) {
+        myfile2 << std::to_string(pts[i]) << ',' 
+        << std::to_string(pts[i+1]) << ',' 
+        << std::to_string(pts[i+2]) << ',' 
+        << std::to_string(pts[i+3]) << ',' 
+        << std::to_string(pts[i+4]) << ',' 
+        << std::to_string(pts[i+5]) 
+        << std::endl;
+    }
+    myfile2.close();
+
+    
     // Call python script to generate tree
     system(("rm generated_tree_" + std::to_string(n_points_real) + ".txt").c_str());
     system(("python src/python/generate_covertree.py " + std::to_string(n_points_real) 
@@ -228,7 +247,7 @@ void distances(std::vector<std::reference_wrapper<std::vector<float, aligned_all
 }
 
 int main(int argc, char **argv)
-{
+{   
     // Parsing and checking arguments
     if (argc != 6)
     {
@@ -242,7 +261,7 @@ int main(int argc, char **argv)
     int vector_size = atoi(argv[4]);    // Size of vectors in the original space
     int want_output = atoi(argv[5]);    // For output
 
-    if (n_points_real > n_points * 10 || n_points_real < 0)
+    if (n_points_real > n_points  || n_points_real < 0)
     {
         std::cout << "Invalid number of points. Value must be >0 and <" << n_points * 10 
         << ". You gave " << n_points_real << std::endl;
@@ -281,6 +300,8 @@ int main(int argc, char **argv)
     std::vector<float, aligned_allocator<float>> rand6(vector_size);
     std::vector<float, aligned_allocator<float>> orig(vector_size * AMOUNT);
     std::vector<float, aligned_allocator<float>> query(dimension * AMOUNT);
+    std::vector<float, aligned_allocator<float> > pts_orig(vector_size*n_points_real);   // Points of the data structure, to be first projected
+    std::vector<float, aligned_allocator<float> > pts(dimension*n_points_real);   // Points of the data structure, to be first projected
     int maxlevel = dummy_level;
     int minlevel = dummy_level;
     int passedTests = 0;
@@ -290,35 +311,57 @@ int main(int argc, char **argv)
     size_t vector_size_result_bytes = sizeof(float) * dimension;
 
     // Generate test data: generate random random vectors and original vectors
-    std::vector<std::reference_wrapper<std::vector<float, aligned_allocator<float>>>> 
-        rands = {rand1, rand2, rand3, rand4, rand5, rand6};
-    srand(time(NULL));
-    float tshold_avg = 1.25;
-    float tshold_min = 1.00;
-    float res[2] = {0.0, 0.0};
-    // Want to ensure that random vectors are "good distributed", pretty distant each other
-    do
-    {
-        std::for_each(rand1.begin(), rand1.end(), [&](float &i)
-                      { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
-        std::for_each(rand2.begin(), rand2.end(), [&](float &i)
-                      { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
-        std::for_each(rand3.begin(), rand3.end(), [&](float &i)
-                      { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
-        std::for_each(rand4.begin(), rand4.end(), [&](float &i)
-                      { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
-        std::for_each(rand5.begin(), rand5.end(), [&](float &i)
-                      { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
-        std::for_each(rand6.begin(), rand6.end(), [&](float &i)
-                      { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
-        // std::cout << distances(rands) << std::endl;
-        distances(rands, res);
-    } while (res[0] < tshold_avg || res[1] < tshold_min);
-    std::cout << "D: " << res[0] << "/" << res[1] << std::endl;
+    // std::vector<std::reference_wrapper<std::vector<float, aligned_allocator<float>>>> 
+    //     rands = {rand1, rand2, rand3, rand4, rand5, rand6};
+    // srand(time(NULL));
+    // float tshold_avg = 1.25;
+    // float tshold_min = 1.00;
+    // float res[2] = {0.0, 0.0};
+    // // Want to ensure that random vectors are "good distributed", pretty distant each other
+    // do
+    // {
+    //     std::for_each(rand1.begin(), rand1.end(), [&](float &i)
+    //                   { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
+    //     std::for_each(rand2.begin(), rand2.end(), [&](float &i)
+    //                   { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
+    //     std::for_each(rand3.begin(), rand3.end(), [&](float &i)
+    //                   { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
+    //     std::for_each(rand4.begin(), rand4.end(), [&](float &i)
+    //                   { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
+    //     std::for_each(rand5.begin(), rand5.end(), [&](float &i)
+    //                   { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
+    //     std::for_each(rand6.begin(), rand6.end(), [&](float &i)
+    //                   { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); });
+    //     // std::cout << distances(rands) << std::endl;
+    //     distances(rands, res);
+    // } while (res[0] < tshold_avg || res[1] < tshold_min);
+    // std::cout << "D: " << res[0] << "/" << res[1] << std::endl;
 
+    // std::for_each(orig.begin(), orig.end(), [&](float &i)
+    //     { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) / pow(10, floor(log10(vector_size))); 
+    // });
+    
+    // Trying normal distribution!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    std::random_device rd{};
+    std::mt19937 gen{rd()};
+    std::normal_distribution<> d{0,1};
+    std::for_each(rand1.begin(), rand1.end(), [&](float &i)
+                    { i = d(gen); });
+    std::for_each(rand2.begin(), rand2.end(), [&](float &i)
+                    { i = d(gen); });
+    std::for_each(rand3.begin(), rand3.end(), [&](float &i)
+                    { i = d(gen); });
+    std::for_each(rand4.begin(), rand4.end(), [&](float &i)
+                    { i = d(gen); });
+    std::for_each(rand5.begin(), rand5.end(), [&](float &i)
+                    { i = d(gen); });
+    std::for_each(rand6.begin(), rand6.end(), [&](float &i)
+                    { i = d(gen); });
     std::for_each(orig.begin(), orig.end(), [&](float &i)
-        { i = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) / pow(10, floor(log10(vector_size))); 
-    });
+                    { i = d(gen); });
+    std::for_each(pts_orig.begin(), pts_orig.end(), [&](float &i)
+                    { i = d(gen); });
+
 
     // Execute projection on host and measure time
     float host_projection_ms = 0.0;
@@ -327,6 +370,9 @@ int main(int argc, char **argv)
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<float, std::milli> duration_host_projection = end - start;
     host_projection_ms = host_projection_ms + duration_host_projection.count();
+
+    // Project data to be inserted into the coverTree
+    host_projection(rand1, rand2, rand3, rand4, rand5, rand6, pts_orig, pts, vector_size, n_points_real);    
 
     // Print generated data
     if (want_output)
@@ -382,8 +428,28 @@ int main(int argc, char **argv)
     }
 
     // Generate the try
+    int wanted_points = n_points_real;
     generateTree(points_coords, points_children, result_py, result_py_2, result_py_3, result_py_4, 
-        n_points_real, query, maxlevel, minlevel, AMOUNT, want_output, passedTests);
+        n_points_real, query, maxlevel, minlevel, AMOUNT, want_output, pts, passedTests);
+
+    // // Debug: check max children 
+    // int maxj = 0;
+    // for(int i=0; i<n_points_real; i++){
+    //     for(int j=0; j<maxchildren*2; j+=2) {
+    //         // std::cout << points_children[i][j] << " ";
+    //         if(points_children[i*maxchildren*2+j] == 69){
+    //             break;
+    //         }
+    //         maxj = j > maxj ? j : maxj;
+    //     }
+    // }
+    // maxj = maxj/2 + 1;
+    // std::cout << "Max children: " << maxj << std::endl;
+    // std::string filename_1("../test_and_performance/maxchildren.csv");
+    // std::ofstream file_append_1;
+    // file_append_1.open(filename_1, std::ios_base::app);
+    // file_append_1 << maxj << std::endl;
+    // return 1;
 
     // PROGRAM DEVICE
     cl_int err;
@@ -649,6 +715,41 @@ int main(int argc, char **argv)
         }
     }
 
+
+    // Testing Naive NN:
+    start = std::chrono::high_resolution_clock::now();
+    std::vector<float> min_orig(AMOUNT*vector_size);
+    for(int i=0; i<vector_size*AMOUNT; i += vector_size) {
+
+        std::vector<float> query_vect(vector_size);
+        for(int o=0; o<vector_size; o++){
+            query_vect[o] = orig[i+o];
+        }
+
+        float min = 999999;
+        float min_id = -1;
+
+        for(int j=0; j<vector_size*n_points_real; j+= vector_size) {
+            std::vector<float> point_vect(vector_size);
+            for(int o=0; o<vector_size; o++){
+                point_vect[o] = pts_orig[j+o];
+            }
+
+            
+            float dist = distance(query_vect.data(), point_vect.data());
+            min = dist < min ? dist : min;
+            min_id = dist <= min ? j : min_id;
+        }
+        // Save found NN
+        for(int j=0; j<vector_size; j++){
+            min_orig[i+j] = pts_orig[min_id+j];
+        }
+
+    }
+    end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> naive_knn = end - start;
+
+
     // Output info
     std::cout << std::endl
               << "HOST TEST (Python algo = Bruteforce) => " 
@@ -664,6 +765,11 @@ int main(int argc, char **argv)
     std::cout << "Kernel (ALL) tot time: " << kernel_all_ms.count() << " ms" << std::endl;
     std::cout << "Host tot time: " << host_all_ms << " ms" << std::endl;
 
+    std::cout << "Host Naive tot time: " << naive_knn.count() << " ms" << std::endl;
+
+    std::cout << "Speedup: " << host_all_ms/kernel_all_ms.count() << std::endl;
+    std::cout << "Naive vs Host(ALL) speedup: " << naive_knn.count()/host_all_ms << std::endl;
+    std::cout << "Naive vs Kernel(ALL) speedup: " << naive_knn.count()/kernel_all_ms.count() << std::endl;
     // Export data to file
     time_t now = time(0);
     char *dt = ctime(&now);
@@ -676,9 +782,11 @@ int main(int argc, char **argv)
         << match << ';' << match_2 << ';' << match_3 << ';' << match_4 << ';' 
         << nonmatching_1 / 6 << ';' << nonmatching_4 / 6 << ';'
         << dts << ';' << now << ';'
-        << AMOUNT << ';' << n_points_real << ';' << vector_size << ';' 
+        << AMOUNT << ';' << n_points_real << ';' << wanted_points <<';' << vector_size << ';' 
         << kernel_all_ms.count() << ';' << host_all_ms << ';' 
-        << host_all_ms / kernel_all_ms.count() << std::endl;
+        << host_all_ms / kernel_all_ms.count()  << ';'
+        << naive_knn.count()/host_all_ms << ';'
+        << naive_knn.count()/kernel_all_ms.count() << std::endl;
 
     return (match ? EXIT_SUCCESS : EXIT_FAILURE);
 }

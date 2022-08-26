@@ -52,9 +52,14 @@ def test_covertree():
 
     # k = 1
     
-    pts = [(random(),random(),random(),random(),random(),random()) for _ in range(n_points)]
+    # pts = [(random(),random(),random(),random(),random(),random()) for _ in range(n_points)]
+    # pts = [np.random.normal(0,1,6) for _ in range(n_points)]
     #Import points from file:
-    # pts = np.genfromtxt("pts.txt",delimiter=",",dtype='float32')
+    pts = np.genfromtxt("pts.txt",delimiter=",",dtype='float32')
+    # print(tuple(pts))
+
+    # pts = [(np.random.normal(0,1,1)[0],np.random.normal(0,1,1)[0],np.random.normal(0,1,1)[0],
+    # np.random.normal(0,1,1)[0],np.random.normal(0,1,1)[0],np.random.normal(0,1,1)[0]) for _ in range(n_points)]
     # unique, counts = np.unique(pts, return_counts=True)
 
     # result = np.column_stack((unique, counts)) 

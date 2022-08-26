@@ -89,7 +89,7 @@ class CoverTree:
     #  minimum number of elements at a given level to have their
     #  distances to the element to insert or query evaluated.
     #
-    def __init__(self, distance, maxchildren, root = None, maxlevel = 2, base = 2,
+    def __init__(self, distance, maxchildren, root = None, maxlevel = 8, base = 2,
                  jobs = 1, min_len_parallel = 100):
         self.distance = distance
         self.root = root
@@ -182,10 +182,10 @@ class CoverTree:
             d_p_Q = self._min_ds_(Q_p_ds)
 
             #print(d_p_Q,self.base**i)
-
             if d_p_Q == 0.0:    # already there, no need to insert
                 return
             elif d_p_Q > self.base**i: # the found parent should be right
+                # print(d_p_Q)
                 break
             else: # d_p_Q <= self.base**i, keep iterating
 
@@ -200,7 +200,7 @@ class CoverTree:
 
         # insert p
         if parent == None:
-            # print ("XXX Ignored "+str(self.ignored+1)+" node")
+            print ("YYY Ignored "+str(self.ignored+1)+" node")
             # print (p,uid)
             self.ignored += 1
             self.id -= 1

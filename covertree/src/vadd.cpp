@@ -4,8 +4,8 @@
 
 // Definitions:
 #define dimension 6         // Vector dimension in the data structure -> do NOT change
-#define maxchildren 128     // Maximum number of children for every node (fixed vector)
-#define n_points 1000       // Number of po#defines to generate at maximum
+#define maxchildren 100     // Maximum number of children for every node (fixed vector)
+#define n_points 2000       // Number of po#defines to generate at maximum
 #define dummy_level 69      // Dummy level for null
 #define MAX_VECT_SIZE 1024  // Maximum size of vector
 typedef ap_uint<512> ap_uint512_t;

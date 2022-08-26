@@ -1,19 +1,3 @@
-/** *
-* Copyright (C) 2019-2021 Xilinx, Inc
-*
-* Licensed under the Apache License, Version 2.0 (the "License"). You may
-* not use this file except in compliance with the License. A copy of the
-* License is located at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-* License for the specific language governing permissions and limitations
-* under the License.
-*/
-
 // #include "../../common/includes/xcl2/xcl2.hpp"
 #include <algorithm>
 #include <vector>
@@ -26,32 +10,256 @@
 #include <iostream>
 #include <unistd.h>
 #include "host.hpp"
+// #include <hls_vector.h> 
+// #include <hls_stream.h>
+#include "assert.h"
+// #include "hls_math.h"
 
 #define dimension 6 // Vector dimension in the data structure -> do NOT change
 #define maxchildren 128  // Maximum number of children for every node (fixed vector)
 #define n_points 1000   // Number of po#defines to generate
 #define dummy_level 69
 
-#define BANK_NAME(n) n | XCL_MEM_TOPOLOGY
-// memory topology:  https://www.xilinx.com/html_docs/xilinx2021_1/vitis_doc/optimizingperformance.html#utc1504034308941
-// See https://github.com/WenqiJiang/Fast-Vector-Similarity-Search-on-FPGA/blob/main/FPGA-ANNS-local/generalized_attempt_K_1_12_bank_6_PE/src/host.cpp
-// <id> | XCL_MEM_TOPOLOGY
-// The <id> is determined by looking at the Memory Configuration section in the xxx.xclbin.info file generated next to the xxx.xclbin file. 
-// In the xxx.xclbin.info file, the global memory (DDR, HBM, PLRAM, etc.) is listed with an index representing the <id>.
 
-/* for U280 specifically */
-const int bank[32] = {
-    /* 0 ~ 31 HBM (256MB per channel) */
-    BANK_NAME(0),  BANK_NAME(1),  BANK_NAME(2),  BANK_NAME(3),  BANK_NAME(4),
-    BANK_NAME(5),  BANK_NAME(6),  BANK_NAME(7),  BANK_NAME(8),  BANK_NAME(9),
-    BANK_NAME(10), BANK_NAME(11), BANK_NAME(12), BANK_NAME(13), BANK_NAME(14),
-    BANK_NAME(15), BANK_NAME(16), BANK_NAME(17), BANK_NAME(18), BANK_NAME(19),
-    BANK_NAME(20), BANK_NAME(21), BANK_NAME(22), BANK_NAME(23), BANK_NAME(24),
-    BANK_NAME(25), BANK_NAME(26), BANK_NAME(27), BANK_NAME(28), BANK_NAME(29),
-    BANK_NAME(30), BANK_NAME(31)};
+// #define _minlevel -4
+// #define _maxlevel 2
 
 
+float distance( float const in1[dimension],
+                float const in2[dimension]) {
 
+    float ans = 0;
+    distance_loop:
+    for (int i = 0; i < dimension; i++) {
+    #pragma HLS unroll
+        float a = in1[i];
+        float b = in2[i];
+        ans = ans + ( ( a-b ) * (a-b) ); 
+    }
+
+    return sqrt(ans); 
+}
+
+
+
+void vadd2(int const n_points_real,
+        const float * points_coords_dram,
+        const int * points_children_dram,   
+        const float * querys,
+        float * outs,
+        int maxlevel,
+        int minlevel,
+        int n_query) {
+
+        std::cout << n_points_real << points_coords_dram << points_children_dram << querys << outs << maxlevel << minlevel << n_query <<std::endl;
+
+
+    // Memory mapping    
+    std::cout << "bmap: "  << std::endl;
+    float points_coords [n_points][dimension];
+    int points_children [n_points][maxchildren*2];
+
+    // std::cout << "amap: "  << std::endl;
+
+    // Copying data structure in on-chip memory:
+    for(int i=0; i<n_points_real; i++){
+        for(int j=0; j<dimension; j++){
+            points_coords[i][j] = points_coords_dram[i*dimension+j];
+            // std::cout << "D1: " << i*dimension+j << std::endl;
+
+        }
+        for(int j=0; j<maxchildren*2; j++) {
+            points_children[i][j] = points_children_dram[i*maxchildren*2+j];
+            // std::cout << "D2: " << i*maxchildren*2+j << std::endl;
+        }
+    }
+
+
+    // Debug: check max children 
+    // int maxj = 0;
+    // for(int i=0; i<n_points_real; i++){
+    //     for(int j=0; j<maxchildren*2; j+=2) {
+    //         // std::cout << points_children[i][j] << " ";
+    //         if(points_children[i][j] == 69){
+    //             break;
+    //         }
+    //         maxj = j > maxj ? j : maxj;
+    //     }
+    // }
+    // maxj = maxj/2 + 1;
+    // std::cout << "Max children: " << maxj << std::endl;
+
+    // std::cout << "Points coords is: " <<std::endl;
+    // for(int i=0; i< n_points; i++) {
+    //     for(int j=0; j< dimension;j++) {
+    //         std::cout << points_coords[i][j] << " ";
+    //     }
+    // }
+    int max_qp = 0;
+    // Search n_query query points!
+    for(int q=0; q<n_query;q++) {
+
+        // Select actual query
+        float query[dimension];
+        for(int i=0; i<dimension; i++){
+            query[i] = querys[q*dimension+i];
+            // std::cout << "D3: " << q*dimension+i << std::endl;
+        }
+
+        // Distances from query point
+        float dists [n_points] = {-1};  
+        for (int i=0; i<n_points_real; i++){
+            dists[i] = -1;
+        }
+
+        // Set of points: use array as queue
+        int queue_ptr = 0;              // A pointer to the end of the queue
+        int queue [n_points/2] = {-1};
+        for (int i=0; i<n_points_real; i++){
+            queue[i] = -1;
+        }
+
+        // Insert root in queue and save distance
+        queue[queue_ptr] = 0;
+        queue_ptr++;
+        dists[0] = distance(points_coords[0], query);
+
+        // Iteration on levels
+        levels_loop:
+        for(int l=maxlevel; l >= minlevel; l--){
+        // for(int l= _maxlevel; l >= _minlevel; l--){
+            std::cout << "L: " << l << std::endl;
+
+            // std::cout << "Round " << l << std::endl;
+            // Inspect all children of points in p_set
+            // and compute the distances
+            float min_distance = 19990102;
+            // for(int i=0; i<size; i++){
+            //     if(p_set[i] != -1) {
+            //     std::cout << i << std::endl;
+            //     }
+            // }
+
+            // Visit all elements in queue
+            std::cout << "CoverSet" << std::endl;
+            for(int i=0; i<queue_ptr;i++) {
+                std::cout << queue[i] << std::endl;
+            }
+            int min_distance_id = -1;
+            queue_loop:
+            for(int i=0; i<queue_ptr;i++) {
+                // std::cout << queue[i] << std::endl;
+                // Get children at some level
+                // for(int j=0; j<maxchildren*2; j+=2) {
+                //     std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
+                // }
+                int p = queue[i];
+                // std::cout << "P: " << p << " ["<<i<<"]" << std::endl;
+
+                children_loop:
+                for(int j=0; j<maxchildren*2; j+=2) {
+                    // Values in list are "tuples of 2"
+                    // With (Level, Point)
+
+                    // dummy_level means NULL and list is sorted or
+                    // List is sorted by level; stop
+                    // iterating if find LOWER one
+
+                    /*THIS causes the II to increase from 2 to 19. Is it better to have an II of 19 or to always go throu the 
+                    entire loop?
+                    */
+                    // if(points_children[p][j] == dummy_level || points_children[p][j] < l) {
+                    //     break;
+                    // }
+
+                    // We found a child at level l
+                    // int chil2d = points_children[i][j+1];
+                    // std::cout << i << ", " << j << " > " << points_children[i][j] << " - " << points_children[i][j+1] << std::endl;
+                    if(points_children[p][j] == l) {
+                        int child = points_children[p][j+1];
+                        // Add child to queue and save distance
+                        // std::cout << "C: "<<child << " @"<<queue_ptr <<std::endl;
+                        queue[queue_ptr] = child;
+                        queue_ptr++;
+                        dists[child] = distance(points_coords[child],query);
+
+                        // OK for k=1
+                        if(dists[child] < min_distance){
+                            min_distance = dists[child];
+                            min_distance_id = child;
+                        }
+                    }
+                }
+
+                // OK for k=1
+                if(dists[p] < min_distance){
+                    min_distance = dists[p];
+                    min_distance_id = p;
+                }
+                
+            }
+
+            std::cout << "CoverSet+Children" << std::endl;
+            for(int i=0; i<queue_ptr;i++) {
+                std::cout << queue[i] << std::endl;
+            }
+            std::cout << "C: "<< min_distance_id <<" | " << min_distance << " ! "<< distance(points_coords[min_distance_id],query)<<std::endl;
+            std::cout << "(";
+            for(int i=0; i<6;i++){
+                std::cout << points_coords[min_distance_id][i];
+                if(i<5){
+                   std::cout << ", ";
+                }
+            }
+            std::cout << ")" << std::endl;
+
+            // We allow only points with distance <= min_distance + 2^l
+            int reduced_position = 0;
+            filter_loop:
+            for(int i=0; i<queue_ptr;i++) {
+                int p = queue[i];
+                int modify_position = 1;
+                if(dists[p] > (min_distance + pow(2,l))) {
+                    // Exclude point from queue
+                    modify_position = 0;
+                }
+                queue[reduced_position] = queue[i];
+                reduced_position += modify_position;
+            }
+            
+            // std::cout << "B: " << queue_ptr << std::endl;
+            max_qp = queue_ptr > max_qp ? queue_ptr : max_qp;
+            queue_ptr = reduced_position;
+
+            // std::cout << "A: " << queue_ptr << std::endl;
+
+            // if(l==-1) {
+            //     break;
+            // }
+        }
+
+        std::cout << "Max queue: " << max_qp << std::endl;
+
+        // We visited all levels, now just take the minimum
+        float min_distance = 19990102;
+        int min_index = -1;
+        min_find_loop:
+        for(int i=0; i<queue_ptr;i++) {
+            int p = queue[i];
+            if(dists[p] < min_distance) {
+                min_distance = dists[p];
+                min_index = p;
+            }
+        }
+
+        // Save result corresponding to query
+        for(int i=0; i<dimension; i++) {
+            outs[q*dimension+i] = points_coords[min_index][i];
+        }
+    }
+
+    
+}
 
 /*
  * To generate the tree we call a python script
@@ -174,6 +382,7 @@ void generateTree(  std::vector<float,aligned_allocator<float>> &points_coords,
     passedTests = std::stof(str);
     file.close();
 }
+
 void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_coords,
                     std::vector<int,aligned_allocator<int>>  &points_children,
                     float * result_py,
@@ -189,8 +398,8 @@ void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_
     // Generate random query point and save them to file querys.txt
 
     std::ifstream file;
-    file.open("../covertree/querys.txt");
-    // file.open("querys.txt");
+    // file.open("../covertree/querys.txt");
+    file.open("querys1.txt");
     if(!file) { // file couldn't be opened
       std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
       exit(1);
@@ -201,15 +410,15 @@ void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_
     }
 
     file.close();
-    file.open("../covertree/generated_tree_"+std::to_string(n_points_real)+".txt");
-    // file.open("generated_tree_"+std::to_string(n_points_real)+".txt");
+    // file.open("../covertree/generated_tree_"+std::to_string(n_points_real)+".txt");
+    file.open("generated_tree_"+std::to_string(n_points_real)+".txt");
     if(!file) { // file couldn't be opened
       std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
       exit(1);
     }
 
     // Due to construction constraints (such as max. number of children) some nodes cannot 
-    // be entered the tree. At the moment  just ignore them
+    // be entered the tree. At the moment just ignore them
     std::getline(file, str);
     int ignored = std::stof(str);
     std::getline(file, str);
@@ -235,8 +444,8 @@ void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_
     }
 
     file.close();
-    file.open("../covertree/results.txt");    
-    // file.open("results.txt");
+    // file.open("../covertree/results.txt");    
+    file.open("results1.txt");
     if(!file) { // file couldn't be opened
       std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
       exit(1);
@@ -247,8 +456,10 @@ void importGeneratedTree (  std::vector<float,aligned_allocator<float>> &points_
         // std::cout << result_py[i] << std::endl;
     }
 }
-
 int main(int argc, char** argv) {
+
+    std::cout << "C SIMULATION ***********************" << std::endl;
+
     int n_query = 10;
     int n_points_real = 100;
 
@@ -272,16 +483,14 @@ int main(int argc, char** argv) {
 
     std::cout << "Parameters: n_query="<<n_query<<" | n_points_real=" << n_points_real <<std::endl;
 
-
-    std::string binaryFile = argv[1];
-
+    // std::string binaryFile = argv[1];
     // 2D array DATA to pass to the FPGA
     // float points_coords_2 [n_points][dimension] = {};
     // int points_children_2 [n_points][maxchildren*2] = {};
     // Results arrays
     // float result_hw [dimension*100] = {};
     std::vector<float,aligned_allocator<float>> result_hw (dimension*n_query);
-    float result_py [dimension*n_query] = {};
+    std::vector<float> result_py (dimension*n_query);
     // Utils
     // float query [dimension*100];
     std::vector<float,aligned_allocator<float>> query (dimension*n_query);
@@ -292,199 +501,56 @@ int main(int argc, char** argv) {
     // Convert to 1d arrays...
     // float points_coords [n_points*dimension] = {};
     // int points_children [n_points*maxchildren*2] = {};
-    std::vector<float,aligned_allocator<float>> points_coords(n_points_real*dimension);
-    std::vector<int,aligned_allocator<int>> points_children(n_points_real*maxchildren*2);
+    std::vector<float,aligned_allocator<float>> points_coords(n_points*dimension);
+    std::vector<int,aligned_allocator<int>> points_children(n_points*maxchildren*2);
     int passedTests = 0;
-    importGeneratedTree(points_coords, points_children, result_py, n_points_real, query, maxlevel, minlevel, n_query, want_output);
 
-    // TODO!!!!!!!!!!!!!!!
-    // size_t vector_size_bytes = sizeof(int) * dimension;
-    // size_t vector_size_result_bytes = sizeof(double) * 1;
-    cl_int err;
-    cl::Context context;
-    cl::Kernel krnl_vector_add;
-    cl::CommandQueue q;
-    // Allocate Memory in Host Memory
-    // When creating a buffer with user pointer (CL_MEM_USE_HOST_PTR), under the
-    // hood user ptr
-    // is used if it is properly aligned. when not aligned, runtime had no choice
-    // but to create
-    // its own host side buffer. So it is recommended to use this allocator if
-    // user wish to
-    // create buffer using CL_MEM_USE_HOST_PTR to align user buffer to page
-    // boundary. It will
-    // ensure that user buffer is used when user create Buffer/Mem object with
-    // CL_MEM_USE_HOST_PTR
+    generateTree(points_coords, points_children, result_py.data(), n_points_real, query, maxlevel, minlevel, n_query, want_output, passedTests);
 
-    // std::vector<float, aligned_allocator<float> > source_in1(dimension);
-    // std::vector<float, aligned_allocator<float> > source_in2(dimension);
-    // std::vector<float, aligned_allocator<float> > source_hw_results(1); // <-- let's try to make vectors of size 1 ^^
-    // std::vector<float, aligned_allocator<float> > source_sw_results(1)
-
-    // Test on CPU
-    // float ans = 0;
-    // for (int i = 0; i < dimension; i++) {
-    //     ans += std::sqrt(((source_in1[i] + source_in2[i]) * (source_in1[i] + source_in2[i])) );
+    std::cout << "Generation ok" <<std::endl;
+    // for(int i=0; i< n_points*dimension; i++) {
+    //     std::cout << points_coords[i] << " ";
     // }
-    // source_sw_results[0] = ans;
-    // source_hw_results[0] = 0;
-    
-    // OPENCL HOST CODE AREA START
-    // get_xil_devices() is a utility API which will find the xilinx
-    // platforms and will return list of devices connected to Xilinx platform
-    // auto devices = xcl::get_xil_devices();
-    std::vector<cl::Device> devices = get_devices();
+    int const a = n_points_real;
+    // std::cout << "a ok" <<std::endl;
+    const float * b = points_coords.data();
+    // std::cout << "b ok" <<std::endl;
+    const int * c = points_children.data();
+    // std::cout << "c ok" <<std::endl;
+    const float * d = query.data();
+    // std::cout << "d ok" <<std::endl;
+    float * e = result_hw.data();
+    // std::cout << "e ok" <<std::endl;
+    int f = maxlevel;
+    // std::cout << "f ok" <<std::endl;
+    int g = minlevel;
+    std::cout << a << b << c << d << e << f << g <<n_query<<std::endl;
+    vadd2(a,b,c,d,e,f,g,n_query);
+    std::cout << "vadd ok" <<std::endl;
+    // vadd(n_points_real, points_coords.data(), points_children.data(), query.data(), result_hw.data(), maxlevel,minlevel,n_query);
 
-    // read_binary_file() is a utility API which will load the binaryFile
-    // and will return the pointer to file buffer.
-    // auto fileBuf = xcl::read_binary_file(binaryFile);
-    xclbin_file_name = argv[1];
-    cl::Program::Binaries vadd_bins = import_binary_file();
-
-
-    // cl::Program::Binaries bins{{vadd_bins.data(), vadd_bins.size()}};
-    bool valid_device = false;
-    for (unsigned int i = 0; i < devices.size(); i++) {
-        auto device = devices[i];
-        // Creating Context and Command Queue for selected Device
-        OCL_CHECK(err, context = cl::Context(device, nullptr, nullptr, nullptr, &err));
-        OCL_CHECK(err, q = cl::CommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &err));
-        std::cout << "Trying to program device[" << i << "]: " << device.getInfo<CL_DEVICE_NAME>() << std::endl;
-        cl::Program program(context, {device}, vadd_bins, nullptr, &err);
-        if (err != CL_SUCCESS) {
-            std::cout << "Failed to program device[" << i << "] with xclbin file!\n";
-        } else {
-            std::cout << "Device[" << i << "]: program successful!\n";
-            OCL_CHECK(err, krnl_vector_add = cl::Kernel(program, "vadd", &err)); // <<-- define the programm, "vadd"
-            valid_device = true;
-            break; // we break because we found a valid device
-        }
+    std::ifstream file;
+    std::string str; 
+    file.open("time.txt");
+    if(!file) { // file couldn't be opened
+      std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
+      exit(1);
     }
-    if (!valid_device) {
-        std::cout << "Failed to program any device found, exit!\n";
-        exit(EXIT_FAILURE);
-    }
+    float time = 0.0;
+    std::getline(file, str);
+    time = std::stof(str);
 
+    std::cout << "Python time: " << time <<std::endl;
 
-    // Problems with alignment: try to use aligned vectors:
-    // std::vector<std::vector<float, aligned_allocator<float> >, aligned_allocator<float> > _points_coords(n_points);
-    // std::vector<std::vector<float, aligned_allocator<float> >, aligned_allocator<float> > _points_children(n_points);
-    // std::vector<float, aligned_allocator<float> > _query(dimension);
-    // std::vector<float, aligned_allocator<float> > _result_hw(dimension);
-
-    // for(int i=0; i<n_points; i++) {
-    //     _points_coords[i] = std::vector<float, aligned_allocator<float> >(dimension);
-    //     _points_children[i] = std::vector<float, aligned_allocator<float> >(maxchildren*2);
-
-    //     for(int j=0; j<dimension; j++) {
-    //         _points_coords[i][j] = points_coords[i][j];
-    //     }
-
-    //     for(int j=0; j<maxchildren*2; j++) {
-    //         _points_children[i][j] = points_children[i][j];
-    //     }
-
-    // }
-    // for(int i=0; i<dimension;i++){
-    //     _query[i] = query[i];
-    //     _result_hw[i] = result_hw[i];
-    // }
-
-     //////////////////////////////   TEMPLATE START  //////////////////////////////
-
-        cl_mem_ext_ptr_t 
-            buffer_in1Ext,
-            buffer_in2Ext,
-            buffer_in3Ext,
-            buffer_outputExt;
-    //////////////////////////////   TEMPLATE END  //////////////////////////////
-
-    //////////////////////////////   TEMPLATE START  //////////////////////////////
-        buffer_in1Ext.obj = points_coords.data();
-        buffer_in1Ext.param = 0;
-        buffer_in1Ext.flags = bank[0];
-
-        buffer_in2Ext.obj = points_children.data();
-        buffer_in2Ext.param = 0;
-        buffer_in2Ext.flags = bank[1];
-
-        buffer_in3Ext.obj = query.data();
-        buffer_in3Ext.param = 0;
-        buffer_in3Ext.flags = bank[2];
-
-        buffer_outputExt.obj = result_hw.data();
-        buffer_outputExt.param = 0;
-        buffer_outputExt.flags = bank[3];
-
-    // Allocate Buffer in Global Memory
-    // Buffers are allocated using CL_MEM_USE_HOST_PTR for efficient memory and
-    // Device-to-host communication
-    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*n_points_real*dimension,
-                                         &buffer_in1Ext, &err));
-    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(int)*n_points_real*maxchildren*2,
-                                         &buffer_in2Ext, &err));
-    OCL_CHECK(err, cl::Buffer buffer_in3(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*dimension*n_query,
-                                         &buffer_in3Ext, &err));
-    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY | CL_MEM_EXT_PTR_XILINX, sizeof(float)*dimension*n_query,
-                                            &buffer_outputExt, &err));
-
-   
-
-    std::cout << "max/min/n_points_real/AMOUNT" << maxlevel << "/" <<minlevel << "/" << n_points_real <<"/" <<n_query  <<std::endl;
-    OCL_CHECK(err, err = krnl_vector_add.setArg(0, n_points_real));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(1, buffer_in1));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(2, buffer_in2));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(3, buffer_in3));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(4, buffer_output));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(5, maxlevel));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(6, minlevel));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(7, n_query));
-
-    // Copy input data to device global memory
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_in1, buffer_in2, buffer_in3}, 0 /* 0 means from host*/));
-
-    // Launch the Kernel
-    // For HLS kernels global and local size is always (1,1,1). So, it is
-    // recommended
-    // to always use enqueueTask() for invoking HLS kernel
-    auto start = std::chrono::high_resolution_clock::now();
-
-    OCL_CHECK(err, err = q.enqueueTask(krnl_vector_add));
-
-
-    // Copy Result from Device Global Memory to Host Local Memory
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_output}, CL_MIGRATE_MEM_OBJECT_HOST));
-    q.finish();
-    // OPENCL HOST CODE AREA END
-
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> float_ms = end - start;
-    // std::cout << "Kernel time: " << float_ms.count() << " milliseconds" << std::endl;
-
-    // Get time of python execution
-    // std::ifstream file;
-    // std::string str; 
-    // file.open("time.txt");
-    // if(!file) { // file couldn't be opened
-    //   std::cerr << "Error: file could not be opened: "; //<< strerror(errno) << std::endl;
-    //   exit(1);
-    // }
-
-    // float time = 0.0;
-    // std::getline(file, str);
-    // time = std::stof(str);
-    // std::cout << "Python time: " << time <<std::endl; 
 
     // Compare the results of the Device to the simulation
-    int failed_tests = 0;
     bool match = true;
     for (int i = 0; i < dimension*n_query; i++) { 
-        if (abs(result_hw[i] - result_py[i]) > 1e-5) {
+        if (result_hw[i] != result_py[i]) {
             std::cout << "Error: Result mismatch" << std::endl;
-            std::cout << "i = " << i << " CPU result = " << result_py[i]
+            std::cout << "i = " << 0 << " CPU result = " << result_py[i]
                       << " Device result = " << result_hw[i] << std::endl;
             match = false;
-            failed_tests += 1;
         }
     }
 
@@ -512,14 +578,10 @@ int main(int argc, char** argv) {
             }
         }
     }
-    // std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
-    // std::cout << "FAILED " << failed_tests/6 <<"/"<<n_query << std::endl;
-    // //Printing to file
 
-    std::cout << std::endl << "KERNEL(CT) CT TEST => " << (match ? "PASSED" : "FAILED") << std::endl;
-    std::cout << "| Failed: " << failed_tests/6 << std::endl;
-    std::cout << "Kernel (CT) time: " << float_ms.count() << "ms" <<std::endl; 
+    std::cout << "TEST " << (match ? "PASSED" : "FAILED") << std::endl;
+    std::cout << "PY TEST " << ((passedTests < n_query) ? "FAILED" : "PASSED") << std::endl;
 
-    
     return (match ? EXIT_SUCCESS : EXIT_FAILURE);
 }
+

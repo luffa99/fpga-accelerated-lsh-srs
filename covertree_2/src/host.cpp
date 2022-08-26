@@ -245,6 +245,18 @@ float distance( float * const in1, float * const in2) {
 
 int main(int argc, char** argv) {
 
+
+    std::random_device rd{};
+    std::mt19937 gen{rd()};
+ 
+    // values near the mean are the most likely
+    // standard deviation affects the dispersion of generated values from the mean
+    std::normal_distribution<> d{0,1};
+ 
+    for(int n=0; n<100; ++n) {
+        std::cout << d(gen)<<std::endl;
+    }
+
     if (argc != 6) {
         std::cout << "Usage: " << argv[0] << " <XCLBIN File> <Number of points in the tree> <Amount of vectors to project+search> <Dimension of vectors> <output 1/0>" << std::endl;
         return EXIT_FAILURE;
@@ -301,12 +313,12 @@ int main(int argc, char** argv) {
 
 
     // Generate test data: generate random random vectors and original vectors
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist2 (0,1000);
-    std::default_random_engine rng;
-    rng.seed(dist2(mt));
-    std::uniform_real_distribution<float> dist;
+    // std::random_device rd;
+    // std::mt19937 mt(rd());
+    // std::uniform_int_distribution<int> dist2 (0,1000);
+    // std::default_random_engine rng;
+    // rng.seed(dist2(mt));
+    // std::uniform_real_distribution<float> dist;
     // std::for_each(rand1.begin(), rand1.end(), [&](float &i) { i = dist(rng); });
     // std::for_each(rand2.begin(), rand2.end(), [&](float &i) { i = dist(rng); });
     // std::for_each(rand3.begin(), rand3.end(), [&](float &i) { i = dist(rng); });
