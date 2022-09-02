@@ -126,7 +126,7 @@ def test_covertree():
     points = sorted(points.items(), key=lambda x: int(x[0]))
     points = list(map(lambda i : i[1], points))
     for node in points:
-        if len(node[1]) < maxchildren: ## max 16 children !!!
+        if len(node[1]) < maxchildren: ## max 100 children !!!
             extension = [(69,-1) for el in range(maxchildren-len(node[1]))] ## 69 needs to be > max value!!
             node[1].extend(extension)
 

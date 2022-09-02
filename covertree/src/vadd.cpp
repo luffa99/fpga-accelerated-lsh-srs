@@ -350,27 +350,18 @@ extern "C"
 // Memory mapping
 #pragma HLS INTERFACE m_axi port = points_coords_dram bundle = gmem0
 #pragma HLS INTERFACE m_axi port = points_children_dram bundle = gmem1
-#pragma HLS INTERFACE m_axi port = outs bundle = gmem3
-#pragma HLS INTERFACE m_axi port = proj bundle = gmem5
-
-#pragma HLS INTERFACE s_axilite port = points_coords_dram
-#pragma HLS INTERFACE s_axilite port = points_children_dram
-#pragma HLS INTERFACE s_axilite port = outs
-#pragma HLS INTERFACE s_axilite port = proj
-
-#pragma HLS INTERFACE s_axilite port = n_points_real
-#pragma HLS INTERFACE s_axilite port = maxlevel
-#pragma HLS INTERFACE s_axilite port = minlevel
-
 #pragma HLS INTERFACE m_axi port = rand1 bundle = gmem6
 #pragma HLS INTERFACE m_axi port = rand2 bundle = gmem7
 #pragma HLS INTERFACE m_axi port = rand3 bundle = gmem8
 #pragma HLS INTERFACE m_axi port = rand4 bundle = gmem9
 #pragma HLS INTERFACE m_axi port = rand5 bundle = gmem10
 #pragma HLS INTERFACE m_axi port = rand6 bundle = gmem11
-
 #pragma HLS INTERFACE m_axi port = orig bundle = gmem4
+#pragma HLS INTERFACE m_axi port = outs bundle = gmem3
+#pragma HLS INTERFACE m_axi port = proj bundle = gmem5
 
+#pragma HLS INTERFACE s_axilite port = points_coords_dram
+#pragma HLS INTERFACE s_axilite port = points_children_dram
 #pragma HLS INTERFACE s_axilite port = rand1
 #pragma HLS INTERFACE s_axilite port = rand2
 #pragma HLS INTERFACE s_axilite port = rand3
@@ -378,9 +369,14 @@ extern "C"
 #pragma HLS INTERFACE s_axilite port = rand5
 #pragma HLS INTERFACE s_axilite port = rand6
 #pragma HLS INTERFACE s_axilite port = orig
-
+#pragma HLS INTERFACE s_axilite port = proj
+#pragma HLS INTERFACE s_axilite port = outs
+#pragma HLS INTERFACE s_axilite port = n_points_real
+#pragma HLS INTERFACE s_axilite port = maxlevel
+#pragma HLS INTERFACE s_axilite port = minlevel
 #pragma HLS INTERFACE s_axilite port = amount
 #pragma HLS INTERFACE s_axilite port = vector_size
+
 
         // Data FIFOs
         stream<ap_uint512_t> random_1;
