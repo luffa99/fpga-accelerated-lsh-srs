@@ -59,10 +59,6 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "valarray": "cpp",
-        "strstream": "cpp",
-        "set": "cpp",
-        "typeindex": "cpp",
-        "variant": "cpp"
+        "valarray": "cpp"
     }
 }

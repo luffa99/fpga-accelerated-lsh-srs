@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vitis Analyzer v2022.1 (64-bit)
+# SW Build 3526262 on Mon Apr 18 15:47:01 MDT 2022
+# 
+# Start of session at: Thu Jul 14 10:56:07 2022
+# Process ID: 3115046
+# Current directory: /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple
+# Command line: vitis_analyzer
+# Log file: /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/vitis_analyzer.log
+# Journal file: /pub/scratch/lfalardi/my_bachelor_thesis/covetree_simple/vitis_analyzer.jou
+# Running On: alveo-build-01.inf.ethz.ch, OS: Linux, CPU Frequency: 1000.184 MHz, CPU Physical cores: 30, Host memory: 404307 MB
+#-----------------------------------------------------------
+start_gui
