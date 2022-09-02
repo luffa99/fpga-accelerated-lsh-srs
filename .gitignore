@@ -6,3 +6,6 @@ common/
 .*
 !/.gitignore
 test/
+*.txt
+*.csv
+*.dot
